@@ -1,122 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
+import ScannerPage from "@/features/ScannerPage.jsx";
+import HistoryPage from "@/features/history/HistoryPage.jsx";
+import InsightsPage from "@/features/insight/InsightsPage.jsx";
+import ArchitecturePage from "@/features/architecture/ArchitecturePage.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Import halaman-halaman Anda (Pastikan file ini sudah Anda buat)
+// import Login from './pages/Login';
+// import Dashboard from './pages/Dashboard';
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+const HomePage = () => (
+    <div className="flex flex-col items-center justify-center h-[60vh] text-center">
+        <h1 className="text-3xl font-bold text-white mb-2">Welcome to CeraScan AI</h1>
+        <p className="text-zinc-400 max-w-md">Silakan pilih menu di samping untuk memulai.</p>
+    </div>
+);
 
-      <div className="ticks"></div>
+export default function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/*<Route path="/login" element={<Login/>}/>*/}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+                <Route element={<ProtectedRoute/>}>
+                    {/*<Route path="/dashboard" element={<Dashboard/>}/>*/}
+                    <Route path="/scanner" element={<ScannerPage/>}/>
+                    <Route path="/history" element={<HistoryPage/>}/>
+                    <Route path="/insights" element={<InsightsPage/>}/>
+                    <Route path="/architecture" element={<ArchitecturePage/>}/>
+                </Route>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+                <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
+
+                <Route path="*"
+                       element={<div className="p-8 text-center text-2xl font-bold">404 Halaman Tidak Ditemukan</div>}/>
+            </Routes>
+        </BrowserRouter>
+    );
 }
-
-export default App
