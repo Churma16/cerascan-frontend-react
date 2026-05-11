@@ -1,17 +1,11 @@
 import React from 'react';
 import {AlertCircle, CheckCircle2, History, Image as ImageIcon} from 'lucide-react';
 import MainLayout from "@/layouts/MainLayout.jsx";
-
-// Mock Data
-const scanHistoryData = [
-    {id: 'SCN-8821', time: 'Baru saja', status: 'Normal', conf: 98.2, file: 'sample_img_01.jpg'},
-    {id: 'SCN-8820', time: '10 menit lalu', status: 'Retak', conf: 89.4, file: 'batch_b_05.jpg'},
-    {id: 'SCN-8819', time: '1 jam lalu', status: 'Bernoda', conf: 92.1, file: 'test_noda_12.jpg'},
-    {id: 'SCN-8818', time: 'Kemarin', status: 'Goresan', conf: 76.8, file: 'goresan_09.jpg'},
-    {id: 'SCN-8817', time: 'Kemarin', status: 'Normal', conf: 99.1, file: 'sample_img_02.jpg'},
-];
+import {useScans} from "@/hooks/useScan.js";
+import {truncate, timeAgo} from "@/utils/helper.js";
 
 export default function HistoryPage() {
+    const {data: scanHistories = [], isLoading} = useScans();
     return (
         <MainLayout>
             <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500">
@@ -42,25 +36,30 @@ export default function HistoryPage() {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-[#262833]">
-                            {scanHistoryData.map((log) => (
+                            {isLoading && (
+                                <tr>
+                                    <td colSpan="5" className="px-8 py-5 text-center text-zinc-400">Loading...</td>
+                                </tr>
+                            )}
+                            {Array.isArray(scanHistories) && scanHistories.map((log) => (
                                 <tr key={log.id} className="hover:bg-[#1A1C26]/50 transition-colors">
-                                    <td className="px-8 py-5 font-mono text-sm text-zinc-300">{log.id}</td>
-                                    <td className="px-8 py-5 text-sm text-zinc-400">{log.time}</td>
+                                    <td className="px-8 py-5 font-mono text-sm text-zinc-300">{log.scan_id}</td>
+                                    <td className="px-8 py-5 text-sm text-zinc-400">{timeAgo(log.createdAt)}</td>
                                     <td className="px-8 py-5 text-sm text-zinc-400 flex items-center gap-3">
                                         <div
                                             className="w-8 h-8 rounded bg-[#1A1C26] flex items-center justify-center border border-[#262833]">
                                             <ImageIcon className="w-4 h-4 text-zinc-500"/>
                                         </div>
-                                        {log.file}
+                                        {truncate(log.file_name, 24)}
                                     </td>
                                     <td className="px-8 py-5">
-                    <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${log.status === 'Normal' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
-                      {log.status === 'Normal' ? <CheckCircle2 className="w-3.5 h-3.5"/> :
-                          <AlertCircle className="w-3.5 h-3.5"/>} {log.status}
-                    </span>
+                                        <span
+                                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${log.prediction === 'Normal' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                                          {log.prediction === 'Normal' ? <CheckCircle2 className="w-3.5 h-3.5"/> :
+                                              <AlertCircle className="w-3.5 h-3.5"/>} {log.prediction}
+                                        </span>
                                     </td>
-                                    <td className="px-8 py-5 text-sm font-mono text-right font-medium text-white">{log.conf}%</td>
+                                    <td className="px-8 py-5 text-sm font-mono text-right font-medium text-white">{log.confidence}%</td>
                                 </tr>
                             ))}
                             </tbody>
