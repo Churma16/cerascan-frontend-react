@@ -11,14 +11,16 @@ import {
     Shield,
     Users,
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useCurrentUser } from '@/hooks/useAuth.js';
 
 export default function AdminMainLayout({ children, activeMenu, setActiveMenu }) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Gunakan prop jika diberikan, atau gunakan local state jika tidak
     const [internalActiveMenu, setInternalActiveMenu] = React.useState('overview');
+
+    const { data: myData = {} } = useCurrentUser();
 
     const sidebarMenus = [
         {
@@ -87,12 +89,16 @@ export default function AdminMainLayout({ children, activeMenu, setActiveMenu })
                 {/* Profil Pengguna Singkat */}
                 <div className="p-4 border-b border-[#1E1F2E]">
                     <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#1A1C26] cursor-pointer transition-colors border border-transparent hover:border-[#262833]">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-inner">
+                        <div className="w-10 h-10 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-inner">
                             A
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-white truncate">Admin Utama</p>
-                            <p className="text-xs text-zinc-500 truncate">Super Administrator</p>
+                            <p className="text-sm font-bold text-white truncate">
+                                {myData.full_name}
+                            </p>
+                            <p className="text-xs text-zinc-500 truncate normal-case">
+                                {myData.role}
+                            </p>
                         </div>
                     </div>
                 </div>
