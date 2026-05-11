@@ -1,19 +1,21 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axiosClient from "@/api/axios.js";
+
 export const useScanImage = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (file) => {
             const formData = new FormData();
             formData.append('image', file);
 
-            // Memanggil endpoint API Anda melalui axiosClient
-            const response = await axiosClient.post('/api/scan', formData, {
+            const response = await axiosClient.post('/scans', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
-            return response.data; // Mengembalikan data JSON dari server
+            await queryClient.invalidateQueries({queryKey: ['scans']});
+            return response.data.data;
         },
         onError: (error) => {
             console.error("Gagal melakukan scan:", error);
