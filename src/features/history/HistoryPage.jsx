@@ -2,7 +2,7 @@ import React from 'react';
 import {AlertCircle, CheckCircle2, History, Image as ImageIcon} from 'lucide-react';
 import MainLayout from "@/layouts/MainLayout.jsx";
 import {useScans} from "@/hooks/useScan.js";
-import {truncate, timeAgo} from "@/utils/helper.js";
+import {truncate, timeAgo, getImageUrl} from "@/utils/helper.js";
 
 export default function HistoryPage() {
     const {data: scanHistories = [], isLoading} = useScans();
@@ -47,15 +47,23 @@ export default function HistoryPage() {
                                     <td className="px-8 py-5 text-sm text-zinc-400">{timeAgo(log.createdAt)}</td>
                                     <td className="px-8 py-5 text-sm text-zinc-400 flex items-center gap-3">
                                         <div
-                                            className="w-8 h-8 rounded bg-[#1A1C26] flex items-center justify-center border border-[#262833]">
-                                            <ImageIcon className="w-4 h-4 text-zinc-500"/>
+                                            className="w-10 h-10 rounded-lg bg-[#1A1C26] flex items-center justify-center border border-[#262833] flex-shrink-0 overflow-hidden">
+                                            {log.saved_file_name ? (
+                                                <img 
+                                                    src={getImageUrl(log.saved_file_name)} 
+                                                    alt={log.file_name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <ImageIcon className="w-5 h-5 text-zinc-500"/>
+                                            )}
                                         </div>
                                         {truncate(log.file_name, 24)}
                                     </td>
                                     <td className="px-8 py-5">
                                         <span
-                                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${log.prediction === 'Normal' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
-                                          {log.prediction === 'Normal' ? <CheckCircle2 className="w-3.5 h-3.5"/> :
+                                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${log.prediction === 'normal' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                                          {log.prediction === 'normal' ? <CheckCircle2 className="w-3.5 h-3.5"/> :
                                               <AlertCircle className="w-3.5 h-3.5"/>} {log.prediction}
                                         </span>
                                     </td>
