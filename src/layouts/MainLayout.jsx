@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { BarChart2, History, LayoutGrid, Menu, Network } from 'lucide-react';
+import { useIsAuthenticated } from '@/hooks/useAuth.js';
 
 export default function MainLayout({ children }) {
     const location = useLocation();
     const navigate = useNavigate();
+
+    // Mengecek apakah user sudah login melalui hook
+    const isAuthenticated = useIsAuthenticated();
+
     // Konfigurasi Navigasi Publik
     const navLinks = [
         { path: '/scanner', label: 'Scan Image', icon: LayoutGrid },
@@ -54,12 +59,21 @@ export default function MainLayout({ children }) {
 
                     {/* Tombol Aksi Kanan */}
                     <div className="hidden md:flex items-center gap-4">
-                        <button
-                            className="px-5 py-2.5 bg-white hover:bg-zinc-200 text-zinc-900 text-sm font-bold rounded-xl transition-all shadow-lg shadow-white/10"
-                            onClick={() => navigate(`/login`)}
-                        >
-                            Masuk
-                        </button>
+                        {!isAuthenticated ? (
+                            <button
+                                className="px-5 py-2.5 bg-white hover:bg-zinc-200 text-zinc-900 text-sm font-bold rounded-xl transition-all shadow-lg shadow-white/10"
+                                onClick={() => navigate(`/login`)}
+                            >
+                                Masuk
+                            </button>
+                        ) : (
+                            <button
+                                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
+                                onClick={() => navigate(`/dashboard`)}
+                            >
+                                Dashboard
+                            </button>
+                        )}
                     </div>
 
                     {/* Tombol Menu Mobile */}
