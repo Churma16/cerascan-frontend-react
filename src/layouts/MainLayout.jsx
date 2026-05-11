@@ -55,11 +55,8 @@ export default function MainLayout({children}) {
                     {/* Tombol Aksi Kanan */}
                     <div className="hidden md:flex items-center gap-4">
                         <button
-                            className="text-sm font-semibold text-zinc-300 hover:text-white transition-colors">Masuk
-                        </button>
-                        <button
                             className="px-5 py-2.5 bg-white hover:bg-zinc-200 text-zinc-900 text-sm font-bold rounded-xl transition-all shadow-lg shadow-white/10">
-                            Mulai Gratis
+                            Masuk
                         </button>
                     </div>
 
