@@ -10,15 +10,17 @@ import {
     UploadCloud,
     Zap
 } from 'lucide-react';
-import {Button} from '@/components/ui/button';
+import {Button} from '@/components/ui/button.jsx';
 import MainLayout from "@/layouts/MainLayout.jsx";
+import {useScanImage} from "@/hooks/useScan.js";
 
 export default function ScannerPage() {
-    const [isScanning, setIsScanning] = useState(false);
-    const [scanResult, setScanResult] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [scanResult, setScanResult] = useState(null);
     const fileInputRef = useRef(null);
+
+    const {mutate: scanImage, isPending: isScanning} = useScanImage();
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -32,26 +34,25 @@ export default function ScannerPage() {
     };
 
     const triggerScan = (file) => {
-        setIsScanning(true);
-        setScanResult(null);
-
-        // TODO: Nanti bagian ini diganti menggunakan useMutation (TanStack Query) dan Axios
-        // untuk mengirim 'file' ke endpoint backend Express (localhost:3000/api/scan)
-
-        // Simulasi proses AI (2 detik)
-        setTimeout(() => {
-            setIsScanning(false);
-            const mockStatuses = ["Normal", "Retak", "Bernoda", "Goresan"];
-            const isDefect = Math.random() > 0.6;
-            const randomStatus = isDefect ? mockStatuses[Math.floor(Math.random() * 3) + 1] : "Normal";
-
-            setScanResult({
-                id: 'SCN-' + Math.floor(1000 + Math.random() * 9000),
-                status: randomStatus,
-                confidence: (88 + Math.random() * 11).toFixed(2),
-                time: (Math.random() * (1.5 - 0.2) + 0.2).toFixed(2) + "s"
-            });
-        }, 2000);
+        scanImage(file, {
+            onSuccess: (data) => {
+                setScanResult({
+                    id: data.scan_id || 'SCN-' + Math.floor(1000 + Math.random() * 9000),
+                    status: data.prediction || 'Normal',
+                    confidence: data.confidence || 0,
+                    time: data.inference_time || '0.00s'
+                });
+            },
+            onError: (error) => {
+                console.error("Error scanning:", error);
+                setScanResult({
+                    id: 'ERROR',
+                    status: 'Error',
+                    confidence: 0,
+                    time: '0.00s'
+                });
+            }
+        });
     };
 
     const resetTool = () => {
