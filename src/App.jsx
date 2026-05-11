@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScannerPage from '@/features/scanner/ScannerPage.jsx';
 import HistoryPage from '@/features/history/HistoryPage.jsx';
@@ -22,11 +22,11 @@ export default function App() {
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/dashboard/scans" element={<ScanAdminPage />} />
                     <Route path="/dashboard/users" element={<UserPage />} />
-                    <Route path="/scanner" element={<ScannerPage />} />
-                    <Route path="/history" element={<HistoryPage />} />
-                    <Route path="/insights" element={<InsightsPage />} />
-                    <Route path="/architecture" element={<ArchitecturePage />} />
                 </Route>
+                <Route path="/scanner" element={<ScannerPage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/insights" element={<InsightsPage />} />
+                <Route path="/architecture" element={<ArchitecturePage />} />
 
                 <Route
                     path="*"
