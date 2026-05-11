@@ -18,6 +18,7 @@ export default function ScannerPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [scanResult, setScanResult] = useState(null);
+    const [isDragActive, setIsDragActive] = useState(false);
     const fileInputRef = useRef(null);
 
     const {mutate: scanImage, isPending: isScanning} = useScanImage();
@@ -28,8 +29,35 @@ export default function ScannerPage() {
             setSelectedImage(file);
             setPreviewUrl(URL.createObjectURL(file));
             setScanResult(null);
-            // Panggil fungsi scan otomatis setelah gambar dipilih
             triggerScan(file);
+        }
+    };
+
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setIsDragActive(true);
+        } else if (e.type === "dragleave") {
+            setIsDragActive(false);
+        }
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(false);
+
+        const files = e.dataTransfer.files;
+        if (files && files[0]) {
+            const file = files[0];
+            // Cek apakah file adalah image
+            if (file.type.startsWith('image/')) {
+                setSelectedImage(file);
+                setPreviewUrl(URL.createObjectURL(file));
+                setScanResult(null);
+                triggerScan(file);
+            }
         }
     };
 
@@ -89,11 +117,23 @@ export default function ScannerPage() {
 
                     {!selectedImage && (
                         <div
+                            onDragEnter={handleDrag}
+                            onDragLeave={handleDrag}
+                            onDragOver={handleDrag}
+                            onDrop={handleDrop}
                             onClick={() => fileInputRef.current.click()}
-                            className="flex-1 flex flex-col items-center justify-center p-12 cursor-pointer hover:bg-[#13141C] transition-colors group border-2 border-dashed border-transparent hover:border-indigo-500/30 m-4 rounded-2xl"
+                            className={`flex-1 flex flex-col items-center justify-center p-12 cursor-pointer transition-colors group border-2 border-dashed rounded-2xl m-4 ${
+                                isDragActive
+                                    ? 'bg-indigo-500/10 border-indigo-500/50 shadow-lg shadow-indigo-500/20'
+                                    : 'hover:bg-[#13141C] border-transparent hover:border-indigo-500/30'
+                            }`}
                         >
                             <div
-                                className="w-24 h-24 bg-[#1A1C26] border border-[#262833] group-hover:border-indigo-500/50 group-hover:shadow-indigo-500/20 rounded-3xl flex items-center justify-center mb-6 text-indigo-400 transition-all shadow-2xl group-hover:scale-105">
+                                className={`w-24 h-24 bg-[#1A1C26] border border-[#262833] rounded-3xl flex items-center justify-center mb-6 transition-all shadow-2xl ${
+                                    isDragActive
+                                        ? 'scale-110 border-indigo-500/50 shadow-indigo-500/30 text-indigo-300'
+                                        : 'group-hover:border-indigo-500/50 group-hover:shadow-indigo-500/20 text-indigo-400 group-hover:scale-105'
+                                }`}>
                                 <UploadCloud className="w-12 h-12"/>
                             </div>
                             <h3 className="text-2xl font-bold text-white mb-3">Tarik Gambar ke Sini</h3>
@@ -103,7 +143,7 @@ export default function ScannerPage() {
                             <Button
                                 className="px-8 h-14 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95 flex items-center gap-2 text-base"
                                 onClick={(e) => {
-                                    e.stopPropagation(); // Mencegah klik ganda pada parent
+                                    e.stopPropagation();
                                     fileInputRef.current.click();
                                 }}
                             >
