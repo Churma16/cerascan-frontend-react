@@ -24,7 +24,7 @@ export default function AnovaCard() {
                 className="text-white font-semibold">Batch Size</strong> berdampak signifikan pada Test
                 Loss
                 (ηp²=0.24). Selain itu, terdapat <strong className="text-white font-semibold">interaksi
-                signifikan</strong> antara keduanya terhadap Loss Gap (p=0.017), di mana overfitting
+                signifikan</strong> antara keduanya terhadap Loss Gap (p=0.017), dimana overfitting
                 akibat
                 LR tinggi diperburuk oleh Batch Size yang besar.
             </p>
