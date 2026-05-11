@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { LayoutGrid, Lock, Mail } from 'lucide-react';
-import { useLogin } from '@/hooks/useLogin';
+import { useLogin } from '@/hooks/useLogin.js';
 
 export default function LoginPage() {
     const navigate = useNavigate();
