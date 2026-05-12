@@ -2,7 +2,7 @@ import React from 'react';
 import { AlertCircle, CheckCircle2, History, Image as ImageIcon, Trash2 } from 'lucide-react';
 import { useDeleteScan, useScans } from '@/hooks/useScan.js';
 import { getImageUrl, timeAgo, truncate } from '@/utils/helper.js';
-import AdminMainLayout from '@/layouts/AdminMainLayout.jsx';
+import AdminMainLayout from '@/layouts/Admin/AdminMainLayout.jsx';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import {
     AlertDialog,
@@ -25,43 +25,41 @@ export default function ScanAdminPage() {
             <PageWrapper>
                 <div className="flex justify-between items-end mb-8">
                     <div>
-                        <h2 className="text-2xl font-bold tracking-tight text-white">
+                        <h2 className="text-2xl font-black tracking-tight text-[#042B1F]">
                             Riwayat Pemindaian
                         </h2>
-                        <p className="text-sm text-zinc-400 mt-1">
+                        <p className="text-sm font-medium text-gray-500 mt-1">
                             Daftar log historis dari seluruh aktivitas model VGG-19.
                         </p>
                     </div>
                 </div>
 
-                <div className="bg-[#0E0F15] border border-[#262833] rounded-2xl overflow-hidden shadow-2xl">
-                    <div className="p-6 border-b border-[#262833] flex justify-between items-center bg-[#13141C]">
-                        <h3 className="font-semibold text-white flex items-center gap-2">
-                            <History className="w-5 h-5 text-indigo-400" /> Data Pemrosesan Terakhir
+                <div className="bg-white border border-gray-100 rounded-lg overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                    <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-[#FAFAFA]">
+                        <h3 className="font-extrabold text-[#042B1F] flex items-center gap-2">
+                            <History className="w-5 h-5 text-[#FF645A]" /> Data Pemrosesan Terakhir
                         </h3>
-                        <button className="text-sm text-indigo-400 hover:text-indigo-300 font-medium">
+                        <button className="text-xs font-bold text-[#042B1F] bg-[#E3EFEA] hover:bg-[#d1e5dd] px-4 py-2 rounded-lg transition-colors">
                             Unduh CSV
                         </button>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
-                            <thead className="bg-[#090A0F]">
-                                <tr className="text-zinc-500 text-xs uppercase tracking-widest border-b border-[#262833]">
-                                    <th className="px-6 py-5 font-medium">ID Referensi</th>
-                                    <th className="px-6 py-5 font-medium">Waktu Sistem</th>
-                                    <th className="px-6 py-5 font-medium">Nama Berkas</th>
-                                    <th className="px-6 py-5 font-medium text-center">
-                                        Hasil Inferensi
-                                    </th>
-                                    <th className="px-6 py-5 font-medium text-center">Aksi</th>
+                            <thead className="bg-[#FAFAFA]">
+                                <tr className="text-gray-400 text-[10px] font-extrabold uppercase tracking-widest border-b border-gray-100">
+                                    <th className="px-8 py-5">ID Referensi</th>
+                                    <th className="px-8 py-5">Waktu Sistem</th>
+                                    <th className="px-8 py-5">Nama Berkas</th>
+                                    <th className="px-8 py-5 text-center">Hasil Inferensi</th>
+                                    <th className="px-8 py-5 text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#262833]">
+                            <tbody className="divide-y divide-gray-50">
                                 {isLoading && (
                                     <tr>
                                         <td
                                             colSpan="5"
-                                            className="px-6 py-5 text-center text-zinc-400"
+                                            className="px-8 py-8 text-center font-medium text-gray-400"
                                         >
                                             Loading...
                                         </td>
@@ -73,7 +71,7 @@ export default function ScanAdminPage() {
                                         <tr>
                                             <td
                                                 colSpan="5"
-                                                className="px-6 py-12 text-center text-zinc-500"
+                                                className="px-8 py-12 text-center font-medium text-gray-500"
                                             >
                                                 Tidak ada riwayat.
                                             </td>
@@ -83,16 +81,16 @@ export default function ScanAdminPage() {
                                     scanHistories.map((log) => (
                                         <tr
                                             key={log.id}
-                                            className="hover:bg-[#1A1C26]/50 transition-colors"
+                                            className="hover:bg-gray-50/50 transition-colors"
                                         >
-                                            <td className="px-6 py-5 font-mono text-sm text-zinc-300">
+                                            <td className="px-8 py-5 font-mono font-bold text-[#042B1F]">
                                                 {log.scan_id}
                                             </td>
-                                            <td className="px-6 py-5 text-sm text-zinc-400">
+                                            <td className="px-8 py-5 text-sm font-medium text-gray-500">
                                                 {timeAgo(log.createdAt)}
                                             </td>
-                                            <td className="px-6 py-5 text-sm text-zinc-400 flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded bg-[#1A1C26] flex items-center justify-center border border-[#262833] flex-shrink-0 overflow-hidden">
+                                            <td className="px-8 py-5 text-sm font-medium text-gray-500 flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-xl bg-[#FAFAFA] flex items-center justify-center border border-gray-100 flex-shrink-0 overflow-hidden">
                                                     {log.saved_file_name ? (
                                                         <img
                                                             src={getImageUrl(log.saved_file_name)}
@@ -100,55 +98,53 @@ export default function ScanAdminPage() {
                                                             className="w-full h-full object-cover"
                                                         />
                                                     ) : (
-                                                        <ImageIcon className="w-4 h-4 text-zinc-500" />
+                                                        <ImageIcon className="w-5 h-5 text-gray-300" />
                                                     )}
                                                 </div>
                                                 {truncate(log.file_name, 24)}
                                             </td>
-                                            <td className="px-6 py-5 text-center">
+                                            <td className="px-8 py-5 text-center">
                                                 <span
-                                                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${log.prediction === 'normal' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}
+                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider ${log.prediction === 'normal' ? 'bg-[#E3EFEA] text-[#10B981]' : 'bg-[#FEE2E2] text-[#FF645A]'}`}
                                                 >
                                                     {log.prediction === 'normal' ? (
-                                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                                        <CheckCircle2 className="w-4 h-4" />
                                                     ) : (
-                                                        <AlertCircle className="w-3.5 h-3.5" />
+                                                        <AlertCircle className="w-4 h-4" />
                                                     )}{' '}
                                                     {log.prediction}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-5 text-center">
+                                            <td className="px-8 py-5 text-center">
                                                 <AlertDialog>
                                                     <AlertDialogTrigger asChild>
-                                                        <button className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg border border-red-500/20 transition-all hover:scale-105 active:scale-95">
+                                                        <button className="p-2.5 bg-[#FEE2E2] hover:bg-[#fca5a5] text-[#FF645A] rounded-xl border border-red-100 transition-all hover:scale-105 active:scale-95 shadow-sm">
                                                             <Trash2 className="w-4 h-4" />
                                                         </button>
                                                     </AlertDialogTrigger>
 
-                                                    {/* Tambah border neon tipis & shadow biar dalem */}
-                                                    <AlertDialogContent className="bg-[#13141C] border-zinc-800 shadow-2xl shadow-black/50">
+                                                    <AlertDialogContent className="bg-white border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-xl p-8">
                                                         <AlertDialogHeader>
-                                                            <AlertDialogTitle className="text-xl font-semibold text-zinc-100">
+                                                            <AlertDialogTitle className="text-2xl font-black text-[#042B1F]">
                                                                 Hapus log pemindaian?
                                                             </AlertDialogTitle>
-                                                            <AlertDialogDescription className="text-zinc-400">
+                                                            <AlertDialogDescription className="text-gray-500 font-medium mt-2">
                                                                 Tindakan ini permanen. Data
                                                                 pemindaian akan dihapus selamanya
                                                                 dari sistem.
                                                             </AlertDialogDescription>
                                                         </AlertDialogHeader>
 
-                                                        <AlertDialogFooter className="mt-4 bg-zinc-850">
-                                                            <AlertDialogCancel className="bg-transparent border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors">
+                                                        <AlertDialogFooter className="mt-8">
+                                                            <AlertDialogCancel className="bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors font-bold px-6 py-2.5 rounded-xl">
                                                                 Batal
                                                             </AlertDialogCancel>
 
-                                                            {/* Tombol Hapus dibikin lebih 'galak' */}
                                                             <AlertDialogAction
                                                                 onClick={() =>
                                                                     deleteScan.mutate(log.id)
                                                                 }
-                                                                className="bg-red-500/10 border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-[0_0_15px_rgba(239,68,68,0.1)]"
+                                                                className="bg-[#FF645A] border-none text-white hover:bg-[#e0564e] transition-all px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-[#FF645A]/20"
                                                             >
                                                                 Ya, Hapus Data
                                                             </AlertDialogAction>
