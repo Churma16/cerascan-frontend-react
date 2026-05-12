@@ -1,15 +1,33 @@
 import React from 'react';
 import { Bell, ChevronRight, Search } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { sidebarMenus } from './AdminSidebar';
 
-export default function AdminNavbar({ currentMenu }) {
+export default function AdminNavbar({ activeMenu }) {
+    const location = useLocation();
+
+    let currentMenuId = 'overview';
+    for (const group of sidebarMenus) {
+        for (const item of group.items) {
+            if (
+                location.pathname === item.path ||
+                (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
+            ) {
+                currentMenuId = item.id;
+            }
+        }
+    }
+
+    if (activeMenu !== undefined) {
+        currentMenuId = activeMenu;
+    }
+
     return (
         <header className="h-16 flex items-center justify-between px-8 border-b border-gray-200 bg-white/80 backdrop-blur-md shrink-0 z-10">
             <div className="flex items-center gap-2 text-sm font-medium">
                 <span className="text-gray-500">Dashboard</span>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
-                <span className="text-[#042B1F] capitalize">
-                    {currentMenu ? currentMenu.replace('_', ' ') : ''}
-                </span>
+                <span className="text-[#042B1F] capitalize">{currentMenuId.replace('_', ' ')}</span>
             </div>
 
             <div className="flex items-center gap-6">
