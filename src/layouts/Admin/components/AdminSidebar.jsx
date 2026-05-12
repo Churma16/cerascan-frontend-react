@@ -3,7 +3,6 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { History, LayoutGrid, Users, LogOut } from 'lucide-react';
 import { useCurrentUser, useLogout } from '@/hooks/useAuth.js';
 
-// Ekspor menu agar bisa dibaca juga oleh Navbar tanpa perlu mendefinisikan ulang
 export const sidebarMenus = [
     {
         title: 'Pusat Kontrol',
@@ -36,7 +35,6 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
     const { data: myData = {} } = useCurrentUser();
     const [internalActiveMenu, setInternalActiveMenu] = useState('overview');
 
-    // Penentuan current menu berdasarkan URL
     let currentMenu = internalActiveMenu;
     for (const group of sidebarMenus) {
         for (const item of group.items) {
@@ -49,7 +47,6 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
         }
     }
 
-    // Override jika activeMenu diset dari parent
     if (activeMenu !== undefined) {
         currentMenu = activeMenu;
     }
@@ -63,7 +60,6 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
 
     return (
         <aside className="w-64 flex flex-col border-r border-gray-200 bg-white shrink-0 relative z-20">
-            {/* Header Sidebar (Logo) */}
             <div className="h-16 flex items-center px-6 border-b border-gray-200">
                 <Link
                     to="/"
@@ -76,7 +72,6 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
                 </Link>
             </div>
 
-            {/* Profil Pengguna Singkat */}
             <div className="p-4 border-b border-gray-200">
                 <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-200">
                     <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">
@@ -93,7 +88,6 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
                 </div>
             </div>
 
-            {/* Menu Navigasi */}
             <div className="flex-1 py-4 overflow-y-auto">
                 {sidebarMenus.map((group, idx) => (
                     <div key={idx} className="mb-6">
@@ -124,7 +118,6 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
                 ))}
             </div>
 
-            {/* Footer Sidebar (Logout) */}
             <div className="p-4 border-t border-gray-200">
                 <button
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FF645A] hover:bg-[#FF645A]/10 transition-colors border border-transparent"
