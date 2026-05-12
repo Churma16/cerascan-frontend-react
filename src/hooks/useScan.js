@@ -1,6 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axiosClient from '@/api/axios.js';
 
+/**
+ * Hook mutasi untuk mengunggah dan memproses pemindaian gambar (AI Scanning).
+ * Mengirim berkas menggunakan format multipart/form-data dan secara otomatis
+ * melakukan sinkronisasi ulang (invalidate) pada cache riwayat pemindaian.
+ *
+ * @hook useScanImage
+ * @returns {import('@tanstack/react-query').UseMutationResult} Objek mutasi untuk eksekusi scan.
+ */
 export const useScanImage = () => {
     const queryClient = useQueryClient();
 
@@ -14,6 +22,7 @@ export const useScanImage = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            // Melakukan refresh data history segera setelah scan berhasil
             await queryClient.invalidateQueries({ queryKey: ['scans'] });
             return response.data.data;
         },
@@ -23,11 +32,26 @@ export const useScanImage = () => {
     });
 };
 
+/**
+ * Fungsi internal untuk mengambil daftar riwayat pemindaian dari server.
+ *
+ * @async
+ * @function fetchScans
+ * @returns {Promise<Array>} Array berisi objek riwayat pemindaian.
+ * @throws {Error} Jika pengambilan data gagal.
+ */
 const fetchScans = async () => {
     const response = await axiosClient.get('/scans/history');
     return response.data.data;
 };
 
+/**
+ * Hook untuk mendapatkan daftar riwayat pemindaian pengguna.
+ * Memiliki durasi data segar (staleTime) selama 5 menit.
+ *
+ * @hook useScans
+ * @returns {import('@tanstack/react-query').UseQueryResult} Objek query berisi data riwayat dan status fetching.
+ */
 export const useScans = () => {
     return useQuery({
         queryKey: ['scans'],
@@ -36,6 +60,13 @@ export const useScans = () => {
     });
 };
 
+/**
+ * Hook mutasi untuk menghapus item pemindaian tertentu berdasarkan ID.
+ * Melakukan pembersihan cache 'scans' setelah penghapusan berhasil untuk memastikan UI tetap sinkron.
+ *
+ * @hook useDeleteScan
+ * @returns {import('@tanstack/react-query').UseMutationResult} Objek mutasi untuk eksekusi penghapusan.
+ */
 export const useDeleteScan = () => {
     const queryClient = useQueryClient();
 
