@@ -20,7 +20,7 @@ const hyperParameterData = [
 
 export default function ModelSampleCard() {
     return (
-        <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-[0_4px_25px_rgb(0,0,0,0.04)] flex flex-col h-full">
+        <div className="bg-white border border-gray-100 rounded-lg p-8 shadow-[0_4px_25px_rgb(0,0,0,0.04)] flex flex-col h-full">
             <div className="w-12 h-12 bg-[#FF645A]/10 rounded-xl flex items-center justify-center mb-6">
                 <Lightbulb className="w-6 h-6 text-[#FF645A]" />
             </div>
