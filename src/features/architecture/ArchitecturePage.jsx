@@ -10,7 +10,7 @@ const vggArchitecture = [
     {
         step: 1,
         name: 'Input Layer',
-        desc: 'Citra RGB dire-size ke dimensi 224x224 piksel.',
+        desc: 'Citra RGB diresize ke dimensi 224x224 piksel.',
         type: 'Input',
     },
     {
@@ -54,8 +54,8 @@ export default function ArchitecturePage() {
                         Arsitektur AI
                     </h1>
                     <p className="text-lg text-gray-500 max-w-2xl mx-auto font-medium">
-                        Kerangka kerja sistem dari lapisan frontend hingga ke inti ekstraksi fitur
-                        jaringan saraf tiruan.
+                        Arsitektur sistem dari lapisan frontend hingga ke model ekstraksi fitur
+                        jaringan neural network.
                     </p>
                 </div>
 
