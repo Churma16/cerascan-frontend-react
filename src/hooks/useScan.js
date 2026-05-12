@@ -35,3 +35,19 @@ export const useScans = () => {
         staleTime: 1000 * 60 * 5,
     });
 };
+
+export const useDeleteScan = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id) => {
+            await axiosClient.delete(`/scans/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['scans'] });
+        },
+        onError: (error) => {
+            console.error('Gagal menghapus scan:', error);
+        },
+    });
+};
