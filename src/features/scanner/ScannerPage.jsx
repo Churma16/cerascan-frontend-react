@@ -1,18 +1,19 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import {
     AlertCircle,
+    ArrowRight,
     CheckCircle2,
-    Cpu,
     Download,
-    Image as ImageIcon,
+    ImageIcon,
     RefreshCw,
-    ShieldCheck,
+    Search,
     UploadCloud,
-    Zap
+    Zap,
+    Settings2,
 } from 'lucide-react';
-import {Button} from '@/components/ui/button.jsx';
-import MainLayout from "@/layouts/MainLayout.jsx";
-import {useScanImage} from "@/hooks/useScan.js";
+import { Button } from '@/components/ui/button.jsx';
+import { useScanImage } from '@/hooks/useScan.js';
+import MainLayout from '@/layouts/MainLayout.jsx';
 
 export default function ScannerPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -21,7 +22,7 @@ export default function ScannerPage() {
     const [isDragActive, setIsDragActive] = useState(false);
     const fileInputRef = useRef(null);
 
-    const {mutate: scanImage, isPending: isScanning} = useScanImage();
+    const { mutate: scanImage, isPending: isScanning } = useScanImage();
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -36,9 +37,9 @@ export default function ScannerPage() {
     const handleDrag = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (e.type === "dragenter" || e.type === "dragover") {
+        if (e.type === 'dragenter' || e.type === 'dragover') {
             setIsDragActive(true);
-        } else if (e.type === "dragleave") {
+        } else if (e.type === 'dragleave') {
             setIsDragActive(false);
         }
     };
@@ -68,18 +69,18 @@ export default function ScannerPage() {
                     id: data.scan_id || 'SCN-' + Math.floor(1000 + Math.random() * 9000),
                     status: data.prediction || 'Normal',
                     confidence: data.confidence || 0,
-                    time: data.inference_time || '0.00s'
+                    time: data.inference_time || '0.00s',
                 });
             },
             onError: (error) => {
-                console.error("Error scanning:", error);
+                console.error('Error scanning:', error);
                 setScanResult({
                     id: 'ERROR',
                     status: 'Error',
                     confidence: 0,
-                    time: '0.00s'
+                    time: '0.00s',
                 });
-            }
+            },
         });
     };
 
@@ -92,21 +93,19 @@ export default function ScannerPage() {
 
     return (
         <MainLayout>
-            <div className="w-full max-w-4xl mx-auto px-6 text-center relative z-10 flex flex-col items-center">
-                <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-tight max-w-3xl animate-in slide-in-from-bottom-4 duration-700">
-                    Deteksi Cacat Keramik <br/>
-                    <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-400 to-purple-400">
-            Secara Instan.
-                    </span>
-                </h1>
-                <p className="text-lg text-zinc-400 mb-12 max-w-2xl mx-auto animate-in slide-in-from-bottom-6 duration-700 delay-100">
-                    100% Otomatis dan Cerdas. Unggah foto permukaan keramik Anda dan biarkan AI kami mengidentifikasi
-                    cacat dalam hitungan detik.
-                </p>
+            <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-10">
+                <div className="text-center mb-12">
+                    <h1 className="text-5xl md:text-[4rem] font-black tracking-tight text-[#042B1F] mb-6 leading-tight">
+                        Pengecekan Otomatis Permukaan Keramik
+                    </h1>
+                    <p className="text-base md:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed font-medium">
+                        Satu sistem untuk tiga jenis cacat utama. Goresan, noda, atau retak.
+                        Dianalisis dalam hitungan detik.
+                    </p>
+                </div>
 
-                {/* ALAT PEMINDAI RAKSASA */}
-                <div
-                    className="w-full bg-[#0E0F15] border border-[#262833] rounded-3xl shadow-2xl shadow-black/50 overflow-hidden relative min-h-[400px] flex flex-col transition-all duration-500 animate-in zoom-in-95 duration-700 delay-200">
+                {/* ALAT PEMINDAI UTAMA */}
+                <div className="w-full max-w-3xl bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 rounded-[2.5rem] overflow-hidden relative min-h-[420px] flex flex-col transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.25)] mb-16 mx-auto">
                     <input
                         type="file"
                         accept="image/*"
@@ -122,121 +121,121 @@ export default function ScannerPage() {
                             onDragOver={handleDrag}
                             onDrop={handleDrop}
                             onClick={() => fileInputRef.current.click()}
-                            className={`flex-1 flex flex-col items-center justify-center p-12 cursor-pointer transition-colors group border-2 border-dashed rounded-2xl m-4 ${
+                            className={`flex-1 flex flex-col items-center justify-center p-12 cursor-pointer transition-colors ${
                                 isDragActive
-                                    ? 'bg-indigo-500/10 border-indigo-500/50 shadow-lg shadow-indigo-500/20'
-                                    : 'hover:bg-[#13141C] border-transparent hover:border-indigo-500/30'
+                                    ? 'bg-[#E3EFEA]/30'
+                                    : 'bg-transparent hover:bg-gray-50/50'
                             }`}
                         >
-                            <div
-                                className={`w-24 h-24 bg-[#1A1C26] border border-[#262833] rounded-3xl flex items-center justify-center mb-6 transition-all shadow-2xl ${
-                                    isDragActive
-                                        ? 'scale-110 border-indigo-500/50 shadow-indigo-500/30 text-indigo-300'
-                                        : 'group-hover:border-indigo-500/50 group-hover:shadow-indigo-500/20 text-indigo-400 group-hover:scale-105'
-                                }`}>
-                                <UploadCloud className="w-12 h-12"/>
+                            <div className="w-16 h-16 bg-[#E3EFEA] text-[#042B1F] rounded-full flex items-center justify-center mb-6 transition-transform hover:scale-105 duration-300">
+                                <UploadCloud className="w-7 h-7" />
                             </div>
-                            <h3 className="text-2xl font-bold text-white mb-3">Tarik Gambar ke Sini</h3>
-                            <p className="text-zinc-500 mb-8 max-w-md text-center">Mendukung resolusi tinggi (JPG,
-                                PNG).</p>
+                            <h3 className="text-xl font-extrabold text-[#042B1F] mb-2">
+                                Tarik Gambar ke Sini
+                            </h3>
+                            <p className="text-gray-400 text-sm font-medium mb-8">
+                                Mendukung resolusi tinggi (JPG, PNG).
+                            </p>
 
                             <Button
-                                className="px-8 h-14 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95 flex items-center gap-2 text-base"
+                                className="px-6 h-12 bg-[#042B1F] hover:bg-[#031d15] text-white font-bold rounded-xl transition-all active:scale-95 flex items-center gap-2 shadow-lg shadow-[#042B1F]/20"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     fileInputRef.current.click();
                                 }}
                             >
-                                <ImageIcon className="w-5 h-5"/> Pilih Gambar
+                                <Search className="w-4 h-4 text-emerald-400" /> Mulai Scan Citra
                             </Button>
                         </div>
                     )}
 
                     {selectedImage && (
-                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 relative">
-                            <div
-                                className="relative bg-black min-h-[300px] md:min-h-full flex items-center justify-center border-b md:border-b-0 md:border-r border-[#262833] overflow-hidden">
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 bg-white">
+                            <div className="relative bg-[#FAFAFA] min-h-[300px] flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 overflow-hidden p-6">
                                 <img
                                     src={previewUrl}
                                     alt="Preview"
-                                    className={`max-w-full max-h-[500px] object-contain transition-all duration-700 ${isScanning ? 'scale-105 opacity-60 blur-[2px]' : 'scale-100 opacity-100'}`}
+                                    className={`w-full max-h-[350px] object-contain rounded-xl transition-all duration-700 ${isScanning ? 'scale-105 opacity-50 blur-sm' : 'scale-100 opacity-100 shadow-md'}`}
                                 />
 
-                                {/* Animasi Garis Scanner */}
                                 {isScanning && (
                                     <>
-                                        <div
-                                            className="absolute top-0 left-0 w-full h-1 bg-indigo-500 shadow-[0_0_20px_5px_rgba(99,102,241,0.5)] animate-[scan_2s_ease-in-out_infinite_alternate]"></div>
-                                        <div
-                                            className="absolute inset-0 bg-indigo-500/10 animate-pulse mix-blend-overlay"></div>
-                                        {/* Style keyframes ada di MainLayout atau index.css */}
+                                        <div className="absolute top-0 left-0 w-full h-1 bg-[#10B981] shadow-[0_0_20px_5px_rgba(16,185,129,0.3)] animate-[scan_2s_ease-in-out_infinite_alternate]"></div>
+                                        <div className="absolute inset-0 bg-[#042B1F]/5 animate-pulse mix-blend-overlay"></div>
                                     </>
                                 )}
                             </div>
 
-                            <div className="p-8 lg:p-12 flex flex-col justify-center bg-[#0E0F15] relative">
+                            <div className="p-8 lg:p-10 flex flex-col justify-center relative">
                                 {isScanning && (
-                                    <div
-                                        className="flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-300">
-                                        <div className="w-16 h-16 relative mb-6">
-                                            <div
-                                                className="absolute inset-0 border-4 border-[#262833] rounded-full"></div>
-                                            <div
-                                                className="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                                            <Zap
-                                                className="absolute inset-0 m-auto w-6 h-6 text-indigo-400 animate-pulse"/>
+                                    <div className="flex flex-col items-center justify-center text-center">
+                                        <div className="w-14 h-14 relative mb-6">
+                                            <div className="absolute inset-0 border-4 border-gray-100 rounded-full"></div>
+                                            <div className="absolute inset-0 border-4 border-[#10B981] border-t-transparent rounded-full animate-spin"></div>
+                                            <Zap className="absolute inset-0 m-auto w-5 h-5 text-[#042B1F] animate-pulse" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-white mb-2">Menganalisis Permukaan...</h3>
-                                        <p className="text-zinc-500 text-sm">Menjalankan inferensi VGG-19 Deep
-                                            Learning.</p>
+                                        <h3 className="text-lg font-bold text-[#042B1F] mb-2">
+                                            Menganalisis...
+                                        </h3>
+                                        <p className="text-gray-400 text-sm font-medium">
+                                            Model VGG-19 sedang bekerja.
+                                        </p>
                                     </div>
                                 )}
 
                                 {scanResult && !isScanning && (
-                                    <div
-                                        className="flex flex-col animate-in slide-in-from-right-8 fade-in duration-500">
-                                        <div className="mb-8">
-                                            <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Hasil
-                                                Deteksi</p>
-                                            <div className="flex items-center gap-4">
+                                    <div className="flex flex-col animate-in fade-in duration-500">
+                                        <div className="mb-6">
+                                            <p className="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3">
+                                                Hasil Deteksi
+                                            </p>
+                                            <div className="flex items-center gap-3">
                                                 <div
-                                                    className={`w-14 h-14 rounded-2xl flex items-center justify-center border ${scanResult.status === 'Normal' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-red-500/10 border-red-500/30 text-red-400'}`}>
-                                                    {scanResult.status === 'Normal' ?
-                                                        <CheckCircle2 className="w-7 h-7"/> :
-                                                        <AlertCircle className="w-7 h-7"/>}
+                                                    className={`w-12 h-12 rounded-xl flex items-center justify-center border ${scanResult.status === 'Normal' ? 'bg-[#E3EFEA] border-[#10B981]/20 text-[#10B981]' : 'bg-[#FEE2E2] border-red-500/20 text-red-500'}`}
+                                                >
+                                                    {scanResult.status === 'Normal' ? (
+                                                        <CheckCircle2 className="w-6 h-6" />
+                                                    ) : (
+                                                        <AlertCircle className="w-6 h-6" />
+                                                    )}
                                                 </div>
-                                                <h2 className={`text-4xl font-black ${scanResult.status === 'Normal' ? 'text-emerald-400' : 'text-red-400'}`}>
+                                                <h2
+                                                    className={`text-3xl font-black ${scanResult.status === 'Normal' ? 'text-[#10B981]' : 'text-red-500'}`}
+                                                >
                                                     {scanResult.status}
                                                 </h2>
                                             </div>
                                         </div>
 
-                                        <div className="space-y-4 mb-10">
-                                            <div
-                                                className="flex justify-between items-center py-3 border-b border-[#262833]">
-                                                <span className="text-sm text-zinc-400">Tingkat Akurasi AI</span>
-                                                <span
-                                                    className="text-base font-bold text-white">{scanResult.confidence}%</span>
+                                        <div className="space-y-3 mb-8">
+                                            <div className="flex justify-between items-center py-2.5 border-b border-gray-100">
+                                                <span className="text-sm font-semibold text-gray-500">
+                                                    Tingkat Akurasi AI
+                                                </span>
+                                                <span className="text-sm font-bold text-[#042B1F]">
+                                                    {scanResult.confidence}%
+                                                </span>
                                             </div>
-                                            <div
-                                                className="flex justify-between items-center py-3 border-b border-[#262833]">
-                                                <span className="text-sm text-zinc-400">Waktu Komputasi</span>
-                                                <span
-                                                    className="text-base font-bold text-white font-mono">{scanResult.time}</span>
+                                            <div className="flex justify-between items-center py-2.5 border-b border-gray-100">
+                                                <span className="text-sm font-semibold text-gray-500">
+                                                    Waktu Komputasi
+                                                </span>
+                                                <span className="text-sm font-bold text-[#042B1F] font-mono">
+                                                    {scanResult.time}
+                                                </span>
                                             </div>
                                         </div>
 
-                                        <div className="flex flex-col gap-3">
-                                            <Button
-                                                className="w-full h-14 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/25 transition-all flex justify-center items-center gap-2 text-base">
-                                                <Download className="w-5 h-5"/> Simpan Laporan
+                                        <div className="flex flex-col gap-3 mt-auto">
+                                            <Button className="w-full h-12 bg-[#042B1F] hover:bg-[#031d15] text-white font-bold rounded-xl shadow-md shadow-[#042B1F]/10 transition-all flex justify-center items-center gap-2">
+                                                <Download className="w-4 h-4" /> Simpan Laporan
                                             </Button>
                                             <Button
                                                 onClick={resetTool}
                                                 variant="outline"
-                                                className="w-full h-14 bg-[#1A1C26] hover:bg-[#262833] border border-[#262833] text-zinc-300 font-bold rounded-xl transition-all flex justify-center items-center gap-2 text-base hover:text-white"
+                                                className="w-full h-12 bg-white hover:bg-gray-50 border-gray-200 text-[#042B1F] font-bold rounded-xl transition-all flex justify-center items-center gap-2 shadow-sm"
                                             >
-                                                <RefreshCw className="w-5 h-5"/> Pindai Gambar Lain
+                                                <RefreshCw className="w-4 h-4" /> Pindai Lagi
                                             </Button>
                                         </div>
                                     </div>
@@ -245,44 +244,117 @@ export default function ScannerPage() {
                         </div>
                     )}
                 </div>
-                <p className="mt-6 text-xs text-zinc-500 flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4"/> Citra Anda diproses secara aman.
-                </p>
-            </div>
 
-            {/* INFO SECTION BAWAH */}
-            <section className="mt-24 border-t border-[#1E1F2E] bg-[#090A0F]/50 w-full">
-                <div
-                    className="max-w-5xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-                    <div>
-                        <div
-                            className="w-12 h-12 bg-[#1A1C26] border border-[#262833] rounded-xl flex items-center justify-center mb-6 mx-auto md:mx-0">
-                            <Cpu className="w-6 h-6 text-indigo-400"/>
+                {/* BOTTOM FEATURES SECTION */}
+                <div className="w-full max-w-5xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 rounded-[2rem] p-8 md:p-12 mb-12 flex flex-col md:flex-row gap-12 items-center mx-auto">
+                    <div className="flex-1 flex flex-col gap-6 w-full ">
+                        {/* Badge yang lebih formal */}
+                        <div className="self-start px-3 py-1 bg-gray-100 text-gray-700 text-[10px] font-bold uppercase tracking-wider rounded mb-2 border border-gray-200">
+                            Spesifikasi Teknis Model
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-2">Didukung VGG-19</h3>
-                        <p className="text-sm text-zinc-400 leading-relaxed">Arsitektur jaringan saraf dalam yang sangat
-                            andal untuk klasifikasi pola cacat mikroskopis.</p>
+
+                        {/* Poin 1 */}
+                        <div className="flex gap-4 items-start">
+                            <div className="mt-1 bg-[#042B1F] p-1 rounded">
+                                <CheckCircle2 className="w-4 h-4 text-white" />
+                            </div>
+                            <div>
+                                <h4 className="text-[#042B1F] font-bold text-sm uppercase tracking-tight">
+                                    Klasifikasi Multi-Kelas Presisi
+                                </h4>
+                                <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                                    Arsitektur VGG-19 berhasil mengidentifikasi 4 kategori cacat
+                                    permukaan dengan nilai F1-Score 0.9103, memastikan performa
+                                    deteksi yang stabil di berbagai kondisi citra.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-gray-100"></div>
+
+                        {/* Poin 2 */}
+                        <div className="flex gap-4 items-start">
+                            <div className="mt-1 bg-[#042B1F] p-1 rounded">
+                                <Zap className="w-4 h-4 text-white" />
+                            </div>
+                            <div>
+                                <h4 className="text-[#042B1F] font-bold text-sm uppercase tracking-tight">
+                                    Latensi Inferensi Rendah
+                                </h4>
+                                <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                                    Proses validasi dan klasifikasi citra dilakukan dengan waktu
+                                    respons rata-rata di bawah 2 detik, mendukung kebutuhan inspeksi
+                                    pada lini produksi yang dinamis.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-gray-100"></div>
+
+                        {/* Poin 3 */}
+                        <div className="flex gap-4 items-start">
+                            <div className="mt-1 bg-[#042B1F] p-1 rounded">
+                                <Settings2 className="w-4 h-4 text-white" />
+                            </div>
+                            <div>
+                                <h4 className="text-[#042B1F] font-bold text-sm uppercase tracking-tight">
+                                    Akurasi Pengujian 90.94%
+                                </h4>
+                                <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                                    Performa optimal dicapai melalui tuning hyperparameter pada
+                                    batch size dan learning rate, menghasilkan test accuracy sebesar
+                                    90.94%.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div
-                            className="w-12 h-12 bg-[#1A1C26] border border-[#262833] rounded-xl flex items-center justify-center mb-6 mx-auto md:mx-0">
-                            <Zap className="w-6 h-6 text-amber-400"/>
+
+                    <div className="flex-1 w-full bg-[#042B1F] rounded-3xl p-6 md:p-8 flex items-center justify-center relative overflow-hidden h-[360px] shadow-2xl shadow-[#042B1F]/30">
+                        {/* Mockup Card Inside Green Box */}
+                        <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-5 z-10 animate-in fade-in zoom-in duration-700">
+                            <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                                <div className="w-8 h-8 rounded-full bg-[#FF645A] text-white flex items-center justify-center font-bold text-xs">
+                                    C
+                                </div>
+                                <div>
+                                    <h5 className="text-[#042B1F] text-xs font-extrabold">
+                                        Dashboard Utama
+                                    </h5>
+                                    <p className="text-[10px] text-gray-400 font-medium">
+                                        Sistem terhubung realtime
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="space-y-3 mb-6">
+                                <div className="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+                                    <div className="flex items-center gap-2 text-xs font-bold text-gray-600">
+                                        <ImageIcon className="w-3.5 h-3.5 opacity-50" />{' '}
+                                        Batch_A01.jpg
+                                    </div>
+                                    <span className="text-[10px] font-bold text-[#10B981] bg-[#10B981]/10 px-2 py-1 rounded">
+                                        Normal
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+                                    <div className="flex items-center gap-2 text-xs font-bold text-gray-600">
+                                        <ImageIcon className="w-3.5 h-3.5 opacity-50" />{' '}
+                                        Batch_A02.jpg
+                                    </div>
+                                    <span className="text-[10px] font-bold text-[#FF645A] bg-[#FF645A]/10 px-2 py-1 rounded">
+                                        Retak
+                                    </span>
+                                </div>
+                            </div>
+                            <Button className="w-full h-10 bg-[#042B1F] text-white text-xs font-bold rounded-lg hover:bg-[#031d15]">
+                                Laporan Lengkap
+                            </Button>
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-2">Inferensi Kilat</h3>
-                        <p className="text-sm text-zinc-400 leading-relaxed">Sistem dioptimalkan untuk memberikan hasil
-                            prediksi dalam waktu kurang dari 2 detik.</p>
-                    </div>
-                    <div>
-                        <div
-                            className="w-12 h-12 bg-[#1A1C26] border border-[#262833] rounded-xl flex items-center justify-center mb-6 mx-auto md:mx-0">
-                            <ShieldCheck className="w-6 h-6 text-emerald-400"/>
-                        </div>
-                        <h3 className="text-lg font-bold text-white mb-2">Akurasi Uji Tinggi</h3>
-                        <p className="text-sm text-zinc-400 leading-relaxed">Model dilatih dengan dataset ekstensif
-                            menghasilkan skor akurasi rata-rata 90.94%.</p>
+                        {/* Subtle decorative circles inside green box */}
+                        <div className="absolute top-[-50px] right-[-50px] w-64 h-64 border border-white/10 rounded-full"></div>
+                        <div className="absolute bottom-[-100px] left-[-20px] w-80 h-80 border border-white/5 rounded-full"></div>
                     </div>
                 </div>
-            </section>
+            </div>
         </MainLayout>
     );
 }
