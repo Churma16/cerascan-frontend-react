@@ -1,19 +1,18 @@
 import React, { useRef, useState } from 'react';
 import {
     AlertCircle,
-    ArrowRight,
     CheckCircle2,
     Download,
     ImageIcon,
     RefreshCw,
     Search,
+    Settings2,
     UploadCloud,
     Zap,
-    Settings2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { useScanImage } from '@/hooks/useScan.js';
-import MainLayout from '@/layouts/MainLayout.jsx';
+import MainLayout from '@/layouts/public/MainLayout.jsx';
 
 export default function ScannerPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -94,6 +93,26 @@ export default function ScannerPage() {
     return (
         <MainLayout>
             <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-10">
+                <div className="flex items-center justify-center gap-6 mb-8 mx-auto w-fit">
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm  font-black text-[#042B1F] tracking-[0.2em] uppercase">
+                            Input
+                        </span>
+                    </div>
+                    <div className="w-8 h-0.5 bg-gray-300"></div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm font-black text-[#042B1F] tracking-[0.2em] uppercase">
+                            DETEKSI
+                        </span>
+                    </div>
+                    <div className="w-8 h-0.5 bg-gray-300"></div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm  font-black text-[#042B1F] tracking-[0.2em] uppercase ">
+                            EVALUASI
+                        </span>
+                    </div>
+                </div>
+
                 <div className="text-center mb-12">
                     <h1 className="text-5xl md:text-[4rem] font-black tracking-tight text-[#042B1F] mb-6 leading-tight">
                         Pengecekan Otomatis Permukaan Keramik
@@ -105,7 +124,7 @@ export default function ScannerPage() {
                 </div>
 
                 {/* ALAT PEMINDAI UTAMA */}
-                <div className="w-full max-w-3xl bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 rounded-[2.5rem] overflow-hidden relative min-h-[420px] flex flex-col transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.25)] mb-16 mx-auto">
+                <div className="w-full max-w-3xl bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 rounded-lg overflow-hidden relative min-h-[420px] flex flex-col transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.25)] mb-16 mx-auto">
                     <input
                         type="file"
                         accept="image/*"
@@ -245,15 +264,12 @@ export default function ScannerPage() {
                     )}
                 </div>
 
-                {/* BOTTOM FEATURES SECTION */}
-                <div className="w-full max-w-5xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 rounded-[2rem] p-8 md:p-12 mb-12 flex flex-col md:flex-row gap-12 items-center mx-auto">
+                <div className="w-full max-w-5xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 rounded-lg p-8 md:p-12 mb-12 flex flex-col md:flex-row gap-12 items-center mx-auto">
                     <div className="flex-1 flex flex-col gap-6 w-full ">
-                        {/* Badge yang lebih formal */}
                         <div className="self-start px-3 py-1 bg-gray-100 text-gray-700 text-[10px] font-bold uppercase tracking-wider rounded mb-2 border border-gray-200">
                             Spesifikasi Teknis Model
                         </div>
 
-                        {/* Poin 1 */}
                         <div className="flex gap-4 items-start">
                             <div className="mt-1 bg-[#042B1F] p-1 rounded">
                                 <CheckCircle2 className="w-4 h-4 text-white" />
@@ -309,8 +325,7 @@ export default function ScannerPage() {
                         </div>
                     </div>
 
-                    <div className="flex-1 w-full bg-[#042B1F] rounded-3xl p-6 md:p-8 flex items-center justify-center relative overflow-hidden h-[360px] shadow-2xl shadow-[#042B1F]/30">
-                        {/* Mockup Card Inside Green Box */}
+                    <div className="flex-1 w-full bg-[#042B1F] rounded-lg p-6 md:p-8 flex items-center justify-center relative overflow-hidden h-[360px] shadow-2xl shadow-[#042B1F]/30">
                         <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-5 z-10 animate-in fade-in zoom-in duration-700">
                             <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
                                 <div className="w-8 h-8 rounded-full bg-[#FF645A] text-white flex items-center justify-center font-bold text-xs">
@@ -349,7 +364,6 @@ export default function ScannerPage() {
                                 Laporan Lengkap
                             </Button>
                         </div>
-                        {/* Subtle decorative circles inside green box */}
                         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 border border-white/10 rounded-full"></div>
                         <div className="absolute bottom-[-100px] left-[-20px] w-80 h-80 border border-white/5 rounded-full"></div>
                     </div>
