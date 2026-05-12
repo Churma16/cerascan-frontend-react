@@ -19,6 +19,7 @@ import {
     YAxis,
 } from 'recharts';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
+import { useDashboardKPI } from '@/hooks/useDashboard.js';
 
 // --- MOCK DATA ---
 const weeklyActivityData = [
@@ -64,6 +65,7 @@ const recentScans = [
 export default function DashboardPage() {
     const [activeMenu, setActiveMenu] = useState('overview');
 
+    const { data: dashboardKPIData = {} } = useDashboardKPI();
     return (
         <AdminMainLayout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
             <PageWrapper>
@@ -99,7 +101,9 @@ export default function DashboardPage() {
                             <p className="text-sm font-medium text-zinc-500 mb-1">
                                 Total Pemindaian
                             </p>
-                            <h3 className="text-2xl font-bold text-white">1,290</h3>
+                            <h3 className="text-2xl font-bold text-white">
+                                {dashboardKPIData.total_scans}
+                            </h3>
                         </div>
 
                         {/* Kartu 2 */}
@@ -115,7 +119,9 @@ export default function DashboardPage() {
                             <p className="text-sm font-medium text-zinc-500 mb-1">
                                 Cacat Terdeteksi
                             </p>
-                            <h3 className="text-2xl font-bold text-white">177</h3>
+                            <h3 className="text-2xl font-bold text-white">
+                                {dashboardKPIData.unnormal_scan_count}
+                            </h3>
                         </div>
 
                         {/* Kartu 3 */}
@@ -128,7 +134,9 @@ export default function DashboardPage() {
                             <p className="text-sm font-medium text-zinc-500 mb-1">
                                 Rata-rata Akurasi (AI)
                             </p>
-                            <h3 className="text-2xl font-bold text-white">96.8%</h3>
+                            <h3 className="text-2xl font-bold text-white">
+                                {dashboardKPIData.average_scan_accuracy}%
+                            </h3>
                         </div>
 
                         {/* Kartu 4 */}
@@ -139,7 +147,9 @@ export default function DashboardPage() {
                                 </div>
                             </div>
                             <p className="text-sm font-medium text-zinc-500 mb-1">Pengguna Aktif</p>
-                            <h3 className="text-2xl font-bold text-white">24</h3>
+                            <h3 className="text-2xl font-bold text-white">
+                                {dashboardKPIData.total_users}
+                            </h3>
                         </div>
                     </div>
 
