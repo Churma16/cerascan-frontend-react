@@ -11,13 +11,13 @@ import {
 export default function MicroservicesFlow() {
     return (
         <div className="mb-32">
-            <div className="bg-[#042B1F] rounded-[2.5rem] p-10 md:p-16 shadow-[0_20px_50px_rgb(4,43,31,0.2)] relative flex flex-col items-center overflow-hidden">
+            <div className="bg-[#042B1F] rounded-xl p-10 md:p-16 shadow-[0_20px_50px_rgb(4,43,31,0.2)] relative flex flex-col items-center overflow-hidden">
                 <h2 className="text-2xl font-bold text-white mb-12 relative z-10">
                     Alur Microservices
                 </h2>
 
                 <div className="flex flex-col xl:flex-row items-center justify-center gap-6 w-full z-10 relative">
-                    <div className="w-full xl:w-64 bg-white rounded-2xl p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10 border border-gray-100">
+                    <div className="w-full xl:w-64 bg-white rounded-lg p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10 border border-gray-100">
                         <div className="w-14 h-14 bg-[#E3EFEA] rounded-xl flex items-center justify-center mx-auto mb-4">
                             <LayoutGrid className="w-6 h-6 text-[#042B1F]" />
                         </div>
@@ -33,7 +33,7 @@ export default function MicroservicesFlow() {
                         <ArrowDown className="w-5 h-5 xl:hidden my-2 text-white/50" />
                     </div>
 
-                    <div className="w-full xl:w-64 bg-[#FF645A] rounded-2xl p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10">
+                    <div className="w-full xl:w-64 bg-[#FF645A] rounded-lg p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10">
                         <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
                             <Network className="w-6 h-6 text-white" />
                         </div>
@@ -50,7 +50,7 @@ export default function MicroservicesFlow() {
                         <ArrowDown className="w-5 h-5 xl:hidden my-2 text-white/50" />
                     </div>
 
-                    <div className="w-full xl:w-64 bg-white rounded-2xl p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10 border border-gray-100">
+                    <div className="w-full xl:w-64 bg-white rounded-lg p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10 border border-gray-100">
                         <div className="w-14 h-14 bg-[#E3EFEA] rounded-xl flex items-center justify-center mx-auto mb-4">
                             <Activity className="w-6 h-6 text-[#042B1F]" />
                         </div>
@@ -59,7 +59,7 @@ export default function MicroservicesFlow() {
                     </div>
                 </div>
 
-                <div className="w-full xl:w-64 mt-8 xl:mt-12 bg-white rounded-2xl p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10 border border-gray-100">
+                <div className="w-full xl:w-64 mt-8 xl:mt-12 bg-white rounded-lg p-6 text-center shadow-lg transform transition-transform hover:-translate-y-2 duration-300 relative z-10 border border-gray-100">
                     <div className="xl:hidden absolute -top-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/50">
                         <ArrowDown className="w-5 h-5" />
                     </div>

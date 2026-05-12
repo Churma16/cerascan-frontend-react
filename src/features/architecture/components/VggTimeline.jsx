@@ -12,7 +12,7 @@ export default function VggTimeline({ architectureData }) {
             </div>
 
             <div className="relative">
-                <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gray-100 via-gray-300 to-gray-50 hidden md:block"></div>
+                <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-linear-to-b from-gray-100 via-gray-300 to-gray-50 hidden md:block"></div>
 
                 <div className="space-y-6">
                     {architectureData.map((layer, index) => (
@@ -31,7 +31,7 @@ export default function VggTimeline({ architectureData }) {
                             <div
                                 className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}
                             >
-                                <div className="bg-white p-6 rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all">
+                                <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all">
                                     <span className="text-[10px] font-extrabold uppercase tracking-widest text-gray-400 mb-2 block">
                                         {layer.type}
                                     </span>
