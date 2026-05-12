@@ -12,12 +12,13 @@ import {
     Users,
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCurrentUser } from '@/hooks/useAuth.js';
+import { useCurrentUser, useLogout } from '@/hooks/useAuth.js';
+import { Link } from 'react-router-dom';
 
 export default function AdminMainLayout({ children, activeMenu, setActiveMenu }) {
     const navigate = useNavigate();
     const location = useLocation();
-
+    const logout = useLogout();
     const [internalActiveMenu, setInternalActiveMenu] = React.useState('overview');
 
     const { data: myData = {} } = useCurrentUser();
@@ -34,13 +35,24 @@ export default function AdminMainLayout({ children, activeMenu, setActiveMenu })
             title: 'Administrasi',
             items: [
                 { id: 'users', label: 'Manajemen Tim', icon: Users, path: '/dashboard/users' },
-                { id: 'api_keys', label: 'Akses API', icon: Key, path: '/dashboard/api-keys' },
-                { id: 'security', label: 'Keamanan', icon: Shield, path: '/dashboard/security' },
+                // { id: 'api_keys', label: 'Akses API', icon: Key, path: '/dashboard/api-keys' },
+                // { id: 'security', label: 'Keamanan', icon: Shield, path: '/dashboard/security' },
+                // {
+                //     id: 'settings',
+                //     label: 'Pengaturan Sistem',
+                //     icon: Settings,
+                //     path: '/dashboard/settings',
+                // },
+            ],
+        },
+        {
+            title: 'Account',
+            items: [
                 {
-                    id: 'settings',
-                    label: 'Pengaturan Sistem',
-                    icon: Settings,
-                    path: '/dashboard/settings',
+                    id: 'change password',
+                    label: 'Ganti Password',
+                    icon: Users,
+                    path: '/dashboard/change-password',
                 },
             ],
         },
@@ -78,14 +90,16 @@ export default function AdminMainLayout({ children, activeMenu, setActiveMenu })
             <aside className="w-64 flex flex-col border-r border-[#1E1F2E] bg-[#0E0F15] shrink-0 relative z-20">
                 {/* Header Sidebar (Logo) */}
                 <div className="h-16 flex items-center px-6 border-b border-[#1E1F2E]">
-                    <div className="flex items-center gap-2 text-indigo-400">
+                    <Link
+                        to="/"
+                        className="flex items-center gap-2 text-indigo-400 hover:opacity-80 transition-opacity"
+                    >
                         <LayoutGrid className="w-6 h-6" />
                         <span className="font-bold text-xl tracking-tight text-white">
                             CeraScan<span className="text-indigo-500">.ai</span>
                         </span>
-                    </div>
+                    </Link>
                 </div>
-
                 {/* Profil Pengguna Singkat */}
                 <div className="p-4 border-b border-[#1E1F2E]">
                     <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#1A1C26] cursor-pointer transition-colors border border-transparent hover:border-[#262833]">
@@ -102,7 +116,6 @@ export default function AdminMainLayout({ children, activeMenu, setActiveMenu })
                         </div>
                     </div>
                 </div>
-
                 {/* Menu Navigasi */}
                 <div className="flex-1 py-4 overflow-y-auto">
                     {sidebarMenus.map((group, idx) => (
@@ -137,10 +150,12 @@ export default function AdminMainLayout({ children, activeMenu, setActiveMenu })
                         </div>
                     ))}
                 </div>
-
                 {/* Footer Sidebar (Logout) */}
                 <div className="p-4 border-t border-[#1E1F2E]">
-                    <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors border border-transparent hover:border-red-500/20">
+                    <button
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors border border-transparent hover:border-red-500/20"
+                        onClick={logout}
+                    >
                         <LogOut className="w-[18px] h-[18px]" />
                         Keluar Sistem
                     </button>
