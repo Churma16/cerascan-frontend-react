@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { LayoutGrid, Lock, Mail } from 'lucide-react';
-import { useLogin } from '@/hooks/useLogin.js';
+
+import { useLogin } from '@/hooks/useAuth.js';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -11,17 +11,14 @@ export default function LoginPage() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Panggil hook login dengan credentials
         login(
             { email, password },
             {
                 onSuccess: (data) => {
-                    // Token sudah disimpan di hook, langsung navigate
                     navigate('/dashboard');
                 },
                 onError: (error) => {
                     console.error('Login error:', error);
-                    // Tampilkan pesan error dari server jika ada
                     const errorMessage = error.response?.data?.message || 'gagal login';
                     alert(errorMessage);
                 },
