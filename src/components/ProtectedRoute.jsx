@@ -1,15 +1,21 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
+/**
+ * Guard komponen untuk melindungi rute yang memerlukan autentikasi.
+ *
+ * @component
+ * @returns {React.ReactElement} Outlet jika terautentikasi, atau Navigate ke /login.
+ */
 export default function ProtectedRoute() {
     const token = localStorage.getItem('token');
 
-    // Cek apakah token tidak ada ATAU token bernilai string "undefined"
-    if (!token || token === 'undefined' || token === 'null') {
-        // Hapus token yang rusak jika ada
-        localStorage.removeItem('token');
+    const isAuthenticated = token && token !== 'undefined' && token !== 'null';
+
+    if (!isAuthenticated) {
+        if (token) localStorage.removeItem('token');
+
         return <Navigate to="/login" replace />;
     }
 
-    // Jika auth, render halaman
     return <Outlet />;
 }
