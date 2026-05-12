@@ -19,7 +19,7 @@ const anovaFindings = [
 ];
 export default function AnovaCard() {
     return (
-        <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-[0_4px_25px_rgb(0,0,0,0.04)] flex flex-col h-full">
+        <div className="bg-white border border-gray-100 rounded-lg p-8 shadow-[0_4px_25px_rgb(0,0,0,0.04)] flex flex-col h-full">
             <div className="w-12 h-12 bg-[#FF645A]/10 rounded-xl flex items-center justify-center mb-6">
                 <Activity className="w-6 h-6 text-[#FF645A]" />
             </div>
@@ -27,7 +27,6 @@ export default function AnovaCard() {
                 Analisis Pengaruh Parameter (ANOVA)
             </h3>
 
-            {/* Teks Deskripsi yang Diperbarui */}
             <p className="text-sm text-gray-500 mb-8 leading-relaxed font-medium">
                 Analisis ANOVA menunjukkan{' '}
                 <strong className="text-[#042B1F] font-bold">Learning Rate</strong> merupakan faktor
