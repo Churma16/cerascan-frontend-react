@@ -1,0 +1,54 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Inject Environment Variables
+        run: |
+          echo 'VITE_PROD=true' >> .env
+          echo 'VITE_BACKEND_URL_DEV="http://localhost:3000/api"' >> .env
+          echo 'VITE_BACKEND_URL_PROD="https://api-ceramic.churma.codes/api"' >> .env
+          echo 'VITE_BACKEND_STORAGE_URL_DEV="http://localhost:3000"' >> .env
+          echo 'VITE_BACKEND_STORAGE_URL_PROD="https://api-ceramic.churma.codes"' >> .env
+
+      - name: Build Application
+        run: npm run build
+
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "dist/,Dockerfile.frontend,nginx.conf"
+          target: "/root/ceramic-scanner/frontend/"
+
+      - name: Restart Docker Container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /root/ceramic-scanner
+            docker compose up -d --build frontend
