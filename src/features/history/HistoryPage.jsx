@@ -1,6 +1,5 @@
 import React from 'react';
 import { History } from 'lucide-react';
-import MainLayout from '@/layouts/public/MainLayout.jsx';
 import { useScans } from '@/hooks/useScan.js';
 
 // Import komponen HistoryCard
@@ -25,17 +24,13 @@ export default function HistoryPage() {
                     <h3 className="font-extrabold text-[#042B1F] flex items-center gap-2">
                         <History className="w-5 h-5 text-[#FF645A]" /> Riwayat Deteksi
                     </h3>
-                    <button className="text-xs font-bold text-[#042B1F] bg-[#E3EFEA] hover:bg-[#d1e5dd] px-4 py-2 rounded-lg transition-colors">
-                        Unduh CSV
-                    </button>
+                    {/*<button className="text-xs font-bold text-[#042B1F] bg-[#E3EFEA] hover:bg-[#d1e5dd] px-4 py-2 rounded-lg transition-colors">*/}
+                    {/*    Unduh CSV*/}
+                    {/*</button>*/}
                 </div>
 
                 <div className="space-y-4">
-                    {isLoading && (
-                        <div className="text-center py-10 text-gray-400 font-medium">
-                            Loading data...
-                        </div>
-                    )}
+                    {isLoading && <div className="text-center py-10 text-gray-400 font-medium">Loading data...</div>}
 
                     {!isLoading && Array.isArray(scanHistories) && scanHistories.length === 0 && (
                         <div className="text-center py-10 text-gray-400 font-medium bg-white rounded-lg border border-gray-100">
@@ -43,8 +38,7 @@ export default function HistoryPage() {
                         </div>
                     )}
 
-                    {Array.isArray(scanHistories) &&
-                        scanHistories.map((log) => <HistoryCard key={log.id} log={log} />)}
+                    {Array.isArray(scanHistories) && scanHistories.map((log) => <HistoryCard key={log.id} log={log} />)}
                 </div>
             </div>
         </div>
