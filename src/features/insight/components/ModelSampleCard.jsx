@@ -1,5 +1,6 @@
 import { Lightbulb } from 'lucide-react';
 import React from 'react';
+import CardWrapper from '@/features/insight/components/CardWrapper.jsx';
 
 const hyperParameterData = [
     {
@@ -20,15 +21,13 @@ const hyperParameterData = [
 
 export default function ModelSampleCard() {
     return (
-        <div className="bg-white border border-gray-100 rounded-lg p-8 shadow-[0_4px_25px_rgb(0,0,0,0.04)] flex flex-col h-full">
+        <CardWrapper>
             <div className="w-12 h-12 bg-[#FF645A]/10 rounded-xl flex items-center justify-center mb-6">
                 <Lightbulb className="w-6 h-6 text-[#FF645A]" />
             </div>
             <div className="flex justify-between items-start mb-6">
                 <div>
-                    <h3 className="text-xl font-black text-[#042B1F] mb-1">
-                        Sampel Model (Top 5 dari 36)
-                    </h3>
+                    <h3 className="text-xl font-black text-[#042B1F] mb-1">Sampel Model (Top 5 dari 36)</h3>
                     <p className="text-sm font-medium text-gray-400">
                         Pengujian dibatasi otomatis berkat fitur Early Stopping.
                     </p>
@@ -59,15 +58,9 @@ export default function ModelSampleCard() {
                                     )}
                                     {h.batch}
                                 </td>
-                                <td className="py-4 text-right font-mono text-gray-500 font-medium">
-                                    {h.lr}
-                                </td>
-                                <td className="py-4 text-right font-mono text-gray-500 font-medium">
-                                    {h.dropout}
-                                </td>
-                                <td className="py-4 text-right font-mono text-gray-400">
-                                    {h.loss.toFixed(3)}
-                                </td>
+                                <td className="py-4 text-right font-mono text-gray-500 font-medium">{h.lr}</td>
+                                <td className="py-4 text-right font-mono text-gray-500 font-medium">{h.dropout}</td>
+                                <td className="py-4 text-right font-mono text-gray-400">{h.loss.toFixed(3)}</td>
                                 <td
                                     className={`py-4 text-right font-bold ${h.isBest ? 'text-[#10B981]' : 'text-gray-600'}`}
                                 >
@@ -83,6 +76,6 @@ export default function ModelSampleCard() {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </CardWrapper>
     );
 }

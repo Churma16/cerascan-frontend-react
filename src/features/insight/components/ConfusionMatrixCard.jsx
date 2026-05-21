@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Info } from 'lucide-react';
+import CardWrapper from '@/features/insight/components/CardWrapper.jsx';
 
 export default function ConfusionMatrixCard() {
     const labels = ['Crack', 'Normal', 'Scratch', 'Stain'];
@@ -26,7 +27,7 @@ export default function ConfusionMatrixCard() {
     };
 
     return (
-        <div className="bg-white border border-gray-100 rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative">
+        <CardWrapper>
             <div className="w-12 h-12 bg-[#E3EFEA] rounded-xl flex items-center justify-center mb-6">
                 <Grid className="w-6 h-6 text-teal-600" />
             </div>
@@ -102,6 +103,6 @@ export default function ConfusionMatrixCard() {
                     diprediksi sebagai <em>Scratch</em>, kemungkinan karena kemiripan fitur tekstur pada dataset.
                 </div>
             </div>
-        </div>
+        </CardWrapper>
     );
 }

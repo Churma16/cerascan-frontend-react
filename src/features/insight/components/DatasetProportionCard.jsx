@@ -9,12 +9,10 @@ export default function DatasetProportionCard() {
     ];
 
     return (
-        <div className="lg:w-[420px] bg-[#042B1F] rounded-lg p-10 flex flex-col items-center shadow-2xl shadow-[#042B1F]/20">
+        <div className="lg:w-105 bg-[#042B1F] rounded-lg p-10 flex flex-col items-center shadow-2xl shadow-[#042B1F]/20">
             <div className="text-center mb-6">
                 <h3 className="text-white font-bold text-xl mb-1">Proporsi Dataset</h3>
-                <p className="text-[#a4d4c5] text-xs font-medium uppercase tracking-widest">
-                    Stabilitas Model
-                </p>
+                <p className="text-[#a4d4c5] text-xs font-medium uppercase tracking-widest">Stabilitas Model</p>
             </div>
 
             <div className="relative w-full h-48 mb-10 flex justify-center items-center">
@@ -35,9 +33,7 @@ export default function DatasetProportionCard() {
                     </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <span className="text-[10px] text-[#a4d4c5] font-bold uppercase tracking-tighter">
-                        Total
-                    </span>
+                    <span className="text-[10px] text-[#a4d4c5] font-bold uppercase tracking-tighter">Total</span>
                     <span className="text-lg font-black text-white leading-none">6.659</span>
                 </div>
             </div>
