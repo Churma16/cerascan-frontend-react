@@ -1,6 +1,7 @@
 import axiosClient from '@/api/axios.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 /**
  * Fungsi internal untuk mengambil profil pengguna yang sedang login.
@@ -121,8 +122,53 @@ export const useLogin = () => {
 
             return data;
         },
+        onSuccess: (data) => {
+            console.log('Berhasil:', data);
+            toast.success(`Selamat datang kembali, ${data.data.user.full_name}!`, {
+                className: 'w-120',
+            });
+        },
         onError: (error) => {
-            console.error('Login failed:', error);
+            const errorMessage = error.response?.data?.message || 'Email atau password yang dimasukan tidak cocok';
+            toast.error(errorMessage, { className: 'w-100' });
+        },
+    });
+};
+
+/**
+ * Hook mutasi untuk meminta pengiriman OTP ke email.
+ */
+export const useForgotPassword = () => {
+    return useMutation({
+        mutationFn: async ({ email }) => {
+            const response = await axiosClient.post('/auth/forgot-password', { email });
+            console.log(response);
+            return response.data;
+        },
+    });
+};
+
+/**
+ * Hook mutasi untuk memverifikasi OTP.
+ * Diharapkan mengembalikan objek yang berisi { data: { user_id: ... } } dari backend.
+ */
+export const useVerifyOtp = () => {
+    return useMutation({
+        mutationFn: async ({ email, otp }) => {
+            const response = await axiosClient.post('/auth/verify-otp', { email, otp });
+            return response.data;
+        },
+    });
+};
+
+/**
+ * Hook mutasi untuk menyimpan password baru menggunakan user_id yang didapat dari verifikasi OTP.
+ */
+export const useResetPassword = () => {
+    return useMutation({
+        mutationFn: async ({ id, new_password }) => {
+            const response = await axiosClient.post('/auth/reset-password', { id, new_password });
+            return response.data;
         },
     });
 };
