@@ -22,8 +22,8 @@ export const getImageUrl = (savedFileName) => {
     if (!savedFileName) return '';
     const isProd = import.meta.env.VITE_PROD === 'true';
     const baseUrl = isProd
-        ? import.meta.env.VITE_BACKEND_URL_STORAGE_PROD || 'http://localhost:3000/uploads'
-        : import.meta.env.VITE_BACKEND_URL_STORAGE_DEV || 'http://localhost:3000/uploads';
+        ? import.meta.env.VITE_BACKEND_STORAGE_URL_PROD || 'http://localhost:3000/uploads'
+        : import.meta.env.VITE_BACKEND_STORAGE_URL_DEV || 'http://localhost:3000/uploads';
     return `${baseUrl}/${savedFileName}`;
 };
 
