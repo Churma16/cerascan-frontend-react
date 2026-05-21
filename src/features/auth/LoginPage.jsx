@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import { useLogin } from '@/hooks/useAuth.js';
-import { Mail, Lock } from 'lucide-react';
+import { Lock, Mail } from 'lucide-react';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -15,20 +15,16 @@ export default function LoginPage() {
         login(
             { email, password },
             {
-                onSuccess: (data) => {
+                onSuccess: () => {
                     navigate('/dashboard');
-                },
-                onError: (error) => {
-                    console.error('Login error:', error);
-                    const errorMessage = error.response?.data?.message || 'gagal login';
-                    alert(errorMessage);
                 },
             }
         );
     };
+
     return (
         <div className="min-h-screen bg-[#faf8f5] font-sans flex flex-col justify-center items-center relative overflow-hidden text-gray-800 selection:bg-[#FF645A]/30">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-[#10B981]/5 blur-[150px] rounded-full pointer-events-none"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-150 bg-[#10B981]/5 blur-[150px] rounded-full pointer-events-none"></div>
 
             <div className="z-10 w-full max-w-md px-6">
                 <div className="flex flex-col items-center mb-8">
@@ -40,9 +36,7 @@ export default function LoginPage() {
                         </div>
                         <span className="font-extrabold text-3xl tracking-tighter">CeraScan</span>
                     </div>
-                    <h1 className="text-3xl font-black text-[#042B1F] mb-3 tracking-tight">
-                        Selamat Datang
-                    </h1>
+                    <h1 className="text-3xl font-black text-[#042B1F] mb-3 tracking-tight">Selamat Datang</h1>
                     <p className="text-sm font-medium text-gray-500 text-center">
                         Masukkan kredensial Anda untuk mengakses dashboard admin.
                     </p>
@@ -50,7 +44,7 @@ export default function LoginPage() {
 
                 <form
                     onSubmit={handleLogin}
-                    className="bg-white border border-gray-100 rounded-[2rem] p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)]"
+                    className="bg-white border border-gray-100 rounded-xl p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)]"
                 >
                     <div className="space-y-6 mb-8">
                         <div>
@@ -75,7 +69,9 @@ export default function LoginPage() {
                                     Kata Sandi
                                 </label>
                                 <a
-                                    href="#"
+                                    onClick={() => {
+                                        navigate('/forgot-password');
+                                    }}
                                     className="text-xs font-bold text-[#10B981] hover:text-[#0d9668] transition-colors"
                                 >
                                     Lupa Sandi?
@@ -110,10 +106,7 @@ export default function LoginPage() {
                     <div className="mt-8 text-center">
                         <p className="text-xs font-medium text-gray-400">
                             Belum punya akun?{' '}
-                            <a
-                                href="#"
-                                className="font-bold text-[#FF645A] hover:text-[#e0564e] transition-colors"
-                            >
+                            <a href="#" className="font-bold text-[#FF645A] hover:text-[#e0564e] transition-colors">
                                 Daftar sekarang
                             </a>
                         </p>
