@@ -39,9 +39,9 @@ export default function ModelSampleCard() {
                 <table className="w-full text-left text-sm whitespace-nowrap">
                     <thead>
                         <tr className="border-b border-gray-100 text-gray-400 text-[10px] font-extrabold uppercase tracking-wider">
-                            <th className="pb-3 text-left">Batch</th>
+                            <th className="pb-3 text-end">Batch</th>
                             <th className="pb-3 text-right">LR</th>
-                            <th className="pb-3 text-right">Dropout</th>
+                            <th className="pb-3 text-right">DO</th>
                             <th className="pb-3 text-right">Loss</th>
                             <th className="pb-3 text-right">F1-Score</th>
                             <th className="pb-3 text-right">Akurasi</th>
@@ -53,9 +53,9 @@ export default function ModelSampleCard() {
                                 key={h.id}
                                 className={`${h.isBest ? 'bg-[#E3EFEA]/40' : 'hover:bg-gray-50'} transition-colors`}
                             >
-                                <td className="py-4 font-mono font-semibold text-gray-600 flex items-center gap-2">
+                                <td className="py-4 font-mono font-semibold text-gray-600 flex items-center justify-end gap-2">
                                     {h.isBest && (
-                                        <span className="w-2 h-2 rounded-full bg-[#10B981]"></span>
+                                        <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
                                     )}
                                     {h.batch}
                                 </td>
@@ -66,7 +66,7 @@ export default function ModelSampleCard() {
                                     {h.dropout}
                                 </td>
                                 <td className="py-4 text-right font-mono text-gray-400">
-                                    {h.loss.toFixed(4)}
+                                    {h.loss.toFixed(3)}
                                 </td>
                                 <td
                                     className={`py-4 text-right font-bold ${h.isBest ? 'text-[#10B981]' : 'text-gray-600'}`}
