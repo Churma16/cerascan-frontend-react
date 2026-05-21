@@ -5,7 +5,6 @@ import { useDashboardKPI, useScanHistory, useScanTrends } from '@/hooks/useDashb
 import { timeAgo } from '@/utils/helper.js';
 import { useNavigate } from 'react-router-dom';
 
-
 export default function DashboardPage() {
     const { data: dashboardKPIData = {} } = useDashboardKPI();
     const { data: scanTrendData = [] } = useScanTrends();
@@ -14,6 +13,7 @@ export default function DashboardPage() {
 
     return (
         <PageWrapper>
+            {/*{JSON.stringify(dashboardKPIData)}*/}
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="flex justify-between items-end mb-8">
                     <div>
