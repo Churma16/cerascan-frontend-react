@@ -47,22 +47,20 @@ const vggArchitecture = [
 
 export default function ArchitecturePage() {
     return (
-        <MainLayout>
-            <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-20">
-                <div className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-black text-[#042B1F] mb-4 tracking-tight">
-                        Arsitektur AI
-                    </h1>
-                    <p className="text-lg text-gray-500 max-w-2xl mx-auto font-medium">
-                        Arsitektur sistem dari lapisan frontend hingga ke model ekstraksi fitur
-                        jaringan neural network.
-                    </p>
-                </div>
-
-                <MicroservicesFlow />
-
-                <VggTimeline architectureData={vggArchitecture} />
+        <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-20">
+            <div className="text-center mb-16">
+                <h1 className="text-4xl md:text-5xl font-black text-[#042B1F] mb-4 tracking-tight">
+                    Arsitektur AI
+                </h1>
+                <p className="text-lg text-gray-500 max-w-2xl mx-auto font-medium">
+                    Arsitektur sistem dari lapisan frontend hingga ke model ekstraksi fitur jaringan
+                    neural network.
+                </p>
             </div>
-        </MainLayout>
+
+            <MicroservicesFlow />
+
+            <VggTimeline architectureData={vggArchitecture} />
+        </div>
     );
 }

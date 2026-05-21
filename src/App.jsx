@@ -9,6 +9,7 @@ import ScanAdminPage from '@/features/user/ScanAdminPage.jsx';
 import UserPage from '@/features/user/UserPage.jsx';
 import DashboardPage from '@/features/dashboard/DashboardPage.jsx';
 import ChangePasswordPage from '@/features/auth/ChangePasswordPage.jsx';
+import MainLayout from '@/layouts/public/MainLayout.jsx';
 
 export default function App() {
     return (
@@ -25,10 +26,12 @@ export default function App() {
                     <Route path="/dashboard/users" element={<UserPage />} />
                     <Route path="/dashboard/change-password" element={<ChangePasswordPage />} />
                 </Route>
-                <Route path="/scanner" element={<ScannerPage />} />
-                <Route path="/history" element={<HistoryPage />} />
-                <Route path="/insights" element={<InsightsPage />} />
-                <Route path="/architecture" element={<ArchitecturePage />} />
+                <Route element={<MainLayout />}>
+                    <Route path="/scanner" element={<ScannerPage />} />
+                    <Route path="/history" element={<HistoryPage />} />
+                    <Route path="/insights" element={<InsightsPage />} />
+                    <Route path="/architecture" element={<ArchitecturePage />} />
+                </Route>
 
                 <Route
                     path="*"
