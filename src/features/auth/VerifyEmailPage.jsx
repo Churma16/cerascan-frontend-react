@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, Loader2, XCircle } from 'lucide-react';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import axiosClient from '@/api/axios.js';
 
 export default function VerifyEmailPage() {
@@ -8,7 +8,6 @@ export default function VerifyEmailPage() {
     const navigate = useNavigate();
     const token = searchParams.get('token');
 
-    // Gunakan state manual agar tidak terputus oleh Strict Mode
     const [status, setStatus] = useState(token ? 'loading' : 'error');
     const [statusMessage, setStatusMessage] = useState(
         token ? 'Memverifikasi akun Anda...' : 'Token verifikasi tidak ditemukan atau tidak valid.'
@@ -17,6 +16,7 @@ export default function VerifyEmailPage() {
     useEffect(() => {
         if (!token) return;
 
+        // Gunakan isMounted untuk menghindari pembaruan state pada komponen yang sudah di-unmount
         let isMounted = true;
 
         const processVerification = async () => {
@@ -34,22 +34,19 @@ export default function VerifyEmailPage() {
             } catch (error) {
                 if (!isMounted) return;
 
-                console.log('DEBUG ERROR VERIFIKASI:', error);
+                const errorMsg = error.response?.data?.message || error.response?.data?.meta?.message || '';
 
-                const errorMsg =
-                    error.response?.data?.meta?.message ||
-                    error.response?.data?.message ||
-                    error.meta?.message ||
-                    error.message ||
-                    '';
+                // LOGIKA IDEMPOTENSI:
+                // Jika error dari backend adalah karena email sudah terverifikasi (akibat double trigger),
+                // ubah statusnya menjadi SUKSES.
                 if (errorMsg.toLowerCase().includes('sudah diverifikasi')) {
                     setStatus('success');
-                    setStatusMessage('Email sudah terverifikasi sebelumnya! Mengalihkan ke halaman masuk.');
+                    setStatusMessage('Email sudah terverifikasi! Anda akan dialihkan ke halaman masuk.');
                     const timer = setTimeout(() => navigate('/login'), 4000);
                     return () => clearTimeout(timer);
                 }
 
-                // Jika error asli
+                // Jika error sungguhan (token expired, token acak, dll)
                 setStatus('error');
                 setStatusMessage(errorMsg || 'Tautan verifikasi telah kedaluwarsa atau tidak valid.');
             }
@@ -57,6 +54,7 @@ export default function VerifyEmailPage() {
 
         processVerification();
 
+        // Cleanup function standar React
         return () => {
             isMounted = false;
         };
@@ -79,7 +77,6 @@ export default function VerifyEmailPage() {
                 </div>
 
                 <div className="bg-white border border-gray-100 rounded-[2rem] p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)] text-center">
-                    {/* Render ketika status === 'loading' */}
                     {status === 'loading' && (
                         <div className="flex flex-col items-center py-6">
                             <Loader2 className="w-16 h-16 text-[#10B981] animate-spin mb-6" />
@@ -92,7 +89,6 @@ export default function VerifyEmailPage() {
                         </div>
                     )}
 
-                    {/* Render ketika status === 'success' */}
                     {status === 'success' && (
                         <div className="flex flex-col items-center py-6 animate-fadeIn">
                             <CheckCircle2 className="w-16 h-16 text-[#10B981] mb-6" />
@@ -111,9 +107,8 @@ export default function VerifyEmailPage() {
                         </div>
                     )}
 
-                    {/* Render ketika status === 'error' */}
                     {status === 'error' && (
-                        <div className="flex flex-col items-center py-6">
+                        <div className="flex flex-col items-center py-6 animate-fadeIn">
                             <XCircle className="w-16 h-16 text-[#FF645A] mb-6" />
                             <h1 className="text-2xl font-black text-[#042B1F] mb-3 tracking-tight">Verifikasi Gagal</h1>
                             <p className="text-sm font-medium text-gray-500 max-w-xs leading-relaxed mb-8">
