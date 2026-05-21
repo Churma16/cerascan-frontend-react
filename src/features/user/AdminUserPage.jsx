@@ -1,29 +1,21 @@
-import { Edit, Trash2, UserPlus } from 'lucide-react';
+import { Edit, UserPlus } from 'lucide-react';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
-import { useUsers } from '@/hooks/useUser.js';
+import { useDeleteUser, useUsers } from '@/hooks/useUser.js';
 import { useState } from 'react';
 import AddUserModal from './AddUserModal.jsx';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog.jsx';
+import EditUserModal from './EditUserModal.jsx';
+import AlertButtonAndDialog from '@/components/AlertButtonDialog.jsx';
 
 export default function AdminUserPage() {
     // Pastikan custom hook ini mengembalikan data array
     const { data: userData = [], isLoading } = useUsers();
+    const deleteUser = useDeleteUser();
     const [editingUser, setEditingUser] = useState(null);
     const [isAddingUser, setIsAddingUser] = useState(false);
-    const [formData, setFormData] = useState({ full_name: '', email: '', role: '' });
+    const [, setFormData] = useState({ full_name: '', email: '', role: '' });
     const handleOpenAddUser = () => {
         setIsAddingUser(true);
     };
-
 
     const handleEditUser = (user) => {
         setEditingUser(user);
@@ -32,12 +24,6 @@ export default function AdminUserPage() {
             email: user.email || '',
             role: user.role || '',
         });
-    };
-
-    const handleSaveEdit = () => {
-        // TODO: Ganti dengan mutasi API PUT
-        console.log('Save user:', editingUser.id, formData);
-        setEditingUser(null);
     };
 
     const handleDeleteUser = (id) => {
@@ -133,12 +119,10 @@ export default function AdminUserPage() {
                                                 >
                                                     <Edit className="w-4 h-4" />
                                                 </button>
-                                                <button
-                                                    onClick={() => handleDeleteUser(user.id)}
-                                                    className="p-2.5 bg-[#FEE2E2] hover:bg-[#fca5a5] text-[#FF645A] rounded-xl border border-red-100 transition-colors shadow-sm"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
+                                                <AlertButtonAndDialog
+                                                    data={user}
+                                                    onClick={() => deleteUser.mutate(user.id)}
+                                                />
                                             </div>
                                         </td>
                                     </tr>
@@ -148,77 +132,13 @@ export default function AdminUserPage() {
                 </div>
             </div>
 
-            {/* Edit User Modal */}
-            <AlertDialog open={!!editingUser} onOpenChange={(open) => !open && setEditingUser(null)}>
-                <AlertDialogContent className="bg-white border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-2xl p-0 max-w-lg">
-                    <div className="p-8 border-b border-gray-100 flex items-center justify-between">
-                        <AlertDialogHeader className="text-left">
-                            <AlertDialogTitle className="text-2xl font-black text-[#042B1F]">
-                                Edit Pengguna
-                            </AlertDialogTitle>
-                            <AlertDialogDescription className="text-gray-500 font-medium mt-2">
-                                Ubah informasi pengguna di bawah ini.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                    </div>
-
-                    <div className="p-8 space-y-6">
-                        <div>
-                            <label className="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 block">
-                                Nama Lengkap
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.full_name}
-                                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                                placeholder="Masukkan nama lengkap"
-                                className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3 px-4 text-[#042B1F] font-semibold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all placeholder:text-gray-300"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 block">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                value={formData.email}
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                placeholder="Masukkan email"
-                                className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3 px-4 text-[#042B1F] font-semibold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all placeholder:text-gray-300"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 block">
-                                Peran
-                            </label>
-                            <select
-                                value={formData.role}
-                                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                                className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3 px-4 text-[#042B1F] font-semibold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all"
-                            >
-                                <option value="admin">Admin</option>
-                                <option value="supervisor">Supervisor</option>
-                                <option value="quality_control">Quality Control</option>
-                                <option value="user">User</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <AlertDialogFooter className="p-8 border-t border-gray-100 flex gap-3">
-                        <AlertDialogCancel className="bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors font-bold px-6 py-2.5 rounded-xl flex-1">
-                            Batal
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={handleSaveEdit}
-                            className="bg-[#FF645A] border-none text-white hover:bg-[#e0564e] transition-all px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-[#FF645A]/20 flex-1"
-                        >
-                            Simpan Perubahan
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            {/* Edit User Modal Component */}
+            <EditUserModal
+                isOpen={!!editingUser}
+                onOpenChange={(open) => !open && setEditingUser(null)}
+                user={editingUser}
+                onSaved={() => setEditingUser(null)}
+            />
 
             {/* Add User Modal Component */}
             <AddUserModal isOpen={isAddingUser} onOpenChange={setIsAddingUser} />

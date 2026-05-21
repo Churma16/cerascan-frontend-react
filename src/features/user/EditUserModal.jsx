@@ -1,5 +1,6 @@
-import { useCreateUser } from '@/hooks/useUser.js';
-import { useState } from 'react';
+import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useEditUser } from '@/hooks/useUser.js';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,35 +12,52 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog.jsx';
 
-export default function AddUserModal({ isOpen, onOpenChange }) {
-    const createUserMutation = useCreateUser();
-    const [formData, setFormData] = useState({ full_name: '', email: '', role: 'user' });
+export default function EditUserModal({ isOpen, onOpenChange, user, onSaved }) {
+    const editUserMutation = useEditUser(user?.id);
+    const [formData, setFormData] = useState({ full_name: '', email: '', role: '' });
 
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                full_name: user.full_name || user.name || '',
+                email: user.email || '',
+                role: user.role || 'user',
+            });
+        }
+    }, [user]);
 
-    const handleAddUserSubmit = () => {
-        const payload = {
-            full_name: formData.full_name,
-            email: formData.email,
-            password: 'defaultPassword123', // TODO: Generate atau minta dari user
-            role: formData.role,
-        };
-        createUserMutation.mutate(payload);
-        onOpenChange(false);
-        setFormData({ full_name: '', email: '', role: '' });
+    const handleSubmit = () => {
+        const noUserIdProvided = !user || !user.id;
+        if (noUserIdProvided) return;
+        editUserMutation.mutate(formData, {
+            onSuccess: (data) => {
+                onOpenChange(false);
+                if (onSaved) onSaved(data);
+            },
+            onError: (err) => {
+                console.error('Edit user failed', err);
+            },
+        });
     };
 
     return (
-        <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+        <AlertDialog open={!!isOpen} onOpenChange={onOpenChange}>
             <AlertDialogContent className="bg-white border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-2xl p-0 max-w-lg">
-                <div className="px-8 pt-8 border-b border-gray-100">
+                <div className="p-8 border-b border-gray-100 flex items-center justify-between">
                     <AlertDialogHeader className="text-left">
                         <AlertDialogTitle className="text-2xl font-black text-[#042B1F]">
-                            Tambah Pengguna Baru
+                            Edit Pengguna
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-gray-500 font-medium mt-2">
-                            Isi informasi pengguna untuk menambahkan ke sistem.
+                            Ubah informasi pengguna di bawah ini.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
+                    <button
+                        onClick={() => onOpenChange(false)}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
                 </div>
 
                 <div className="p-8 space-y-6">
@@ -78,10 +96,10 @@ export default function AddUserModal({ isOpen, onOpenChange }) {
                             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                             className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3 px-4 text-[#042B1F] font-semibold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all"
                         >
-                            <option value="user">User</option>
-                            <option value="quality_control">Quality Control</option>
-                            <option value="supervisor">Supervisor</option>
                             <option value="admin">Admin</option>
+                            <option value="supervisor">Supervisor</option>
+                            <option value="quality_control">Quality Control</option>
+                            <option value="user">User</option>
                         </select>
                     </div>
                 </div>
@@ -91,17 +109,17 @@ export default function AddUserModal({ isOpen, onOpenChange }) {
                         Batal
                     </AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={handleAddUserSubmit}
-                        disabled={createUserMutation.isPending}
-                        className="bg-[#10B981] border-none text-white hover:bg-[#0c9c6f] disabled:bg-[#10B981]/50 disabled:cursor-not-allowed transition-all px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-[#10B981]/20 flex-1 flex items-center justify-center gap-2"
+                        onClick={handleSubmit}
+                        disabled={editUserMutation.isPending}
+                        className="bg-[#FF645A] border-none text-white hover:bg-[#e0564e] disabled:bg-[#FF645A]/50 disabled:cursor-not-allowed transition-all px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-[#FF645A]/20 flex-1 flex items-center justify-center gap-2"
                     >
-                        {createUserMutation.isPending ? (
+                        {editUserMutation.isPending ? (
                             <>
                                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                Menambahkan...
+                                Menyimpan...
                             </>
                         ) : (
-                            'Tambah Pengguna'
+                            'Simpan Perubahan'
                         )}
                     </AlertDialogAction>
                 </AlertDialogFooter>
