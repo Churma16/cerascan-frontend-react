@@ -20,7 +20,7 @@ export default function GeneralizationMetricsCard() {
                 </p>
             </div>
 
-            <div className="flex justify-between items-end pt-8 border-t border-gray-50">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-8 md:gap-0 pt-8 border-t border-gray-50">
                 <div>
                     <p className="text-[10px] font-extrabold text-gray-400 tracking-widest mb-2 uppercase">
                         Akurasi Uji
