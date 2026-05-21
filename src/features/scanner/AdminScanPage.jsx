@@ -101,9 +101,7 @@ export default function AdminScanPage() {
                             {Array.isArray(scanHistories) &&
                                 scanHistories.map((log) => (
                                     <tr key={log.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-8 py-5 font-mono font-bold text-[#042B1F]">
-                                            {log.scan_id}
-                                        </td>
+                                        <td className="px-8 py-5 font-mono font-bold text-[#042B1F]">{log.scan_id}</td>
                                         <td className="px-8 py-5 text-sm font-medium text-gray-500">
                                             {timeAgo(log.createdAt)}
                                         </td>
@@ -134,10 +132,7 @@ export default function AdminScanPage() {
                                             </span>
                                         </td>
                                         <td className="px-8 py-5 text-center">
-                                            <AlertButtonAndDialog
-                                                log={log}
-                                                onClick={() => deleteScan.mutate(log.id)}
-                                            />
+                                            <AlertButtonAndDialog log={log} onClick={() => deleteScan.mutate(log.id)} />
                                         </td>
                                     </tr>
                                 ))}
