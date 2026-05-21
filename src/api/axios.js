@@ -8,9 +8,7 @@ const isProd = import.meta.env.VITE_PROD === 'true';
 /**
  * @constant {string} BASE_URL - URL dasar API yang dipilih berdasarkan environment.
  */
-const BASE_URL = isProd
-    ? import.meta.env.VITE_BACKEND_URL_PROD
-    : import.meta.env.VITE_BACKEND_URL_DEV;
+const BASE_URL = isProd ? import.meta.env.VITE_BACKEND_URL_PROD : import.meta.env.VITE_BACKEND_URL_DEV;
 
 /**
  * Axios instance kustom untuk komunikasi API.
@@ -48,9 +46,14 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            localStorage.removeItem('token');
-            window.location.href = '/login';
+        // Kalau server bilang 401 (Unauthorized)
+        if (error.response && error.response.status === 401) {
+            const isLoginRequest = error.config?.url?.includes('/login');
+
+            if (!isLoginRequest) {
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }
