@@ -34,7 +34,7 @@ export default function MainFooter() {
                     <ul className="space-y-4 text-sm font-medium">
                         <li>
                             <a
-                                href="https://tensorflow.org"
+                                href="https://fastapi.tiangolo.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -44,7 +44,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://keras.io"
+                                href="https://react.dev/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -54,7 +54,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://github.com"
+                                href="https://www.tensorflow.org/tfx"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -64,7 +64,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://opencv.org"
+                                href="https://opencv.org/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -83,7 +83,7 @@ export default function MainFooter() {
                     <ul className="space-y-4 text-sm font-medium">
                         <li>
                             <a
-                                href="https://ieee.org"
+                                href="https://scholar.google.com/scholar?q=ceramic+tile+defect+detection+cnn"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -93,7 +93,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://arxiv.org"
+                                href="https://arxiv.org/abs/1409.1556"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -103,7 +103,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://opensource.org"
+                                href="https://opensource.org/licenses/MIT"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -113,7 +113,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://pypi.org"
+                                href="https://www.privacy.gov.id/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -132,7 +132,7 @@ export default function MainFooter() {
                     <ul className="space-y-4 text-sm font-medium">
                         <li>
                             <a
-                                href="https://github.com"
+                                href="https://paperswithcode.com/task/defect-detection"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -142,7 +142,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://nvidia.com"
+                                href="https://keras.io/api/applications/vgg/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -152,7 +152,7 @@ export default function MainFooter() {
                         </li>
                         <li>
                             <a
-                                href="https://stackoverflow.com"
+                                href="https://stackoverflow.com/questions/tagged/tensorflow+keras+fastapi"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white/70 hover:text-white transition-colors"
@@ -180,7 +180,7 @@ export default function MainFooter() {
                     </span>
                     <div className="flex gap-8 uppercase tracking-widest">
                         <a
-                            href="https://github.com"
+                            href="https://github.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-white transition-colors"
@@ -188,7 +188,7 @@ export default function MainFooter() {
                             Repository
                         </a>
                         <a
-                            href="https://arxiv.org"
+                            href="https://arxiv.org/list/cs.CV/recent"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-white transition-colors"
@@ -196,7 +196,7 @@ export default function MainFooter() {
                             ArXiv
                         </a>
                         <a
-                            href="https://google.com"
+                            href="https://scholar.google.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-white transition-colors"
