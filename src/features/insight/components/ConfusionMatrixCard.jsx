@@ -37,7 +37,7 @@ export default function ConfusionMatrixCard() {
                 gelap mengindikasikan frekuensi prediksi yang lebih tinggi.
             </p>
 
-            <div className="">
+            <div className="overflow-x-auto">
                 <div className="min-w-150 flex flex-col items-center">
                     <div className="text-center font-semibold text-slate-600 mb-4 ml-16">Label Prediksi</div>
 
