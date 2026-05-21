@@ -52,3 +52,38 @@ export const useCreateUser = () => {
         },
     });
 };
+
+export const useEditUser = (id) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (payload) => {
+            const response = await axiosClient.put(`/users/${id}`, payload);
+            return response.data;
+        },
+        onSuccess: (data) => {
+            console.log('Berhasil:', data);
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+        },
+        onError: (error) => {
+            const errMsg = error.response?.data?.meta?.message || 'Gagal mengedit pengguna';
+            console.error(errMsg);
+        },
+    });
+};
+
+export const useDeleteUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (id) => {
+            const response = await axiosClient.delete(`/users/${id}`);
+            return response.data;
+        },
+        onSuccess: (data) => {
+            console.log('Berhasil:', data);
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+        },
+        onError: (error) => {
+            console.error('Gagal menghapus user:', error);
+        },
+    });
+};
