@@ -7,7 +7,6 @@ import EditUserModal from './EditUserModal.jsx';
 import AlertButtonAndDialog from '@/components/AlertButtonDialog.jsx';
 
 export default function AdminUserPage() {
-    // Pastikan custom hook ini mengembalikan data array
     const { data: userData = [], isLoading } = useUsers();
     const deleteUser = useDeleteUser();
     const [editingUser, setEditingUser] = useState(null);
@@ -24,13 +23,6 @@ export default function AdminUserPage() {
             email: user.email || '',
             role: user.role || '',
         });
-    };
-
-    const handleDeleteUser = (id) => {
-        if (window.confirm('Hapus pengguna ini dari sistem?')) {
-            // TODO: Ganti dengan mutasi API DELETE
-            console.log('Delete user id:', id);
-        }
     };
 
     return (
@@ -80,7 +72,6 @@ export default function AdminUserPage() {
                                 </tr>
                             )}
 
-                            {/* 3. Data Terisi */}
                             {Array.isArray(userData) &&
                                 !isLoading &&
                                 userData.map((user) => (
