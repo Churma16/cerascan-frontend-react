@@ -1,72 +1,45 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
-import axiosClient from '@/api/axios.js';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Lock, Mail, User } from 'lucide-react';
 
-export default function VerifyEmailPage() {
-    const [searchParams] = useSearchParams();
+import { useRegister } from '@/hooks/useAuth.js';
+import { toast } from 'react-toastify';
+
+export default function RegisterPage() {
     const navigate = useNavigate();
-    const token = searchParams.get('token');
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    const [status, setStatus] = useState(token ? 'loading' : 'error');
-    const [statusMessage, setStatusMessage] = useState(
-        token ? 'Memverifikasi akun Anda...' : 'Token verifikasi tidak ditemukan atau tidak valid.'
-    );
+    const { mutate: register, isPending: isLoading } = useRegister();
 
-    useEffect(() => {
-        if (!token) return;
+    const handleRegister = (e) => {
+        e.preventDefault();
 
-        // Gunakan isMounted untuk menghindari pembaruan state pada komponen yang sudah di-unmount
-        let isMounted = true;
+        if (password !== confirmPassword) {
+            toast.error('Kata sandi dan konfirmasi tidak cocok', { className: 'w-100' });
+            return;
+        }
 
-        const processVerification = async () => {
-            try {
-                const response = await axiosClient.get(`/auth/verify-email?token=${token}`);
-
-                if (isMounted) {
-                    setStatus('success');
-                    setStatusMessage(
-                        response.data?.meta?.message || response.data?.message || 'Email berhasil diverifikasi!'
-                    );
-                    const timer = setTimeout(() => navigate('/login'), 4000);
-                    return () => clearTimeout(timer);
-                }
-            } catch (error) {
-                if (!isMounted) return;
-
-                const errorMsg = error.response?.data?.message || error.response?.data?.meta?.message || '';
-
-                // LOGIKA IDEMPOTENSI:
-                // Jika error dari backend adalah karena email sudah terverifikasi (akibat double trigger),
-                // ubah statusnya menjadi SUKSES.
-                if (errorMsg.toLowerCase().includes('sudah diverifikasi')) {
-                    setStatus('success');
-                    setStatusMessage('Email sudah terverifikasi! Anda akan dialihkan ke halaman masuk.');
-                    const timer = setTimeout(() => navigate('/login'), 4000);
-                    return () => clearTimeout(timer);
-                }
-
-                // Jika error sungguhan (token expired, token acak, dll)
-                setStatus('error');
-                setStatusMessage(errorMsg || 'Tautan verifikasi telah kedaluwarsa atau tidak valid.');
+        register(
+            { full_name: fullName, email, password },
+            {
+                onSuccess: () => {
+                    // Arahkan ke halaman login setelah registrasi sukses
+                    navigate('/login');
+                },
             }
-        };
-
-        processVerification();
-
-        // Cleanup function standar React
-        return () => {
-            isMounted = false;
-        };
-    }, [token, navigate]);
+        );
+    };
 
     return (
-        <div className="min-h-screen bg-[#faf8f5] font-sans flex flex-col justify-center items-center relative overflow-hidden text-gray-800 selection:bg-[#FF645A]/30">
+        <div className="min-h-screen bg-[#faf8f5] font-sans flex flex-col justify-center items-center relative overflow-hidden text-gray-800 selection:bg-[#FF645A]/30 py-10">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-[#10B981]/5 blur-[150px] rounded-full pointer-events-none"></div>
 
             <div className="z-10 w-full max-w-md px-6">
                 <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-1.5 text-[#FF645A] mb-4">
+                    <div className="flex items-center gap-1.5 text-[#FF645A] mb-6">
                         <div className="flex flex-col gap-0.5 mt-0.5">
                             <div className="w-2 h-2 bg-[#FF645A] rounded-full"></div>
                             <div className="w-2 h-2 bg-[#FF645A] rounded-full"></div>
@@ -74,63 +47,115 @@ export default function VerifyEmailPage() {
                         </div>
                         <span className="font-extrabold text-3xl tracking-tighter">CeraScan</span>
                     </div>
+                    <h1 className="text-3xl font-black text-[#042B1F] mb-3 tracking-tight">Buat Akun</h1>
+                    <p className="text-sm font-medium text-gray-500 text-center">
+                        Daftar untuk mulai menggunakan sistem deteksi cacat keramik.
+                    </p>
                 </div>
 
-                <div className="bg-white border border-gray-100 rounded-[2rem] p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)] text-center">
-                    {status === 'loading' && (
-                        <div className="flex flex-col items-center py-6">
-                            <Loader2 className="w-16 h-16 text-[#10B981] animate-spin mb-6" />
-                            <h1 className="text-2xl font-black text-[#042B1F] mb-3 tracking-tight">
-                                Proses Verifikasi
-                            </h1>
-                            <p className="text-sm font-medium text-gray-500 max-w-xs leading-relaxed">
-                                Mohon tunggu sebentar, kami sedang mengaktifkan akun Anda di sistem.
-                            </p>
-                        </div>
-                    )}
-
-                    {status === 'success' && (
-                        <div className="flex flex-col items-center py-6 animate-fadeIn">
-                            <CheckCircle2 className="w-16 h-16 text-[#10B981] mb-6" />
-                            <h1 className="text-2xl font-black text-[#042B1F] mb-3 tracking-tight">
-                                Verifikasi Berhasil!
-                            </h1>
-                            <p className="text-sm font-medium text-gray-500 max-w-xs leading-relaxed mb-8">
-                                {statusMessage}
-                            </p>
-                            <Link
-                                to="/login"
-                                className="w-full py-4 bg-[#042B1F] hover:bg-[#031d15] text-white font-bold rounded-xl shadow-lg shadow-[#042B1F]/20 transition-all flex justify-center items-center gap-2"
-                            >
-                                Masuk Sekarang <ArrowRight className="w-4 h-4" />
-                            </Link>
-                        </div>
-                    )}
-
-                    {status === 'error' && (
-                        <div className="flex flex-col items-center py-6 animate-fadeIn">
-                            <XCircle className="w-16 h-16 text-[#FF645A] mb-6" />
-                            <h1 className="text-2xl font-black text-[#042B1F] mb-3 tracking-tight">Verifikasi Gagal</h1>
-                            <p className="text-sm font-medium text-gray-500 max-w-xs leading-relaxed mb-8">
-                                {statusMessage}
-                            </p>
-                            <div className="w-full space-y-3">
-                                <Link
-                                    to="/register"
-                                    className="block w-full py-4 bg-[#042B1F] hover:bg-[#031d15] text-white font-bold rounded-xl shadow-lg transition-all"
-                                >
-                                    Daftar Ulang
-                                </Link>
-                                <Link
-                                    to="/login"
-                                    className="block w-full py-3 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors"
-                                >
-                                    Kembali ke Beranda
-                                </Link>
+                <form
+                    onSubmit={handleRegister}
+                    className="bg-white border border-gray-100 rounded-[2rem] p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)]"
+                >
+                    <div className="space-y-5 mb-8">
+                        {/* Input Nama Lengkap */}
+                        <div>
+                            <label className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-2.5">
+                                Nama Lengkap
+                            </label>
+                            <div className="relative">
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <input
+                                    type="text"
+                                    required
+                                    value={fullName}
+                                    onChange={(e) => setFullName(e.target.value)}
+                                    placeholder="Sulastri Bin Faisal"
+                                    className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-[#042B1F] font-bold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all placeholder:text-gray-300"
+                                />
                             </div>
                         </div>
-                    )}
-                </div>
+
+                        {/* Input Email */}
+                        <div>
+                            <label className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-2.5">
+                                Alamat Email
+                            </label>
+                            <div className="relative">
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <input
+                                    type="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="admin@cerascan.ai"
+                                    className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-[#042B1F] font-bold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all placeholder:text-gray-300"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Input Kata Sandi */}
+                        <div>
+                            <label className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-2.5">
+                                Kata Sandi
+                            </label>
+                            <div className="relative">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <input
+                                    type="password"
+                                    required
+                                    minLength="6"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-[#042B1F] font-bold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all placeholder:text-gray-300"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Input Konfirmasi Kata Sandi */}
+                        <div>
+                            <label className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-2.5">
+                                Konfirmasi Sandi
+                            </label>
+                            <div className="relative">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <input
+                                    type="password"
+                                    required
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-[#042B1F] font-bold focus:outline-none focus:border-[#FF645A] focus:ring-4 focus:ring-[#FF645A]/10 transition-all placeholder:text-gray-300"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full py-4 bg-[#042B1F] hover:bg-[#031d15] disabled:bg-[#042B1F]/50 text-white font-bold rounded-xl shadow-lg shadow-[#042B1F]/20 transition-all flex justify-center items-center gap-2"
+                    >
+                        {isLoading ? (
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                            'Daftar Sekarang'
+                        )}
+                    </button>
+
+                    <div className="mt-8 text-center">
+                        <p className="text-xs font-medium text-gray-400">
+                            Sudah punya akun?{' '}
+                            <Link
+                                to="/login"
+                                className="font-bold text-[#FF645A] hover:text-[#e0564e] transition-colors"
+                            >
+                                Masuk di sini
+                            </Link>
+                        </p>
+                    </div>
+                </form>
             </div>
         </div>
     );
