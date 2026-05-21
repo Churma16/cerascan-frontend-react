@@ -195,3 +195,14 @@ export const useRegister = () => {
         },
     });
 };
+
+export const useVerifyEmail = () => {
+    return useMutation({
+        mutationFn: async (token) => {
+            const { data: apiResponse } = await axiosClient.get(`/auth/verify-email`, {
+                params: { token },
+            });
+            return apiResponse;
+        },
+    });
+};

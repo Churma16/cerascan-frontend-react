@@ -12,6 +12,8 @@ import ChangePasswordPage from '@/features/auth/ChangePasswordPage.jsx';
 import MainLayout from '@/layouts/public/MainLayout.jsx';
 import AdminMainLayout from '@/layouts/Admin/AdminMainLayout.jsx';
 import ResetPasswordPage from '@/features/auth/ResetPasswordPage.jsx';
+import RegisterPage from '@/features/auth/RegisterPage.jsx';
+import VerifyEmailPage from '@/features/auth/VerifyEmailPage.jsx';
 
 export default function App() {
     return (
