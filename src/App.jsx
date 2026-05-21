@@ -11,6 +11,7 @@ import DashboardPage from '@/features/dashboard/DashboardPage.jsx';
 import ChangePasswordPage from '@/features/auth/ChangePasswordPage.jsx';
 import MainLayout from '@/layouts/public/MainLayout.jsx';
 import AdminMainLayout from '@/layouts/Admin/AdminMainLayout.jsx';
+import ResetPasswordPage from '@/features/auth/ResetPasswordPage.jsx';
 
 export default function App() {
     return (
@@ -19,6 +20,7 @@ export default function App() {
                 {/* Public Routes */}
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/" element={<Navigate to="/scanner" replace />} />
+                <Route path="/forgot-password" element={<ResetPasswordPage />} />
 
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
@@ -37,10 +39,7 @@ export default function App() {
                     <Route path="/architecture" element={<ArchitecturePage />} />
                 </Route>
 
-                <Route
-                    path="*"
-                    element={<div className="p-8 text-center text-2xl font-bold">404 Halaman Tidak Ditemukan</div>}
-                />
+                <Route path="*" element={<Navigate to="/scanner" replace />} />
             </Routes>
         </BrowserRouter>
     );
