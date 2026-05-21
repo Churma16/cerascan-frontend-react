@@ -1,11 +1,8 @@
 import React from 'react';
-import MainLayout from '@/layouts/public/MainLayout.jsx';
-
-// Import komponen yang sudah dipisah
 import MicroservicesFlow from './components/MicroservicesFlow';
 import VggTimeline from './components/VggTimeline';
+import PageHeader from '@/components/PageHeader.jsx';
 
-// Mock Data
 const vggArchitecture = [
     {
         step: 1,
@@ -48,15 +45,10 @@ const vggArchitecture = [
 export default function ArchitecturePage() {
     return (
         <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-20">
-            <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-5xl font-black text-[#042B1F] mb-4 tracking-tight">
-                    Arsitektur AI
-                </h1>
-                <p className="text-lg text-gray-500 max-w-2xl mx-auto font-medium">
-                    Arsitektur sistem dari lapisan frontend hingga ke model ekstraksi fitur jaringan
-                    neural network.
-                </p>
-            </div>
+            <PageHeader
+                title="Arsitektur Website Dan Model VGG19"
+                desc="Arsitektur sistem dari lapisan frontend hingga ke model ekstraksi fitur jaringan neural network."
+            />
 
             <MicroservicesFlow />
 

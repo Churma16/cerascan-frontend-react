@@ -1,14 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-    AlertCircle,
-    CheckCircle2,
-    ImageIcon,
-    RefreshCw,
-    Search,
-    Settings2,
-    UploadCloud,
-    Zap,
-} from 'lucide-react';
+import { AlertCircle, CheckCircle2, ImageIcon, RefreshCw, Search, Settings2, UploadCloud, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { useScanImage } from '@/hooks/useScan.js';
 import { useNavigate } from 'react-router-dom';
@@ -95,21 +86,15 @@ export default function ScannerPage() {
         <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-10 justify-center">
             <div className="flex items-center justify-center gap-3 sm:gap-6 mb-8 mx-auto w-fit">
                 <div className="flex items-center gap-3">
-                    <span className="text-sm  font-black text-[#042B1F] tracking-[0.2em] uppercase">
-                        Input
-                    </span>
+                    <span className="text-sm  font-black text-[#042B1F] tracking-[0.2em] uppercase">Input</span>
                 </div>
                 <div className="w-8 h-0.5 bg-gray-300"></div>
                 <div className="flex items-center gap-3">
-                    <span className="text-sm font-black text-[#042B1F] tracking-[0.2em] uppercase">
-                        DETEKSI
-                    </span>
+                    <span className="text-sm font-black text-[#042B1F] tracking-[0.2em] uppercase">DETEKSI</span>
                 </div>
                 <div className="w-8 h-0.5 bg-gray-300"></div>
                 <div className="flex items-center gap-3">
-                    <span className="text-sm  font-black text-[#042B1F] tracking-[0.2em] uppercase ">
-                        EVALUASI
-                    </span>
+                    <span className="text-sm  font-black text-[#042B1F] tracking-[0.2em] uppercase ">EVALUASI</span>
                 </div>
             </div>
 
@@ -118,20 +103,14 @@ export default function ScannerPage() {
                     Pengecekan Otomatis Permukaan Keramik
                 </h1>
                 <p className="text-base md:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed font-medium">
-                    Satu sistem untuk tiga jenis cacat utama. Goresan, noda, atau retak. Dianalisis
-                    dalam hitungan detik.
+                    Satu sistem untuk tiga jenis cacat utama. Goresan, noda, atau retak. Dianalisis dalam hitungan
+                    detik.
                 </p>
             </div>
 
             {/* ALAT PEMINDAI UTAMA */}
-            <div className="w-full max-w-3xl bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 rounded-lg overflow-hidden relative min-h-[420px] flex flex-col transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.25)] mb-16 mx-auto">
-                <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                />
+            <div className="w-full max-w-3xl bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 rounded-lg overflow-hidden relative min-h-105 flex flex-col transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.25)] mb-16 mx-auto">
+                <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
 
                 {!selectedImage && (
                     <div
@@ -147,12 +126,8 @@ export default function ScannerPage() {
                         <div className="w-16 h-16 bg-[#E3EFEA] text-[#042B1F] rounded-full flex items-center justify-center mb-6 transition-transform hover:scale-105 duration-300">
                             <UploadCloud className="w-7 h-7" />
                         </div>
-                        <h3 className="text-xl font-extrabold text-[#042B1F] mb-2">
-                            Tarik Gambar ke Sini
-                        </h3>
-                        <p className="text-gray-400 text-sm font-medium mb-8">
-                            Mendukung resolusi tinggi (JPG, PNG).
-                        </p>
+                        <h3 className="text-xl font-extrabold text-[#042B1F] mb-2">Tarik Gambar ke Sini</h3>
+                        <p className="text-gray-400 text-sm font-medium mb-8">Mendukung resolusi tinggi (JPG, PNG).</p>
 
                         <Button
                             className="px-6 h-12 bg-[#042B1F] hover:bg-[#031d15] text-white font-bold rounded-xl transition-all active:scale-95 flex items-center gap-2 shadow-lg shadow-[#042B1F]/20"
@@ -168,11 +143,11 @@ export default function ScannerPage() {
 
                 {selectedImage && (
                     <div className="flex-1 grid grid-cols-1 md:grid-cols-2 bg-white">
-                        <div className="relative bg-[#FAFAFA] min-h-[300px] flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 overflow-hidden p-6">
+                        <div className="relative bg-[#FAFAFA] min-h-75 flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 overflow-hidden p-6">
                             <img
                                 src={previewUrl}
                                 alt="Preview"
-                                className={`w-full max-h-[350px] object-contain rounded-xl transition-all duration-700 ${isScanning ? 'scale-105 opacity-50 blur-sm' : 'scale-100 opacity-100 shadow-md'}`}
+                                className={`w-full max-h-87.5 object-contain rounded-xl transition-all duration-700 ${isScanning ? 'scale-105 opacity-50 blur-sm' : 'scale-100 opacity-100 shadow-md'}`}
                             />
 
                             {isScanning && (
@@ -191,12 +166,8 @@ export default function ScannerPage() {
                                         <div className="absolute inset-0 border-4 border-[#10B981] border-t-transparent rounded-full animate-spin"></div>
                                         <Zap className="absolute inset-0 m-auto w-5 h-5 text-[#042B1F] animate-pulse" />
                                     </div>
-                                    <h3 className="text-lg font-bold text-[#042B1F] mb-2">
-                                        Menganalisis...
-                                    </h3>
-                                    <p className="text-gray-400 text-sm font-medium">
-                                        Model VGG-19 sedang bekerja.
-                                    </p>
+                                    <h3 className="text-lg font-bold text-[#042B1F] mb-2">Menganalisis...</h3>
+                                    <p className="text-gray-400 text-sm font-medium">Model VGG-19 sedang bekerja.</p>
                                 </div>
                             )}
 
@@ -234,9 +205,7 @@ export default function ScannerPage() {
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center py-2.5 border-b border-gray-100">
-                                            <span className="text-sm font-semibold text-gray-500">
-                                                Waktu Komputasi
-                                            </span>
+                                            <span className="text-sm font-semibold text-gray-500">Waktu Komputasi</span>
                                             <span className="text-sm font-bold text-[#042B1F] font-mono">
                                                 {scanResult.time}
                                             </span>
@@ -277,9 +246,8 @@ export default function ScannerPage() {
                                 Klasifikasi Multi-Kelas Presisi
                             </h4>
                             <p className="text-xs text-gray-500 font-medium leading-relaxed">
-                                Arsitektur VGG-19 berhasil mengidentifikasi 4 kategori cacat
-                                permukaan dengan nilai F1-Score 0.9103, memastikan performa deteksi
-                                yang stabil di berbagai kondisi citra.
+                                Arsitektur VGG-19 berhasil mengidentifikasi 4 kategori cacat permukaan dengan nilai
+                                F1-Score 0.9103, memastikan performa deteksi yang stabil di berbagai kondisi citra.
                             </p>
                         </div>
                     </div>
@@ -296,9 +264,8 @@ export default function ScannerPage() {
                                 Latensi Inferensi Rendah
                             </h4>
                             <p className="text-xs text-gray-500 font-medium leading-relaxed">
-                                Proses validasi dan klasifikasi citra dilakukan dengan waktu respons
-                                rata-rata di bawah 2 detik, mendukung kebutuhan inspeksi pada lini
-                                produksi yang dinamis.
+                                Proses validasi dan klasifikasi citra dilakukan dengan waktu respons rata-rata di bawah
+                                2 detik, mendukung kebutuhan inspeksi pada lini produksi yang dinamis.
                             </p>
                         </div>
                     </div>
@@ -315,8 +282,8 @@ export default function ScannerPage() {
                                 Akurasi Pengujian 90.94%
                             </h4>
                             <p className="text-xs text-gray-500 font-medium leading-relaxed">
-                                Performa optimal dicapai melalui tuning hyperparameter pada batch
-                                size dan learning rate, menghasilkan test accuracy sebesar 90.94%.
+                                Performa optimal dicapai melalui tuning hyperparameter pada batch size dan learning
+                                rate, menghasilkan test accuracy sebesar 90.94%.
                             </p>
                         </div>
                     </div>
@@ -329,12 +296,8 @@ export default function ScannerPage() {
                                 C
                             </div>
                             <div>
-                                <h5 className="text-[#042B1F] text-xs font-extrabold">
-                                    Dashboard Utama
-                                </h5>
-                                <p className="text-[10px] text-gray-400 font-medium">
-                                    Sistem terhubung realtime
-                                </p>
+                                <h5 className="text-[#042B1F] text-xs font-extrabold">Dashboard Utama</h5>
+                                <p className="text-[10px] text-gray-400 font-medium">Sistem terhubung realtime</p>
                             </div>
                         </div>
                         <div className="space-y-3 mb-6">

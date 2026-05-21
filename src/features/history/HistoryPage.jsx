@@ -4,20 +4,14 @@ import { useScans } from '@/hooks/useScan.js';
 
 // Import komponen HistoryCard
 import HistoryCard from './components/HistoryCard';
+import PageHeader from '@/components/PageHeader.jsx';
 
 export default function HistoryPage() {
     const { data: scanHistories = [], isLoading } = useScans();
 
     return (
         <div className="w-full max-w-4xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-20">
-            <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-5xl font-black text-[#042B1F] mb-4 tracking-tight">
-                    Riwayat Scan Keramik
-                </h1>
-                <p className="text-lg text-gray-500 max-w-2xl mx-auto font-medium">
-                    Riwayat dekteksi keramik yang beroperasi secara realtime
-                </p>
-            </div>
+            <PageHeader title="Riwayat Scan Keramik" desc="Riwayat dekteksi keramik yang beroperasi secara realtime" />
 
             <div>
                 <div className="flex justify-between items-center mb-6">
