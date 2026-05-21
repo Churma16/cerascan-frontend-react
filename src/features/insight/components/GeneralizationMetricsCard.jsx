@@ -11,7 +11,7 @@ export default function GeneralizationMetricsCard() {
                 </div>
             </div>
 
-            <div className="flex-grow">
+            <div className="grow">
                 <h2 className="text-3xl font-black text-[#042B1F] mb-4 tracking-tight">Generalisasi Sangat Baik</h2>
                 <p className="text-sm font-medium text-gray-500 mb-12 leading-relaxed max-w-md">
                     Sistem terbukti sangat tangguh dalam mengklasifikasi 4 kelas cacat (retak, noda, goresan, normal)
