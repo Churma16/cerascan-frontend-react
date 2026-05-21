@@ -1,5 +1,5 @@
 import axiosClient from '@/api/axios.js';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 /**
  * Fungsi internal untuk mengambil daftar seluruh pengguna dari API.
@@ -26,5 +26,29 @@ export const useUsers = () => {
         queryKey: ['users'],
         queryFn: fetchUser,
         staleTime: 1000 * 60 * 5,
+    });
+};
+
+export const useCreateUser = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (payload) => {
+            const response = await axiosClient.post('/auth/register', {
+                full_name: payload.full_name,
+                email: payload.email,
+                password: payload.password,
+                role: payload.role,
+            });
+            return response.data;
+        },
+        onSuccess: (data) => {
+            console.log('Berhasil:', data);
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+        },
+        onError: (error) => {
+            const errMsg = error.response?.data?.meta?.message || 'Gagal menambah pengguna';
+            console.error(errMsg);
+        },
     });
 };
