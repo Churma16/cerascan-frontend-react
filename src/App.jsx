@@ -21,6 +21,8 @@ export default function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/" element={<Navigate to="/scanner" replace />} />
                 <Route path="/forgot-password" element={<ResetPasswordPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/verify-email" element={<VerifyEmailPage />} />
 
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>

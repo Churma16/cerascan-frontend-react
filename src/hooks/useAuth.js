@@ -172,3 +172,26 @@ export const useResetPassword = () => {
         },
     });
 };
+
+export const useRegister = () => {
+    return useMutation({
+        mutationFn: async ({ full_name, email, password }) => {
+            const { data: apiResponse } = await axiosClient.post('/auth/v2/register', {
+                full_name,
+                email,
+                password,
+            });
+            return apiResponse;
+        },
+        onSuccess: () => {
+            toast.success('Registrasi berhasil! Silakan cek kotak masuk email Anda untuk verifikasi.', {
+                className: 'w-120',
+            });
+        },
+        onError: (error) => {
+            console.log(error);
+            const errorMessage = error.response?.data?.meta?.message || 'Gagal melakukan registrasi';
+            toast.error(errorMessage, { className: 'w-100' });
+        },
+    });
+};
