@@ -1,4 +1,3 @@
-import React from 'react';
 import { AlertCircle, CheckCircle2, History, Image as ImageIcon, Trash2 } from 'lucide-react';
 import { useDeleteScan, useScans } from '@/hooks/useScan.js';
 import { getImageUrl, timeAgo, truncate } from '@/utils/helper.js';
