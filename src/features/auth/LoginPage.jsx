@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import { useLogin } from '@/hooks/useAuth.js';
@@ -68,14 +68,12 @@ export default function LoginPage() {
                                 <label className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
                                     Kata Sandi
                                 </label>
-                                <a
-                                    onClick={() => {
-                                        navigate('/forgot-password');
-                                    }}
+                                <Link
+                                    to={`/forgot-password`}
                                     className="text-xs font-bold text-[#10B981] hover:text-[#0d9668] transition-colors"
                                 >
                                     Lupa Sandi?
-                                </a>
+                                </Link>
                             </div>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -106,9 +104,12 @@ export default function LoginPage() {
                     <div className="mt-8 text-center">
                         <p className="text-xs font-medium text-gray-400">
                             Belum punya akun?{' '}
-                            <a href="#" className="font-bold text-[#FF645A] hover:text-[#e0564e] transition-colors">
+                            <Link
+                                to="/register"
+                                className="font-bold text-[#FF645A] hover:text-[#e0564e] transition-colors"
+                            >
                                 Daftar sekarang
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </form>
