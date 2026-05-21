@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { BarChart2, History, LayoutGrid, Menu, Network } from 'lucide-react';
+import { BarChart2, History, LayoutGrid, Menu, Network, X } from 'lucide-react';
 import { useIsAuthenticated } from '@/hooks/useAuth.js';
 
 export default function MainNavbar() {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -46,19 +47,19 @@ export default function MainNavbar() {
                                 }`}
                             >
                                 {link.label}
-                                <svg
-                                    width="12"
-                                    height="12"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-40"
-                                >
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
+                                {/*<svg*/}
+                                {/*    width="12"*/}
+                                {/*    height="12"*/}
+                                {/*    viewBox="0 0 24 24"*/}
+                                {/*    fill="none"*/}
+                                {/*    stroke="currentColor"*/}
+                                {/*    strokeWidth="2.5"*/}
+                                {/*    strokeLinecap="round"*/}
+                                {/*    strokeLinejoin="round"*/}
+                                {/*    className="opacity-40"*/}
+                                {/*>*/}
+                                {/*    <path d="m6 9 6 6 6-6" />*/}
+                                {/*</svg>*/}
                             </Link>
                         );
                     })}
@@ -82,10 +83,57 @@ export default function MainNavbar() {
                     )}
                 </div>
 
-                <button className="md:hidden text-gray-400 bg-gray-50 p-2 rounded-lg border border-gray-100">
-                    <Menu className="w-6 h-6" />
+                <button
+                    className="md:hidden text-gray-400 bg-gray-50 p-2 rounded-lg border border-gray-100 hover:bg-gray-100 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                    {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
             </div>
+
+            {/* Mobile Menu */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 space-y-3">
+                    {navLinks.map((link) => {
+                        const isActive = location.pathname === link.path;
+                        return (
+                            <Link
+                                key={link.path}
+                                to={link.path}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`block py-2 px-3 rounded-lg font-semibold text-sm transition-colors ${
+                                    isActive 
+                                        ? 'bg-[#FF645A]/10 text-[#FF645A]' 
+                                        : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                            >
+                                {link.label}
+                            </Link>
+                        );
+                    })}
+                    <div className="border-t border-gray-100 pt-3 mt-3">
+                        {!isAuthenticated ? (
+                            <Link
+                                to="/login"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block py-2 px-3 rounded-lg font-semibold text-sm text-center bg-[#FF645A] text-white hover:bg-[#FF645A]/90 transition-colors w-full"
+                            >
+                                Masuk
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    navigate('/dashboard');
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                className="block py-2 px-3 rounded-lg font-semibold text-sm text-center bg-[#042B1F] text-white hover:bg-[#042B1F]/90 transition-colors w-full"
+                            >
+                                Dashboard
+                            </button>
+                        )}
+                    </div>
+                </div>
+            )}
         </header>
     );
 }
