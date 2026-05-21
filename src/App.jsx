@@ -5,11 +5,12 @@ import HistoryPage from '@/features/history/HistoryPage.jsx';
 import InsightsPage from '@/features/insight/InsightsPage.jsx';
 import ArchitecturePage from '@/features/architecture/ArchitecturePage.jsx';
 import LoginPage from '@/features/auth/LoginPage.jsx';
-import ScanAdminPage from '@/features/user/ScanAdminPage.jsx';
-import UserPage from '@/features/user/UserPage.jsx';
+import AdminScanPage from '@/features/scanner/AdminScanPage.jsx';
+import AdminUserPage from '@/features/user/AdminUserPage.jsx';
 import DashboardPage from '@/features/dashboard/DashboardPage.jsx';
 import ChangePasswordPage from '@/features/auth/ChangePasswordPage.jsx';
 import MainLayout from '@/layouts/public/MainLayout.jsx';
+import AdminMainLayout from '@/layouts/Admin/AdminMainLayout.jsx';
 
 export default function App() {
     return (
@@ -21,11 +22,14 @@ export default function App() {
 
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/dashboard" element={<DashboardPage />} />
-                    <Route path="/dashboard/scans" element={<ScanAdminPage />} />
-                    <Route path="/dashboard/users" element={<UserPage />} />
-                    <Route path="/dashboard/change-password" element={<ChangePasswordPage />} />
+                    <Route element={<AdminMainLayout />}>
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route path="/dashboard/scans" element={<AdminScanPage />} />
+                        <Route path="/dashboard/users" element={<AdminUserPage />} />
+                        <Route path="/dashboard/change-password" element={<ChangePasswordPage />} />
+                    </Route>
                 </Route>
+
                 <Route element={<MainLayout />}>
                     <Route path="/scanner" element={<ScannerPage />} />
                     <Route path="/history" element={<HistoryPage />} />
@@ -35,11 +39,7 @@ export default function App() {
 
                 <Route
                     path="*"
-                    element={
-                        <div className="p-8 text-center text-2xl font-bold">
-                            404 Halaman Tidak Ditemukan
-                        </div>
-                    }
+                    element={<div className="p-8 text-center text-2xl font-bold">404 Halaman Tidak Ditemukan</div>}
                 />
             </Routes>
         </BrowserRouter>

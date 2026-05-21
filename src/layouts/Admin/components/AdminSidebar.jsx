@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { History, LayoutGrid, Users, LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { History, LayoutGrid, LogOut, Users } from 'lucide-react';
 import { useCurrentUser, useLogout } from '@/hooks/useAuth.js';
 
 export const sidebarMenus = [
@@ -61,10 +61,7 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
     return (
         <aside className="w-64 flex flex-col border-r border-gray-200 bg-white shrink-0 relative z-20">
             <div className="h-16 flex items-center px-6 border-b border-gray-200">
-                <Link
-                    to="/"
-                    className="flex items-center gap-2 text-[#FF645A] hover:opacity-80 transition-opacity"
-                >
+                <Link to="/" className="flex items-center gap-2 text-[#FF645A] hover:opacity-80 transition-opacity">
                     <LayoutGrid className="w-6 h-6" />
                     <span className="font-bold text-xl tracking-tight text-[#042B1F]">
                         CeraScan<span className="text-[#FF645A]">.ai</span>
@@ -78,12 +75,8 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
                         {myData.full_name ? myData.full_name.charAt(0).toUpperCase() : 'A'}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-[#042B1F] truncate">
-                            {myData.full_name || 'Admin'}
-                        </p>
-                        <p className="text-xs text-gray-500 truncate normal-case">
-                            {myData.role || 'Role'}
-                        </p>
+                        <p className="text-sm font-bold text-[#042B1F] truncate">{myData.full_name || 'Admin'}</p>
+                        <p className="text-xs text-gray-500 truncate normal-case">{myData.role || 'Role'}</p>
                     </div>
                 </div>
             </div>
