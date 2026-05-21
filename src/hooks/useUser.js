@@ -1,5 +1,6 @@
 import axiosClient from '@/api/axios.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Bounce, toast } from 'react-toastify';
 
 /**
  * Fungsi internal untuk mengambil daftar seluruh pengguna dari API.
@@ -45,10 +46,12 @@ export const useCreateUser = () => {
         onSuccess: (data) => {
             console.log('Berhasil:', data);
             queryClient.invalidateQueries({ queryKey: ['users'] });
+            toast.success('Pengguna berhasil dibuat!');
         },
         onError: (error) => {
             const errMsg = error.response?.data?.meta?.message || 'Gagal menambah pengguna';
             console.error(errMsg);
+            toast.error(`Gagal membuat penguna: ${errMsg}`);
         },
     });
 };
@@ -58,15 +61,17 @@ export const useEditUser = (id) => {
     return useMutation({
         mutationFn: async (payload) => {
             const response = await axiosClient.put(`/users/${id}`, payload);
-            return response.data;
+            return response.data.data;
         },
         onSuccess: (data) => {
             console.log('Berhasil:', data);
             queryClient.invalidateQueries({ queryKey: ['users'] });
+            toast.success(`Pengguna ${data.full_name} berhasil diperbarui`);
         },
         onError: (error) => {
             const errMsg = error.response?.data?.meta?.message || 'Gagal mengedit pengguna';
             console.error(errMsg);
+            toast.error(`Gagal mengedit pengguna: ${errMsg}`);
         },
     });
 };
@@ -78,12 +83,24 @@ export const useDeleteUser = () => {
             const response = await axiosClient.delete(`/users/${id}`);
             return response.data;
         },
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             console.log('Berhasil:', data);
             queryClient.invalidateQueries({ queryKey: ['users'] });
+            toast.success('Data Berhasil Dihapus', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+                transition: Bounce,
+            });
         },
         onError: (error) => {
             console.error('Gagal menghapus user:', error);
+            toast.error('Gagal menghapus user:', error);
         },
     });
 };
