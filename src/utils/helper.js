@@ -51,3 +51,21 @@ export const timeAgo = (dateStr) => {
 
     return `${diffDays} hari lalu`;
 };
+
+/**
+ * Mengonversi angka menjadi format mata uang Rupiah (Rp) dengan separator ribuan.
+ *
+ * @function toRupiah
+ * @param {number|string} price - Nilai harga yang akan dikonversi ke format Rupiah.
+ * @returns {string} String format Rupiah (contoh: "Rp 100.000") atau "Rp 0" jika nilai tidak valid.
+ * @example
+ * toRupiah(5000) => "Rp 5.000"
+ * toRupiah("100000") => "Rp 100.000"
+ * toRupiah(0) => "Rp 0"
+ */
+export const toRupiah = (price) => {
+    if (price === null || price === undefined || price === '') {
+        return 'Rp 0';
+    }
+    return `Rp ${Number(price).toLocaleString('id-ID')}`;
+};
