@@ -69,3 +69,62 @@ export const toRupiah = (price) => {
     }
     return `Rp ${Number(price).toLocaleString('id-ID')}`;
 };
+
+/**
+ * Mengonversi huruf pertama dari setiap kata menjadi huruf kapital (Title Case).
+ * Huruf setelah awalan kata akan otomatis diubah menjadi huruf kecil.
+ *
+ * @function capitalizeEachWord
+ * @param {string} str - String teks yang akan diproses.
+ * @returns {string} Teks dengan format awalan kapital pada setiap kata, atau string kosong jika input tidak valid.
+ * @example
+ * capitalizeEachWord("hello world") => "Hello World"
+ * capitalizeEachWord("jOhn dOe") => "John Doe"
+ */
+export const capitalizeEachWord = (str) => {
+    if (typeof str !== 'string' || !str) return '';
+    return str
+        .toLowerCase()
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
+
+/**
+ * Mengonversi string tanggal menjadi format tanggal Indonesia (contoh: "29 Mei 2026").
+ *
+ * @function formatDateId
+ * @param {string} dateStr - String tanggal yang valid (contoh: "2026-05-29T16:32:27.000Z").
+ * @returns {string} Tanggal dalam format "DD MMMM YYYY" berbahasa Indonesia, atau string kosong jika tidak valid.
+ * @example
+ * formatDateId("2026-05-29T16:32:27.000Z") => "29 Mei 2026"
+ */
+export const formatDateId = (dateStr) => {
+    if (!dateStr) return '';
+
+    const date = new Date(dateStr);
+
+    // Validasi apakah nilai dateStr bisa diurai menjadi tanggal yang valid
+    if (isNaN(date.getTime())) return '';
+
+    return new Intl.DateTimeFormat('id-ID', {
+        day: 'numeric',
+        month: 'long', // Gunakan 'short' jika ingin singkatan (contoh: "Mei", "Jun")
+        year: 'numeric',
+    }).format(date);
+};
+
+export const convertTwoNumberBeforeDecimal = (ratio) => {
+    // 1. Convert to number and fix decimal places (e.g., 2 decimal places)
+    const num = Number(ratio || 0);
+    const fixedNum = num.toFixed(2); // Outputs "5.23" or "12.34"
+
+    // 2. Split into integer and decimal parts
+    const [integerPart, decimalPart] = fixedNum.split('.');
+
+    // 3. Pad the integer part so it always has at least 2 digits
+    const paddedInteger = integerPart.padStart(2, '0');
+
+    // 4. Join them back together using a comma
+    return `${paddedInteger},${decimalPart}`;
+};
