@@ -82,3 +82,27 @@ export const useDeleteScan = () => {
         },
     });
 };
+
+/**
+ * Hook mutasi untuk mengunggah batch gambar untuk pemindaian (Batch Scanning).
+ * Mengirim multiple file menggunakan format multipart/form-data.
+ *
+ * @hook useBatchScanImages
+ * @returns {import('@tanstack/react-query').UseMutationResult} Objek mutasi untuk eksekusi batch scan.
+ */
+export const useBatchScanImages = () => {
+    return useMutation({
+        mutationFn: async (files) => {
+            const formData = new FormData();
+            Array.from(files).forEach((file) => {
+                formData.append('images', file);
+            });
+
+            const response = await axiosClient.post('/scans/batch', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            return response.data.data;
+        },
+    });
+};
+
