@@ -1,9 +1,10 @@
 import { Activity, AlertCircle, CheckCircle2, Image as ImageIcon, TrendingUp, Users } from 'lucide-react';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import { useDashboardKPI, useScanHistory, useScanTrends } from '@/hooks/useDashboard.js';
 import { timeAgo } from '@/utils/helper.js';
 import { useNavigate } from 'react-router-dom';
+import AdminPageHeader from '@/components/AdminPageHeader.jsx';
 
 export default function DashboardPage() {
     const { data: dashboardKPIData = {} } = useDashboardKPI();
@@ -13,20 +14,11 @@ export default function DashboardPage() {
 
     return (
         <PageWrapper>
-            {/*{JSON.stringify(dashboardKPIData)}*/}
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="flex justify-between items-end mb-8">
-                    <div>
-                        <h2 className="text-2xl font-black tracking-tight text-[#042B1F]">Selamat Datang, Admin</h2>
-                        <p className="text-sm font-medium text-gray-500 mt-1">
-                            Berikut adalah ringkasan peforma deteksi hari ini.
-                        </p>
-                    </div>
-                    {/*<button className="px-4 py-2.5 bg-white hover:bg-gray-50 border border-gray-200 text-[#042B1F] text-sm font-bold rounded-lg transition-colors flex items-center gap-2 shadow-sm">*/}
-                    {/*    <Download className="w-4 h-4" /> Unduh Laporan*/}
-                    {/*</button>*/}
-                </div>
-
+                <AdminPageHeader
+                    title="Selamat Datang, Admin"
+                    desc="Berikut adalah ringkasan peforma deteksi hari ini."
+                />
                 <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-4 gap-4">
                     <div className="bg-white border border-gray-100 p-6 rounded-lg shadow-[0_4px_25px_rgb(0,0,0,0.03)]">
                         <div className="flex justify-between items-start mb-4">
@@ -79,7 +71,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4">
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4 h-64">
                     <div className="xl:col-span-2 bg-white border border-gray-100 rounded-lg p-8 drop-shadow-sm">
                         <h3 className="text-xl font-black text-[#042B1F] mb-6">
                             Aktivitas Pemindaian (7 Hari Terakhir)
@@ -124,6 +116,12 @@ export default function DashboardPage() {
                                         }}
                                         itemStyle={{ color: '#042B1F', fontWeight: 'bold' }}
                                     />
+                                    <Legend
+                                        verticalAlign="top"
+                                        align="right"
+                                        iconType="square"
+                                        wrapperStyle={{ paddingBottom: 8, fontSize: 12, fontWeight: 600 }}
+                                    />
                                     <Area
                                         type="monotone"
                                         dataKey="total_scan"
@@ -148,7 +146,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Tabel Aktivitas Singkat */}
-                    <div className="bg-white border border-gray-100 rounded-lg p-8 drop-shadow-sm flex flex-col">
+                    <div className="bg-white border border-gray-100 rounded-lg p-8 drop-shadow-sm flex flex-col overflow-y-auto">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="text-xl font-black text-[#042B1F]">Deteksi Terkini</h3>
                             <button
@@ -159,7 +157,7 @@ export default function DashboardPage() {
                             </button>
                         </div>
 
-                        <div className="flex-1 space-y-3">
+                        <div className="flex-1 space-y-3 ">
                             {scanHistoryData.map((scan, i) => (
                                 <div
                                     key={i}
