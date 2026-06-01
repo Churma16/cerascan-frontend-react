@@ -48,7 +48,6 @@ export default function ResetPasswordPage() {
             { email, otp },
             {
                 onSuccess: (response) => {
-                    // Menyimpan user_id dari respons backend untuk digunakan di step 3
                     setUserId(response.data?.user_id);
                     setStep(3);
                 },
