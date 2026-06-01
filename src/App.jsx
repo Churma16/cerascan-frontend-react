@@ -5,7 +5,7 @@ import HistoryPage from '@/features/history/HistoryPage.jsx';
 import InsightsPage from '@/features/insight/InsightsPage.jsx';
 import ArchitecturePage from '@/features/architecture/ArchitecturePage.jsx';
 import LoginPage from '@/features/auth/LoginPage.jsx';
-import AdminScanPage from '@/features/scanner/AdminScanPage.jsx';
+import ScanHistoryPage from '@/features/scanner/ScanHistoryPage.jsx';
 import AdminUserPage from '@/features/user/AdminUserPage.jsx';
 import DashboardPage from '@/features/dashboard/DashboardPage.jsx';
 import ChangePasswordPage from '@/features/auth/ChangePasswordPage.jsx';
@@ -14,6 +14,9 @@ import AdminMainLayout from '@/layouts/Admin/AdminMainLayout.jsx';
 import ResetPasswordPage from '@/features/auth/ResetPasswordPage.jsx';
 import RegisterPage from '@/features/auth/RegisterPage.jsx';
 import VerifyEmailPage from '@/features/auth/VerifyEmailPage.jsx';
+import BillingPage from '@/features/billing/BillingPage.jsx';
+import BatchScanPage from '@/features/batch_scan/BatchScanPage.jsx';
+import LeaderboardPage from '@/features/leaderboard/LeaderboardPage.jsx';
 
 export default function App() {
     return (
@@ -30,9 +33,12 @@ export default function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route element={<AdminMainLayout />}>
                         <Route path="/dashboard" element={<DashboardPage />} />
-                        <Route path="/dashboard/scans" element={<AdminScanPage />} />
+                        <Route path="/dashboard/scans" element={<ScanHistoryPage />} />
+                        <Route path="/dashboard/billing" element={<BillingPage />} />
+                        <Route path="/dashboard/leaderboard" element={<LeaderboardPage />} />
                         <Route path="/dashboard/users" element={<AdminUserPage />} />
                         <Route path="/dashboard/change-password" element={<ChangePasswordPage />} />
+                        <Route path="/dashboard/batch-scan" element={<BatchScanPage />} />
                     </Route>
                 </Route>
 
