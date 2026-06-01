@@ -4,7 +4,7 @@ import { getImageUrl, timeAgo, truncate } from '@/utils/helper.js';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import AlertButtonAndDialog from '@/components/AlertButtonDialog.jsx';
 
-export default function AdminScanPage() {
+export default function ScanHistoryPage() {
     const { data: scanHistories = [], isLoading } = useScans();
     const deleteScan = useDeleteScan();
 
