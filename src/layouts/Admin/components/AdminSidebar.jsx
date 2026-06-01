@@ -1,30 +1,51 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { History, LayoutGrid, LogOut, Users } from 'lucide-react';
+import {
+    ClipboardList,
+    CreditCard,
+    Key,
+    History,
+    LayoutDashboard,
+    LayoutGrid,
+    LogOut,
+    Scan,
+    ScanLine,
+    Trophy,
+    Users,
+    ShieldCheck,
+} from 'lucide-react';
 import { useCurrentUser, useLogout } from '@/hooks/useAuth.js';
+import UpgradeButton from '@/components/UpgradeButton.jsx';
+import RequireAccess from '@/security/RequireAccess.jsx';
+
+// Pastikan Anda mengimpor icon yang sesuai dari lucide-react
+// import { LayoutGrid, Scan, Trophy, CreditCard, Users, Key, ClipboardList } from 'lucide-react';
 
 export const sidebarMenus = [
     {
-        title: 'Pusat Kontrol',
+        title: 'Operasional',
         items: [
-            { id: 'overview', label: 'Ringkasan', icon: LayoutGrid, path: '/dashboard' },
-            { id: 'history', label: 'Semua Riwayat', icon: History, path: '/dashboard/scans' },
+            { id: 'overview', label: 'Ringkasan', icon: LayoutDashboard, path: '/dashboard' },
+            { id: 'batch-scan', label: 'Mulai Scan', icon: ScanLine, path: '/dashboard/batch-scan' },
         ],
     },
     {
-        title: 'Administrasi',
-        items: [{ id: 'users', label: 'Manajemen Tim', icon: Users, path: '/dashboard/users' }],
+        title: 'Laporan & Data',
+        items: [
+            { id: 'history', label: 'Riwayat Scan', icon: History, path: '/dashboard/scans' },
+            { id: 'leaderboard', label: 'Peringkat Tim', icon: Trophy, path: '/dashboard/leaderboard' },
+        ],
     },
     {
-        title: 'Account',
+        title: 'Manajemen',
         items: [
-            {
-                id: 'change password',
-                label: 'Ganti Password',
-                icon: Users,
-                path: '/dashboard/change-password',
-            },
+            { id: 'users', label: 'Anggota Tim', icon: Users, path: '/dashboard/users' },
+            { id: 'billing', label: 'Tagihan & Paket', icon: CreditCard, path: '/dashboard/billing' },
         ],
+    },
+    {
+        title: 'Akun Pribadi',
+        items: [{ id: 'security', label: 'Keamanan', icon: ShieldCheck, path: '/dashboard/change-password' }],
     },
 ];
 
@@ -76,7 +97,10 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-bold text-[#042B1F] truncate">{myData.full_name || 'Admin'}</p>
-                        <p className="text-xs text-gray-500 truncate normal-case">{myData.role || 'Role'}</p>
+                        <p className="text-xs text-gray-500 truncate normal-case">
+                            {myData?.active_plan?.name || 'Role'}
+                        </p>
+                        {/*{JSON.stringify(myData)}*/}
                     </div>
                 </div>
             </div>
@@ -110,7 +134,11 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
                     </div>
                 ))}
             </div>
-
+            <RequireAccess allowedPlans={[1]}>
+                <div className="p-4">
+                    <UpgradeButton />
+                </div>
+            </RequireAccess>
             <div className="p-4 border-t border-gray-200">
                 <button
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#FF645A] hover:bg-[#FF645A]/10 transition-colors border border-transparent"
