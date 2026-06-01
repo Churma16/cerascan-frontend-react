@@ -1,17 +1,54 @@
-import React, { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AlertCircle, CheckCircle2, ImageIcon, RefreshCw, Search, Settings2, UploadCloud, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { useScanImage } from '@/hooks/useScan.js';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 export default function ScannerPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [scanResult, setScanResult] = useState(null);
     const [isDragActive, setIsDragActive] = useState(false);
+
+    // --- BARU --- State untuk menahan loading AI dan melacak ID gambar
+    const [isProcessingAi, setIsProcessingAi] = useState(false);
+    const [currentScanId, setCurrentScanId] = useState(null);
+
     const fileInputRef = useRef(null);
 
-    const { mutate: scanImage, isPending: isScanning } = useScanImage();
+    const { mutate: scanImage, isPending: isUploading } = useScanImage();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Hubungkan ke API Gateway Node.js Anda
+        const socket = io('http://localhost:3000');
+
+        socket.on('connect', () => {
+            console.log('Frontend terhubung ke WebSocket');
+        });
+
+        // Dengarkan sinyal hasil dari AI
+        socket.on('scan_completed', (data) => {
+            console.log('Hasil AI diterima:', data);
+
+            // Pastikan hasil yang masuk adalah untuk gambar yang sedang di-scan
+            if (data.scan_id === currentScanId) {
+                setScanResult({
+                    id: data.scan_id,
+                    status: data.prediction,
+                    confidence: data.confidence,
+                    time: data.inference_time,
+                });
+                // Matikan animasi loading
+                setIsProcessingAi(false);
+            }
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [currentScanId]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -52,14 +89,12 @@ export default function ScannerPage() {
     };
 
     const triggerScan = (file) => {
+        setIsProcessingAi(true);
         scanImage(file, {
-            onSuccess: (data) => {
-                setScanResult({
-                    id: data.scan_id || 'SCN-' + Math.floor(1000 + Math.random() * 9000),
-                    status: data.prediction || 'Normal',
-                    confidence: data.confidence || 0,
-                    time: data.inference_time || '0.00s',
-                });
+            onSuccess: (dataScan) => {
+                const returnedScanId = dataScan.scan_id;
+                console.log('Menunggu hasil AI untuk ID:', returnedScanId);
+                setCurrentScanId(returnedScanId);
             },
             onError: (error) => {
                 console.error('Error scanning:', error);
@@ -77,10 +112,12 @@ export default function ScannerPage() {
         setSelectedImage(null);
         setPreviewUrl(null);
         setScanResult(null);
+        setIsProcessingAi(false);
+        setCurrentScanId(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
-    const navigate = useNavigate();
+    const showLoadingAnimation = isUploading || isProcessingAi;
 
     return (
         <div className="w-full max-w-5xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-10 justify-center">
@@ -147,10 +184,12 @@ export default function ScannerPage() {
                             <img
                                 src={previewUrl}
                                 alt="Preview"
-                                className={`w-full max-h-87.5 object-contain rounded-xl transition-all duration-700 ${isScanning ? 'scale-105 opacity-50 blur-sm' : 'scale-100 opacity-100 shadow-md'}`}
+                                // --- BARU --- Gunakan showLoadingAnimation
+                                className={`w-full max-h-87.5 object-contain rounded-xl transition-all duration-700 ${showLoadingAnimation ? 'scale-105 opacity-50 blur-sm' : 'scale-100 opacity-100 shadow-md'}`}
                             />
 
-                            {isScanning && (
+                            {/* --- BARU --- Gunakan showLoadingAnimation */}
+                            {showLoadingAnimation && (
                                 <>
                                     <div className="absolute top-0 left-0 w-full h-1 bg-[#10B981] shadow-[0_0_20px_5px_rgba(16,185,129,0.3)] animate-[scan_2s_ease-in-out_infinite_alternate]"></div>
                                     <div className="absolute inset-0 bg-[#042B1F]/5 animate-pulse mix-blend-overlay"></div>
@@ -159,7 +198,8 @@ export default function ScannerPage() {
                         </div>
 
                         <div className="p-8 lg:p-10 flex flex-col justify-center relative">
-                            {isScanning && (
+                            {/* --- BARU --- Gunakan showLoadingAnimation */}
+                            {showLoadingAnimation && (
                                 <div className="flex flex-col items-center justify-center text-center">
                                     <div className="w-14 h-14 relative mb-6">
                                         <div className="absolute inset-0 border-4 border-gray-100 rounded-full"></div>
@@ -171,7 +211,7 @@ export default function ScannerPage() {
                                 </div>
                             )}
 
-                            {scanResult && !isScanning && (
+                            {scanResult && !showLoadingAnimation && (
                                 <div className="flex flex-col animate-in fade-in duration-500">
                                     <div className="mb-6">
                                         <p className="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3">
