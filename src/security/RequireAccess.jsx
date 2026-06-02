@@ -14,10 +14,10 @@ export default function RequireAccess({ allowedRoles, allowedPlans, children }) 
         return null;
     }
 
-    // show popup
-    if (allowedPlans != null && user.plan_id === getPlanProperties('FREE').value) {
-        return null;
-    }
+    // // show popup
+    // if (allowedPlans != null && user.plan_id === getPlanProperties('FREE').value) {
+    //     return null;
+    // }
 
     return children;
 }
