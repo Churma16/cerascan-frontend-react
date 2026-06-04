@@ -45,6 +45,11 @@ const fetchScans = async () => {
     return response.data.data;
 };
 
+const fetchPublicScans = async () => {
+    const response = await axiosClient.get('/scans/history/public');
+    return response.data.data;
+};
+
 /**
  * Hook untuk mendapatkan daftar riwayat pemindaian pengguna.
  * Memiliki durasi data segar (staleTime) selama 5 menit.
@@ -56,6 +61,14 @@ export const useScans = () => {
     return useQuery({
         queryKey: ['scans'],
         queryFn: fetchScans,
+        staleTime: 1000 * 60 * 5,
+    });
+};
+
+export const usePublicScans = () => {
+    return useQuery({
+        queryKey: ['scans', 'public'],
+        queryFn: fetchPublicScans,
         staleTime: 1000 * 60 * 5,
     });
 };
@@ -105,4 +118,3 @@ export const useBatchScanImages = () => {
         },
     });
 };
-
