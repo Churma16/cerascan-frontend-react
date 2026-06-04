@@ -5,14 +5,43 @@ import { io } from 'socket.io-client';
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { convertTwoNumberBeforeDecimal } from '@/utils/helper.js';
-import { motion } from 'framer-motion'; // 1. Import Framer Motion
+import { motion } from 'framer-motion';
+
+const getRankBadge = (rank) => {
+    if (rank === 1) {
+        return (
+            <div className="w-8 h-8 rounded-full bg-[#FEF3C7] text-[#D97706] flex items-center justify-center mx-auto">
+                <Trophy className="w-4 h-4 shadow-sm" />
+            </div>
+        );
+    }
+    if (rank === 2) {
+        return (
+            <div className="w-8 h-8 rounded-full bg-[#F1F5F9] text-[#64748B] flex items-center justify-center mx-auto">
+                <Medal className="w-4 h-4" />
+            </div>
+        );
+    }
+    if (rank === 3) {
+        return (
+            <div className="w-8 h-8 rounded-full bg-[#FFEDD5] text-[#C2410C] flex items-center justify-center mx-auto">
+                <Medal className="w-4 h-4" />
+            </div>
+        );
+    }
+    return (
+        <div className="w-8 h-8 rounded-full bg-gray-50 border border-gray-100 text-gray-500 font-bold text-xs flex items-center justify-center mx-auto">
+            {rank}
+        </div>
+    );
+};
 
 export default function LeaderboardPage() {
     const queryClient = useQueryClient();
     const { data: leadersData = [], isLoading, isError } = useLeaderboard(10);
 
     useEffect(() => {
-        const socket = io('http://localhost:3000');
+        const socket = io(import.meta.env.VITE_WEB_SOCKET_URL || 'http://localhost:3000');
 
         socket.on('scan_completed', (data) => {
             console.log('🔥 [Socket] Seseorang baru saja selesai scan!', data);
@@ -24,35 +53,6 @@ export default function LeaderboardPage() {
             socket.disconnect();
         };
     }, [queryClient]);
-
-    const getRankBadge = (rank) => {
-        if (rank === 1) {
-            return (
-                <div className="w-8 h-8 rounded-full bg-[#FEF3C7] text-[#D97706] flex items-center justify-center mx-auto">
-                    <Trophy className="w-4 h-4 shadow-sm" />
-                </div>
-            );
-        }
-        if (rank === 2) {
-            return (
-                <div className="w-8 h-8 rounded-full bg-[#F1F5F9] text-[#64748B] flex items-center justify-center mx-auto">
-                    <Medal className="w-4 h-4" />
-                </div>
-            );
-        }
-        if (rank === 3) {
-            return (
-                <div className="w-8 h-8 rounded-full bg-[#FFEDD5] text-[#C2410C] flex items-center justify-center mx-auto">
-                    <Medal className="w-4 h-4" />
-                </div>
-            );
-        }
-        return (
-            <div className="w-8 h-8 rounded-full bg-gray-50 border border-gray-100 text-gray-500 font-bold text-xs flex items-center justify-center mx-auto">
-                {rank}
-            </div>
-        );
-    };
 
     return (
         <PageWrapper>
@@ -84,11 +84,8 @@ export default function LeaderboardPage() {
                         </thead>
                         <tbody className="divide-y divide-gray-50">
                             {leadersData?.map((user) => (
-                                // 2. Ubah tr menjadi motion.tr
                                 <motion.tr
-                                    // 3. layout adalah kunci utama untuk animasi perpindahan (swap)
                                     layout
-                                    // 4. Tambahkan sedikit animasi masuk saat user baru pertama kali masuk leaderboard
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{
@@ -96,7 +93,6 @@ export default function LeaderboardPage() {
                                         stiffness: 300,
                                         damping: 30,
                                     }}
-                                    // 5. Pastikan menggunakan ID unik (bukan index atau rank)
                                     key={user.user_id || user.id}
                                     className="hover:bg-gray-50/50 transition-colors bg-white"
                                 >
@@ -108,9 +104,9 @@ export default function LeaderboardPage() {
                                             </div>
                                             <div>
                                                 <p className="font-bold text-[#042B1F] leading-tight">{user.name}</p>
-                                                <p className="text-xs font-medium text-gray-500 mt-0.5">
-                                                    {user.email || user.role}
-                                                </p>
+                                                {/*<p className="text-xs font-medium text-gray-500 mt-0.5">*/}
+                                                {/*    {user.plan.name}*/}
+                                                {/*</p>*/}
                                             </div>
                                         </div>
                                     </td>
@@ -124,7 +120,7 @@ export default function LeaderboardPage() {
                                     </td>
                                     <td className="px-8 py-4">
                                         <div className="flex items-center gap-3">
-                                            <span className="w-10 text-sm font-semibold text-gray-600">
+                                            <span className="w-14 text-sm font-semibold text-gray-600">
                                                 {user.ratio ? convertTwoNumberBeforeDecimal(user.ratio * 100) : '0'}%
                                             </span>
                                             <div className="w-24 h-1.5 bg-gray-100 rounded-full relative overflow-hidden flex items-center">
