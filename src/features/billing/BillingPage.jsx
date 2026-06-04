@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { AlertCircle, Calendar, CheckCircle2, CreditCard, History } from 'lucide-react';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import { capitalizeEachWord, formatDateId, toRupiah } from '@/utils/helper.js';
+import LiveUserQuotaColumn from '@/features/billing/LiveUserQuotaColumn.jsx';
 import { useActiveSubscription, useCurrentUserSubsHistories } from '@/hooks/useSubcription.js';
 import { useCurrentUserPaymentHistories } from '@/hooks/usePayment.js';
-import LiveUserQuotaColumn from '@/features/billing/LiveUserQuotaColumn.jsx';
+import { useState } from 'react';
 
 function LoadingSubsTable() {
     return (
@@ -89,7 +89,9 @@ function CurrentPlanCard(props) {
                             <div className="text-center">
                                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Durasi</p>
                                 <p className="text-xl font-black text-[#042B1F] mt-1">
-                                    {props.currentSubscription?.plan?.duration_days ?? '-'} hari
+                                    {props.currentSubscription?.plan_id == 1
+                                        ? 'Selamanya'
+                                        : (props.currentSubscription?.plan?.duration_days ?? '-')}
                                 </p>
                             </div>
                             <LiveUserQuotaColumn />
@@ -111,7 +113,7 @@ export default function BillingPage() {
         const statusMap = {
             active: { bg: 'bg-[#E3EFEA]', text: 'text-[#10B981]', label: 'Aktif' },
             expired: { bg: 'bg-[#FEF3C7]', text: 'text-[#F59E0B]', label: 'Kadaluarsa' },
-            cancelled: { bg: 'bg-[#FEE2E2]', text: 'text-[#FF645A]', label: 'Dibatalkan' },
+            canceled: { bg: 'bg-[#FEE2E2]', text: 'text-[#FF645A]', label: 'Dibatalkan' },
             completed: { bg: 'bg-[#E3EFEA]', text: 'text-[#10B981]', label: 'Selesai' },
             pending: { bg: 'bg-[#E0F2FE]', text: 'text-[#0284C7]', label: 'Tertunda' },
         };
@@ -229,6 +231,13 @@ export default function BillingPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50">
+                                {paymentHistories.length === 0 && (
+                                    <tr>
+                                        <td colSpan="6" className="px-8 py-8 text-center font-medium text-gray-500">
+                                            Tidak ada riwayat pembelian.
+                                        </td>
+                                    </tr>
+                                )}
                                 {paymentHistories.map((payment) => (
                                     <tr key={payment.id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="px-8 py-5 font-mono font-bold text-[#042B1F]">
