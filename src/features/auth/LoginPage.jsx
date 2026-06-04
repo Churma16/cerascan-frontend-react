@@ -24,7 +24,7 @@ export default function LoginPage() {
 
     // Fungsi untuk memicu proses OAuth Google
     const handleGoogleLogin = () => {
-        if (import.meta.env.VITE_PROD === true) {
+        if (import.meta.env.VITE_PROD === 'true') {
             window.location.href = `${import.meta.env.VITE_BACKEND_URL_PROD}/auth/google`;
         } else {
             window.location.href = `${import.meta.env.VITE_BACKEND_URL_DEV}/auth/google`;
