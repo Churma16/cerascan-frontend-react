@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-    ClipboardList,
+    Banknote,
     CreditCard,
-    Key,
     History,
     LayoutDashboard,
     LayoutGrid,
     LogOut,
-    Scan,
+    Package,
+    Receipt,
     ScanLine,
+    ShieldCheck,
     Trophy,
     Users,
-    ShieldCheck,
 } from 'lucide-react';
 import { useCurrentUser, useLogout } from '@/hooks/useAuth.js';
 import UpgradeButton from '@/components/UpgradeButton.jsx';
 import RequireAccess from '@/security/RequireAccess.jsx';
-
-// Pastikan Anda mengimpor icon yang sesuai dari lucide-react
-// import { LayoutGrid, Scan, Trophy, CreditCard, Users, Key, ClipboardList } from 'lucide-react';
 
 export const sidebarMenus = [
     {
@@ -37,15 +34,21 @@ export const sidebarMenus = [
         ],
     },
     {
-        title: 'Manajemen',
+        title: 'Administrasi Sistem',
+        adminOnly: true,
         items: [
-            { id: 'users', label: 'Anggota Tim', icon: Users, path: '/dashboard/users' },
-            { id: 'billing', label: 'Tagihan & Paket', icon: CreditCard, path: '/dashboard/billing' },
+            { id: 'users', label: 'Data Pengguna', icon: Users, path: '/dashboard/users' },
+            { id: 'plans', label: 'Data Paket', icon: Package, path: '/dashboard/plans' },
+            { id: 'subscriptions', label: 'Kelola Langganan', icon: CreditCard, path: '/dashboard/subscriptions' },
+            { id: 'payment', label: 'Semua Transaksi', icon: Banknote, path: '/dashboard/payment' },
         ],
     },
     {
-        title: 'Akun Pribadi',
-        items: [{ id: 'security', label: 'Keamanan', icon: ShieldCheck, path: '/dashboard/change-password' }],
+        title: 'Akun Saya',
+        items: [
+            { id: 'billing', label: 'Tagihan Saya', icon: Receipt, path: '/dashboard/billing' },
+            { id: 'security', label: 'Keamanan', icon: ShieldCheck, path: '/dashboard/change-password' },
+        ],
     },
 ];
 
@@ -100,39 +103,44 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
                         <p className="text-xs text-gray-500 truncate normal-case">
                             {myData?.active_plan?.name || 'Role'}
                         </p>
-                        {/*{JSON.stringify(myData)}*/}
                     </div>
                 </div>
             </div>
 
             <div className="flex-1 py-4 overflow-y-auto">
-                {sidebarMenus.map((group, idx) => (
-                    <div key={idx} className="mb-6">
-                        <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 px-6">
-                            {group.title}
-                        </div>
-                        <nav className="space-y-1 px-3">
-                            {group.items.map((item) => {
-                                const Icon = item.icon;
-                                const isActive = currentMenu === item.id;
+                {sidebarMenus.map((group, idx) => {
+                    if (group.adminOnly && myData.role !== 'admin') {
+                        return null;
+                    }
 
-                                return (
-                                    <button
-                                        key={item.id}
-                                        onClick={() => handleNavigation(item)}
-                                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                                        ${isActive ? 'bg-[#042B1F] text-white shadow-sm' : 'text-gray-500 hover:text-[#042B1F] hover:bg-gray-50 border border-transparent'}`}
-                                    >
-                                        <Icon
-                                            className={`w-[18px] h-[18px] ${isActive ? 'text-white' : 'text-gray-400'}`}
-                                        />
-                                        {item.label}
-                                    </button>
-                                );
-                            })}
-                        </nav>
-                    </div>
-                ))}
+                    return (
+                        <div key={idx} className="mb-6">
+                            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 px-6">
+                                {group.title}
+                            </div>
+                            <nav className="space-y-1 px-3">
+                                {group.items.map((item) => {
+                                    const Icon = item.icon;
+                                    const isActive = currentMenu === item.id;
+
+                                    return (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => handleNavigation(item)}
+                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
+                                ${isActive ? 'bg-[#042B1F] text-white shadow-sm' : 'text-gray-500 hover:text-[#042B1F] hover:bg-gray-50 border border-transparent'}`}
+                                        >
+                                            <Icon
+                                                className={`w-4.5 h-4.5 ${isActive ? 'text-white' : 'text-gray-400'}`}
+                                            />
+                                            {item.label}
+                                        </button>
+                                    );
+                                })}
+                            </nav>
+                        </div>
+                    );
+                })}
             </div>
             <RequireAccess allowedPlans={[1]}>
                 <div className="p-4">
