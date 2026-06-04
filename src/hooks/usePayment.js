@@ -51,3 +51,16 @@ export const usePayments = () => {
         staleTime: 1000 * 60 * 5,
     });
 };
+
+const fetchPaymentKpi = async () => {
+    const response = await axiosClient.get('/payment/kpi');
+    return response.data.data;
+};
+
+export const usePaymentKpi = () => {
+    return useQuery({
+        queryKey: ['payments', 'kpi'],
+        queryFn: fetchPaymentKpi,
+        staleTime: 1000 * 60 * 5,
+    });
+};
