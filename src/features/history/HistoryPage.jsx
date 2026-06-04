@@ -1,13 +1,13 @@
 import React from 'react';
 import { History } from 'lucide-react';
-import { useScans } from '@/hooks/useScan.js';
+import { usePublicScans, useScans } from '@/hooks/useScan.js';
 
 // Import komponen HistoryCard
 import HistoryCard from './components/HistoryCard';
 import PageHeader from '@/components/PageHeader.jsx';
 
 export default function HistoryPage() {
-    const { data: scanHistories = [], isLoading } = useScans();
+    const { data: scanHistories = [], isLoading } = usePublicScans();
 
     return (
         <div className="w-full max-w-4xl mx-auto px-6 relative z-10 animate-in fade-in duration-500 pb-20">
