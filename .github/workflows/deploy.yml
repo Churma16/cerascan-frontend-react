@@ -30,6 +30,8 @@ jobs:
           echo 'VITE_BACKEND_URL_PROD="https://api-ceramic.churma.codes/api"' >> .env
           echo 'VITE_BACKEND_STORAGE_URL_DEV="http://localhost:3000/storage"' >> .env
           echo 'VITE_BACKEND_STORAGE_URL_PROD="https://api-ceramic.churma.codes/uploads"' >> .env
+          echo "VITE_MIDTRANS_CLIENT_KEY=${{ secrets.MIDTRANS_CLIENT_KEY }}" >> .env
+          echo 'VITE_MIDTRANS_SNAP_URL="https://app.sandbox.midtrans.com/snap/snap.js"' >> .env
 
       - name: Build Application
         run: npm run build
