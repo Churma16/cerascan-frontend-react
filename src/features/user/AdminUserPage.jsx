@@ -46,16 +46,18 @@ export default function AdminUserPage() {
                     <table className="w-full text-left">
                         <thead className="bg-[#FAFAFA]">
                             <tr className="text-gray-400 text-[10px] font-extrabold uppercase tracking-widest border-b border-gray-100">
-                                <th className="px-8 py-5">Pengguna</th>
-                                <th className="px-8 py-5">Peran</th>
-                                <th className="px-8 py-5">Status</th>
+                                <th className="px-8 py-5 text-left">Pengguna</th>
+                                <th className="px-8 py-5 text-center">Peran</th>
+                                <th className="px-8 py-5 text-center">Paket Aktif</th>
+                                <th className="px-8 py-5 text-center">Status</th>
                                 <th className="px-8 py-5 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
+                            {/* LOADING STATE */}
                             {isLoading && (
                                 <tr>
-                                    <td colSpan="4" className="px-8 py-10 text-center font-medium text-gray-400">
+                                    <td colSpan="5" className="px-8 py-12 text-center font-medium text-gray-400">
                                         <div className="flex items-center justify-center gap-2">
                                             <div className="w-4 h-4 border-2 border-[#10B981] border-t-transparent rounded-full animate-spin"></div>
                                             Memuat data pengguna...
@@ -64,22 +66,24 @@ export default function AdminUserPage() {
                                 </tr>
                             )}
 
+                            {/* EMPTY STATE */}
                             {Array.isArray(userData) && userData.length === 0 && !isLoading && (
                                 <tr>
-                                    <td colSpan="4" className="px-8 py-12 text-center font-medium text-gray-500">
+                                    <td colSpan="5" className="px-8 py-12 text-center font-medium text-gray-500">
                                         Belum ada pengguna yang terdaftar.
                                     </td>
                                 </tr>
                             )}
 
+                            {/* DATA ROWS */}
                             {Array.isArray(userData) &&
                                 !isLoading &&
                                 userData.map((user) => (
                                     <tr key={user.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-8 py-5">
+                                        {/* Sel Teks (Kiri) */}
+                                        <td className="px-8 py-5 text-left">
                                             <div className="flex items-center gap-4">
                                                 <div className="w-12 h-12 rounded-2xl bg-[#E3EFEA] flex items-center justify-center text-[#042B1F] text-lg font-black uppercase">
-                                                    {/* Fallback jika field namanya berbeda dari API */}
                                                     {user.full_name
                                                         ? user.full_name.charAt(0)
                                                         : user.name
@@ -87,15 +91,28 @@ export default function AdminUserPage() {
                                                           : '?'}
                                                 </div>
                                                 <div>
-                                                    <p className="font-black text-[#042B1F] mb-0.5">
+                                                    <p className="font-bold text-[#042B1F] mb-0.5">
                                                         {user.full_name || user.name}
                                                     </p>
-                                                    <p className="text-xs font-medium text-gray-500">{user.email}</p>
+                                                    <p className="text-[10px] font-medium text-gray-500">
+                                                        {user.email}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-8 py-5 text-sm font-bold text-gray-500">{user.role}</td>
-                                        <td className="px-8 py-5">
+
+                                        {/* Sel Teks (Tengah) */}
+                                        <td className="px-8 py-5 text-sm font-bold text-[#042B1F] text-center">
+                                            {user.role}
+                                        </td>
+
+                                        {/* Sel Teks (Tengah) */}
+                                        <td className="px-8 py-5 text-sm font-bold text-[#042B1F] text-center">
+                                            {user.active_plan.name}
+                                        </td>
+
+                                        {/* Sel Status (Tengah) */}
+                                        <td className="px-8 py-5 text-center">
                                             <span
                                                 className={`inline-flex items-center px-3 py-1.5 rounded-lg text-[10px] font-extrabold tracking-wider uppercase ${user.status === 'Aktif' || user.status === 'active' ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-gray-100 text-gray-500'}`}
                                             >
