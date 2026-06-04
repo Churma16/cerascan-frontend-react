@@ -38,3 +38,16 @@ export const useCurrentUserPaymentHistories = () => {
         staleTime: 1000 * 60 * 5,
     });
 };
+
+const fetchPayments = async () => {
+    const response = await axiosClient.get('/payment');
+    return response.data.data;
+};
+
+export const usePayments = () => {
+    return useQuery({
+        queryKey: ['payments'],
+        queryFn: fetchPayments,
+        staleTime: 1000 * 60 * 5,
+    });
+};
