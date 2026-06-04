@@ -21,6 +21,7 @@ import PaymentPage from '@/features/payment/PaymentPage.jsx';
 import PlanPage from '@/features/plan/PlanPage.jsx';
 import SubscriptionPage from '@/features/subscription/SubscriptionPage.jsx';
 import AdminOnlyRoute from '@/components/guard/AdminOnlyRoute.jsx';
+import AuthCallback from '@/features/auth/AuthCallback.jsx';
 
 export default function App() {
     return (
@@ -28,6 +29,7 @@ export default function App() {
             <Routes>
                 {/* Public Routes */}
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
                 <Route path="/" element={<Navigate to="/scanner" replace />} />
                 <Route path="/forgot-password" element={<ResetPasswordPage />} />
                 <Route path="/register" element={<RegisterPage />} />
