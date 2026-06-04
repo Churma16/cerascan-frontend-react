@@ -95,11 +95,20 @@ export default function AdminSidebar({ activeMenu, setActiveMenu }) {
 
             <div className="p-4 border-b border-gray-200">
                 <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-200">
-                    <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">
-                        {myData.full_name ? myData.full_name.charAt(0).toUpperCase() : 'A'}
-                    </div>
+                    {myData?.avatar ? (
+                        <img
+                            src={myData.avatar}
+                            alt="User Avatar"
+                            className="w-10 h-10 rounded-full object-cover shadow-inner shrink-0"
+                        />
+                    ) : (
+                        <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner shrink-0">
+                            {myData?.full_name ? myData.full_name.charAt(0).toUpperCase() : 'A'}
+                        </div>
+                    )}
+
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-[#042B1F] truncate">{myData.full_name || 'Admin'}</p>
+                        <p className="text-sm font-bold text-[#042B1F] truncate">{myData?.full_name || 'Admin'}</p>
                         <p className="text-xs text-gray-500 truncate normal-case">
                             {myData?.active_plan?.name || 'Role'}
                         </p>
