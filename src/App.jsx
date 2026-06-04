@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/guard/ProtectedRoute.jsx';
 import ScannerPage from '@/features/scanner/ScannerPage.jsx';
 import HistoryPage from '@/features/history/HistoryPage.jsx';
 import InsightsPage from '@/features/insight/InsightsPage.jsx';
@@ -17,6 +17,10 @@ import VerifyEmailPage from '@/features/auth/VerifyEmailPage.jsx';
 import BillingPage from '@/features/billing/BillingPage.jsx';
 import BatchScanPage from '@/features/batch_scan/BatchScanPage.jsx';
 import LeaderboardPage from '@/features/leaderboard/LeaderboardPage.jsx';
+import PaymentPage from '@/features/payment/PaymentPage.jsx';
+import PlanPage from '@/features/plan/PlanPage.jsx';
+import SubscriptionPage from '@/features/subscription/SubscriptionPage.jsx';
+import AdminOnlyRoute from '@/components/guard/AdminOnlyRoute.jsx';
 
 export default function App() {
     return (
@@ -28,27 +32,29 @@ export default function App() {
                 <Route path="/forgot-password" element={<ResetPasswordPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
-
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
                     <Route element={<AdminMainLayout />}>
                         <Route path="/dashboard" element={<DashboardPage />} />
                         <Route path="/dashboard/scans" element={<ScanHistoryPage />} />
                         <Route path="/dashboard/billing" element={<BillingPage />} />
-                        <Route path="/dashboard/leaderboard" element={<LeaderboardPage />} />
-                        <Route path="/dashboard/users" element={<AdminUserPage />} />
-                        <Route path="/dashboard/change-password" element={<ChangePasswordPage />} />
                         <Route path="/dashboard/batch-scan" element={<BatchScanPage />} />
+                        <Route path="/dashboard/leaderboard" element={<LeaderboardPage />} />
+                        <Route path="/dashboard/change-password" element={<ChangePasswordPage />} />
+                        <Route element={<AdminOnlyRoute />}>
+                            <Route path="/dashboard/plans" element={<PlanPage />} />
+                            <Route path="/dashboard/users" element={<AdminUserPage />} />
+                            <Route path="/dashboard/payment" element={<PaymentPage />} />
+                            <Route path="/dashboard/subscriptions" element={<SubscriptionPage />} />
+                        </Route>
                     </Route>
                 </Route>
-
                 <Route element={<MainLayout />}>
                     <Route path="/scanner" element={<ScannerPage />} />
                     <Route path="/history" element={<HistoryPage />} />
                     <Route path="/insights" element={<InsightsPage />} />
                     <Route path="/architecture" element={<ArchitecturePage />} />
                 </Route>
-
                 <Route path="*" element={<Navigate to="/scanner" replace />} />
             </Routes>
         </BrowserRouter>
