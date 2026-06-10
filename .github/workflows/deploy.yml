@@ -26,6 +26,7 @@ jobs:
       - name: Inject Environment Variables
         run: |
           echo 'VITE_PROD=true' >> .env
+          echo 'VITE_WEB_SOCKET_URL="https://api-ceramic.churma.codes"' >> .env
           echo 'VITE_BACKEND_URL_DEV="http://localhost:3000/api"' >> .env
           echo 'VITE_BACKEND_URL_PROD="https://api-ceramic.churma.codes/api"' >> .env
           echo 'VITE_BACKEND_STORAGE_URL_DEV="http://localhost:3000/storage"' >> .env
