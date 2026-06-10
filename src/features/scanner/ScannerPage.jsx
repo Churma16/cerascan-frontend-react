@@ -15,10 +15,16 @@ export default function ScannerPage() {
     const [isProcessingAi, setIsProcessingAi] = useState(false);
     const [currentScanId, setCurrentScanId] = useState(null);
 
+    const currentScanIdRef = useRef(null);
     const fileInputRef = useRef(null);
 
     const { mutate: scanImage, isPending: isUploading } = useScanImage();
     const navigate = useNavigate();
+
+    // Sinkronisasi ref dengan state currentScanId
+    useEffect(() => {
+        currentScanIdRef.current = currentScanId;
+    }, [currentScanId]);
 
     useEffect(() => {
         // Hubungkan ke API Gateway Node.js Anda
@@ -33,7 +39,7 @@ export default function ScannerPage() {
             console.log('Hasil AI diterima:', data);
 
             // Pastikan hasil yang masuk adalah untuk gambar yang sedang di-scan
-            if (data.scan_id === currentScanId) {
+            if (data.scan_id === currentScanIdRef.current) {
                 setScanResult({
                     id: data.scan_id,
                     status: data.prediction,
@@ -48,7 +54,7 @@ export default function ScannerPage() {
         return () => {
             socket.disconnect();
         };
-    }, [currentScanId]);
+    }, []);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
