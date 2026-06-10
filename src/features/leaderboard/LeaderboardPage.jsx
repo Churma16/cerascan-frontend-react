@@ -83,7 +83,25 @@ export default function LeaderboardPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
-                            {leadersData?.map((user) => (
+                            {isLoading && (
+                                <tr>
+                                    <td colSpan="5" className="px-8 py-12 text-center font-medium text-gray-400">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <div className="w-4 h-4 border-2 border-[#10B981] border-t-transparent rounded-full animate-spin"></div>
+                                            Memuat peringkat...
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                            {!isLoading && leadersData.length === 0 && (
+                                <tr>
+                                    <td colSpan="5" className="px-8 py-12 text-center font-medium text-gray-500">
+                                        Belum ada data peringkat.
+                                    </td>
+                                </tr>
+                            )}
+                            {!isLoading &&
+                                leadersData?.map((user) => (
                                 <motion.tr
                                     layout
                                     initial={{ opacity: 0, y: -20 }}

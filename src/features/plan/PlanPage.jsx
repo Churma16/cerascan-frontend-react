@@ -260,7 +260,7 @@ export default function PlanPage() {
     const [isAddingPlan, setIsAddingPlan] = useState(false);
     const [editingPlan, setEditingPlan] = useState(null);
 
-    const { data: planData = [] } = usePlans();
+    const { data: planData = [], isLoading } = usePlans();
 
     return (
         <PageWrapper>
@@ -294,8 +294,20 @@ export default function PlanPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
+                            {/* LOADING STATE */}
+                            {isLoading && (
+                                <tr>
+                                    <td colSpan="5" className="px-8 py-12 text-center font-medium text-gray-400">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <div className="w-4 h-4 border-2 border-[#10B981] border-t-transparent rounded-full animate-spin"></div>
+                                            Memuat data paket...
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+
                             {/* EMPTY STATE */}
-                            {planData.length === 0 && (
+                            {!isLoading && planData.length === 0 && (
                                 <tr>
                                     <td colSpan="5" className="px-8 py-12 text-center font-medium text-gray-500">
                                         Belum ada paket yang terdaftar.
@@ -304,7 +316,7 @@ export default function PlanPage() {
                             )}
 
                             {/* DATA ROWS */}
-                            {planData.map((plan) => (
+                            {!isLoading && planData.map((plan) => (
                                 <tr key={plan.id} className="hover:bg-gray-50/50 transition-colors">
                                     {/* Sel Teks (Kiri) */}
                                     <td className="px-8 py-5 text-left">

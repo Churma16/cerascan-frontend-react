@@ -231,7 +231,14 @@ export default function BillingPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50">
-                                {paymentHistories.length === 0 && (
+                                {isLoadingPaymentHistories && (
+                                    <tr>
+                                        <td colSpan="6" className="px-8 py-8 text-center font-medium text-gray-400">
+                                            Loading...
+                                        </td>
+                                    </tr>
+                                )}
+                                {!isLoadingPaymentHistories && paymentHistories.length === 0 && (
                                     <tr>
                                         <td colSpan="6" className="px-8 py-8 text-center font-medium text-gray-500">
                                             Tidak ada riwayat pembelian.
