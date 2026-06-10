@@ -22,7 +22,7 @@ export default function ScannerPage() {
 
     useEffect(() => {
         // Hubungkan ke API Gateway Node.js Anda
-        const socket = io('http://localhost:3000');
+        const socket = io(import.meta.env.VITE_WEB_SOCKET_URL || 'http://localhost:3000');
 
         socket.on('connect', () => {
             console.log('Frontend terhubung ke WebSocket');
