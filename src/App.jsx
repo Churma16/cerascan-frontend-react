@@ -8,6 +8,7 @@ import LoginPage from '@/features/auth/LoginPage.jsx';
 import ScanHistoryPage from '@/features/scanner/ScanHistoryPage.jsx';
 import AdminUserPage from '@/features/user/AdminUserPage.jsx';
 import DashboardPage from '@/features/dashboard/DashboardPage.jsx';
+import DLQDashboardPage from '@/features/dashboard/DLQDashboardPage.jsx';
 import ChangePasswordPage from '@/features/auth/ChangePasswordPage.jsx';
 import MainLayout from '@/layouts/public/MainLayout.jsx';
 import AdminMainLayout from '@/layouts/Admin/AdminMainLayout.jsx';
@@ -48,6 +49,7 @@ export default function App() {
                             <Route path="/dashboard/users" element={<AdminUserPage />} />
                             <Route path="/dashboard/payment" element={<PaymentPage />} />
                             <Route path="/dashboard/subscriptions" element={<SubscriptionPage />} />
+                            <Route path="/dashboard/dlq" element={<DLQDashboardPage />} />
                         </Route>
                     </Route>
                 </Route>
