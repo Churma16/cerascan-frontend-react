@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { AlertCircle, CheckCircle2, Trash2, UploadCloud, Zap } from 'lucide-react';
-import { useBatchScanImages } from '@/hooks/useScan.js'; // Pastikan hook ini sudah ada
+import { useBatchScanImages } from '@/hooks/useScan.js';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
-import { io } from 'socket.io-client';
+import { useBatchScanSocket } from '@/hooks/useBatchScanSocket.js';
 
 export default function BatchScanPage() {
     const [scanItems, setScanItems] = useState([]);
@@ -12,28 +12,7 @@ export default function BatchScanPage() {
 
     const { mutate: batchScanImages, isPending: isUploading } = useBatchScanImages();
 
-    useEffect(() => {
-        const socket = io(import.meta.env.VITE_WEB_SOCKET_URL);
-        socket.on('connect', () => console.log('Admin terhubung ke WebSocket'));
-
-        socket.on('scan_completed', (data) => {
-            setScanItems((prevItems) =>
-                prevItems.map((item) =>
-                    item.id === data.scan_id
-                        ? {
-                              ...item,
-                              status: data.prediction,
-                              confidence: data.confidence,
-                              time: data.inference_time,
-                              isProcessing: false,
-                          }
-                        : item
-                )
-            );
-        });
-
-        return () => socket.disconnect();
-    }, []);
+    useBatchScanSocket(setScanItems);
 
     // ---------------------------------------------------------
     // HANDLERS: Drag & Drop dan File Input
