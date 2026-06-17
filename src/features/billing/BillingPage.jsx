@@ -87,11 +87,11 @@ function CurrentPlanCard(props) {
                                 </p>
                             </div>
                             <div className="text-center">
-                                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Durasi</p>
+                                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Sisa Durasi</p>
                                 <p className="text-xl font-black text-[#042B1F] mt-1">
                                     {props.currentSubscription?.plan_id == 1
                                         ? 'Selamanya'
-                                        : (props.currentSubscription?.plan?.duration_days ?? '-')}
+                                        : (props.currentSubscription?.remaining_duration ?? '-')}
                                 </p>
                             </div>
                             <LiveUserQuotaColumn />
