@@ -101,9 +101,17 @@ export default function LeaderboardPage() {
                                     <td className="px-8 py-4">{getRankBadge(user.rank)}</td>
                                     <td className="px-8 py-4">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">
-                                                {user.name.charAt(0)}
-                                            </div>
+                                            {user.avatar ? (
+                                                <img
+                                                    src={user.avatar}
+                                                    alt={user.name}
+                                                    className="w-10 h-10 rounded-full object-cover shadow-inner"
+                                                />
+                                            ) : (
+                                                <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">
+                                                    {user.name.charAt(0)}
+                                                </div>
+                                            )}
                                             <div>
                                                 <p className="font-bold text-[#042B1F] leading-tight">{user.name}</p>
                                                 {/*<p className="text-xs font-medium text-gray-500 mt-0.5">*/}
