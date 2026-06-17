@@ -104,6 +104,8 @@ export const useDeleteScan = () => {
  * @returns {import('@tanstack/react-query').UseMutationResult} Objek mutasi untuk eksekusi batch scan.
  */
 export const useBatchScanImages = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (files) => {
             const formData = new FormData();
@@ -115,6 +117,10 @@ export const useBatchScanImages = () => {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             return response.data.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['scans'] });
+            queryClient.invalidateQueries({ queryKey: ['dashboard'] });
         },
     });
 };
