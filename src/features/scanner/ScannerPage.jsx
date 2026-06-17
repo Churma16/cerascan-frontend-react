@@ -3,7 +3,7 @@ import { AlertCircle, CheckCircle2, ImageIcon, RefreshCw, Search, Settings2, Upl
 import { Button } from '@/components/ui/button.jsx';
 import { useScanImage } from '@/hooks/useScan.js';
 import { useNavigate } from 'react-router-dom';
-import { io } from 'socket.io-client';
+import { useScannerSocket } from '@/hooks/useScannerSocket.js';
 
 export default function ScannerPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -26,35 +26,7 @@ export default function ScannerPage() {
         currentScanIdRef.current = currentScanId;
     }, [currentScanId]);
 
-    useEffect(() => {
-        // Hubungkan ke API Gateway Node.js Anda
-        const socket = io(import.meta.env.VITE_WEB_SOCKET_URL || 'http://localhost:3000');
-
-        socket.on('connect', () => {
-            console.log('Frontend terhubung ke WebSocket');
-        });
-
-        // Dengarkan sinyal hasil dari AI
-        socket.on('scan_completed', (data) => {
-            console.log('Hasil AI diterima:', data);
-
-            // Pastikan hasil yang masuk adalah untuk gambar yang sedang di-scan
-            if (data.scan_id === currentScanIdRef.current) {
-                setScanResult({
-                    id: data.scan_id,
-                    status: data.prediction,
-                    confidence: data.confidence,
-                    time: data.inference_time,
-                });
-                // Matikan animasi loading
-                setIsProcessingAi(false);
-            }
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, []);
+    useScannerSocket(currentScanIdRef, setScanResult, setIsProcessingAi);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
