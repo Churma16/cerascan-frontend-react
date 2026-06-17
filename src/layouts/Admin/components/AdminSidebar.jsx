@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
+    AlertTriangle,
     Banknote,
     CreditCard,
     History,
@@ -41,6 +42,7 @@ export const sidebarMenus = [
             { id: 'plans', label: 'Data Paket', icon: Package, path: '/dashboard/plans' },
             { id: 'subscriptions', label: 'Kelola Langganan', icon: CreditCard, path: '/dashboard/subscriptions' },
             { id: 'payment', label: 'Semua Transaksi', icon: Banknote, path: '/dashboard/payment' },
+            { id: 'dlq', label: 'Antrean Gagal (DLQ)', icon: AlertTriangle, path: '/dashboard/dlq' },
         ],
     },
     {
