@@ -31,6 +31,22 @@ export const useBatchScanSocket = (setScanItems) => {
             );
         });
 
+        socket.on('scan_failed', (data) => {
+            setScanItems((prevItems) =>
+                prevItems.map((item) =>
+                    item.id === data.scan_id
+                        ? {
+                              ...item,
+                              status: 'Gagal (Masuk DLQ)',
+                              confidence: 0,
+                              time: '-',
+                              isProcessing: false,
+                          }
+                        : item
+                )
+            );
+        });
+
         return () => socket.disconnect();
     }, [setScanItems]);
 };
