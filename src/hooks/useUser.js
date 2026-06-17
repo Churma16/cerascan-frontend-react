@@ -104,3 +104,17 @@ export const useDeleteUser = () => {
         },
     });
 };
+
+const fetchUserQuota = async (userId) => {
+    const response = await axiosClient.get(`/user-quotas/${userId}`);
+    return response.data.data;
+};
+
+export const useUserQuota = (userId) => {
+    return useQuery({
+        queryKey: ['userQuota', userId],
+        queryFn: () => fetchUserQuota(userId),
+        enabled: !!userId,
+        staleTime: 1000 * 60 * 5,
+    });
+};
