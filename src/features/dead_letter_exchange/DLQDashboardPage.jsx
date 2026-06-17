@@ -29,7 +29,7 @@ export default function DLQDashboardPage() {
     const fetchMessages = async () => {
         setIsLoading(true);
         try {
-            const response = await axiosClient.get('dashboard/dlq');
+            const response = await axiosClient.get('dlq');
             setMessages(response.data.data || []);
         } catch (error) {
             showToast(error.response?.data?.message || 'Gagal memuat antrean DLQ', 'error');
@@ -41,7 +41,7 @@ export default function DLQDashboardPage() {
     const handleRetry = async (id) => {
         setActionLoadingId(id);
         try {
-            const response = await axiosClient.post('dashboard/dlq/retry', { id });
+            const response = await axiosClient.post('dlq/retry', { id });
             showToast(response.data.message || 'Pesan berhasil dikirim ulang!');
             fetchMessages();
         } catch (error) {
@@ -57,7 +57,7 @@ export default function DLQDashboardPage() {
         }
         setIsPurging(true);
         try {
-            const response = await axiosClient.delete('dashboard/dlq/purge');
+            const response = await axiosClient.delete('dlq/purge');
             showToast(response.data.message || 'Seluruh antrean berhasil dibersihkan!');
             fetchMessages();
         } catch (error) {
