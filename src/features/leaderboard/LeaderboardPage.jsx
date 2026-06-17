@@ -1,9 +1,7 @@
 import { Medal, Target, Trophy } from 'lucide-react';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import { useLeaderboard } from '@/hooks/useLeaderboard.js';
-import { io } from 'socket.io-client';
-import { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useLeaderboardSocket } from '@/hooks/useLeaderboardSocket.js';
 import { convertTwoNumberBeforeDecimal } from '@/utils/helper.js';
 import { motion } from 'framer-motion';
 
@@ -37,22 +35,8 @@ const getRankBadge = (rank) => {
 };
 
 export default function LeaderboardPage() {
-    const queryClient = useQueryClient();
     const { data: leadersData = [], isLoading, isError } = useLeaderboard(10);
-
-    useEffect(() => {
-        const socket = io(import.meta.env.VITE_WEB_SOCKET_URL || 'http://localhost:3000');
-
-        socket.on('scan_completed', (data) => {
-            console.log('🔥 [Socket] Seseorang baru saja selesai scan!', data);
-            queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
-        });
-
-        return () => {
-            socket.off('scan_completed');
-            socket.disconnect();
-        };
-    }, [queryClient]);
+    useLeaderboardSocket();
 
     return (
         <PageWrapper>
