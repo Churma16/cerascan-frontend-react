@@ -1,8 +1,9 @@
-import { Activity, AlertCircle, CheckCircle2, Image as ImageIcon, TrendingUp, Users } from 'lucide-react';
+import { Activity, AlertCircle, CheckCircle2, Image as ImageIcon, Users } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import { useDashboardKPI, useScanHistory, useScanTrends } from '@/hooks/useDashboard.js';
 import { timeAgo } from '@/utils/helper.js';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminPageHeader from '@/components/AdminPageHeader.jsx';
 
@@ -15,11 +16,11 @@ function KpiSection(props) {
                         <Activity className="w-6 h-6 text-[#10B981]" />
                     </div>
                     <span className="flex items-center gap-1 text-[10px] font-extrabold text-[#10B981] bg-[#10B981]/10 px-2.5 py-1 rounded-full">
-                        <TrendingUp className="w-3 h-3" /> 12%
+                        {/*<TrendingUp className="w-3 h-3" /> 12%*/}
                     </span>
                 </div>
                 <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Total Pemindaian</p>
-                <h3 className="text-3xl font-black text-[#042B1F]">{props.dashboardKPIData.total_scans}</h3>
+                <h3 className="text-3xl font-black text-[#042B1F]">{props.dashboardKPIData.total_scans ?? 0}</h3>
             </div>
 
             <div className="bg-white border border-gray-100 p-6 rounded-lg shadow-[0_4px_25px_rgb(0,0,0,0.03)]">
@@ -28,11 +29,13 @@ function KpiSection(props) {
                         <AlertCircle className="w-6 h-6 text-[#FF645A]" />
                     </div>
                     <span className="flex items-center gap-1 text-[10px] font-extrabold text-[#FF645A] bg-[#FF645A]/10 px-2.5 py-1 rounded-full">
-                        <TrendingUp className="w-3 h-3" /> 5%
+                        {/*<TrendingUp className="w-3 h-3" /> 5%*/}
                     </span>
                 </div>
                 <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Cacat Terdeteksi</p>
-                <h3 className="text-3xl font-black text-[#042B1F]">{props.dashboardKPIData.unnormal_scan_count}</h3>
+                <h3 className="text-3xl font-black text-[#042B1F]">
+                    {props.dashboardKPIData.unnormal_scan_count ?? 0}
+                </h3>
             </div>
 
             <div className="bg-white border border-gray-100 p-6 rounded-lg shadow-[0_4px_25px_rgb(0,0,0,0.03)]">
@@ -54,7 +57,7 @@ function KpiSection(props) {
                     </div>
                 </div>
                 <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Pengguna Aktif</p>
-                <h3 className="text-3xl font-black text-[#042B1F]">{props.dashboardKPIData.total_users}</h3>
+                <h3 className="text-3xl font-black text-[#042B1F]">{props.dashboardKPIData.total_users ?? 0}</h3>
             </div>
         </div>
     );
@@ -76,7 +79,7 @@ export default function DashboardPage() {
                 {/* Kolom Kiri: Chart */}
                 <div className="xl:col-span-2 bg-white border border-gray-100 rounded-lg p-8 drop-shadow-sm flex flex-col">
                     <h3 className="text-xl font-black text-[#042B1F] mb-6">Aktivitas Pemindaian (7 Hari Terakhir)</h3>
-                    <div className="h-72 w-full flex-1">
+                    <div className="relative w-full flex-1 min-h-75">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={scanTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
                                 <defs>
