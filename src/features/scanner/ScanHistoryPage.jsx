@@ -1,12 +1,16 @@
 import { AlertCircle, CheckCircle2, History, Image as ImageIcon } from 'lucide-react';
 import { useDeleteScan, useScans } from '@/hooks/useScan.js';
+import { useCurrentUser } from '@/hooks/useAuth.js';
 import { getImageUrl, timeAgo, truncate } from '@/utils/helper.js';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import AlertButtonAndDialog from '@/components/AlertButtonDialog.jsx';
 
 export default function ScanHistoryPage() {
     const { data: scanHistories = [], isLoading } = useScans();
+    const { data: user } = useCurrentUser();
     const deleteScan = useDeleteScan();
+
+    const isAdmin = user?.role === 'admin';
 
     return (
         <PageWrapper>
@@ -35,6 +39,7 @@ export default function ScanHistoryPage() {
                                 <th className="px-8 py-5">ID Referensi</th>
                                 <th className="px-8 py-5">Waktu Sistem</th>
                                 <th className="px-8 py-5">Nama Berkas</th>
+                                {isAdmin && <th className="px-8 py-5 text-center">Waktu Inferensi</th>}
                                 <th className="px-8 py-5 text-center">Hasil Inferensi</th>
                                 <th className="px-8 py-5 text-center">Aksi</th>
                             </tr>
@@ -42,14 +47,14 @@ export default function ScanHistoryPage() {
                         <tbody className="divide-y divide-gray-50">
                             {isLoading && (
                                 <tr>
-                                    <td colSpan="5" className="px-8 py-8 text-center font-medium text-gray-400">
+                                    <td colSpan={isAdmin ? 6 : 5} className="px-8 py-8 text-center font-medium text-gray-400">
                                         Loading...
                                     </td>
                                 </tr>
                             )}
                             {Array.isArray(scanHistories) && scanHistories.length === 0 && !isLoading && (
                                 <tr>
-                                    <td colSpan="5" className="px-8 py-12 text-center font-medium text-gray-500">
+                                    <td colSpan={isAdmin ? 6 : 5} className="px-8 py-12 text-center font-medium text-gray-500">
                                         Tidak ada riwayat.
                                     </td>
                                 </tr>
@@ -75,6 +80,11 @@ export default function ScanHistoryPage() {
                                             </div>
                                             {truncate(log.file_name, 24)}
                                         </td>
+                                        {isAdmin && (
+                                            <td className="px-8 py-5 text-center text-sm font-mono font-semibold text-gray-600">
+                                                {log.inference_time || '0ms'}
+                                            </td>
+                                        )}
                                         <td className="px-8 py-5 text-center">
                                             <span
                                                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider ${log.prediction === 'normal' ? 'bg-[#E3EFEA] text-[#10B981]' : 'bg-[#FEE2E2] text-[#FF645A]'}`}
