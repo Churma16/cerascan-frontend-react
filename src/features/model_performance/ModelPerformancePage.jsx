@@ -343,7 +343,7 @@ export default function ModelPerformancePage() {
     }
 
     const avgInference = kpi.averageInference ? Math.round(Number(kpi.averageInference)) : 0;
-    const isInferenceOptimal = avgInference <= 200;
+    const isInferenceOptimal = avgInference <= 500;
 
     return (
         <PageWrapper>
@@ -393,7 +393,7 @@ export default function ModelPerformancePage() {
                     <p
                         className={`text-[11px] font-semibold mt-3 ${isInferenceOptimal ? 'text-[#10B981]' : 'text-[#FF645A]'}`}
                     >
-                        {isInferenceOptimal ? 'Optimal, di bawah 200ms' : 'Kurang optimal, di atas 200ms'}
+                        {isInferenceOptimal ? 'Optimal, di bawah 500ms' : 'Kurang optimal, di atas 500ms'}
                     </p>
                 </div>
 
