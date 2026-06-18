@@ -64,7 +64,6 @@ export default function BatchScanPage() {
         // Kirim ke Backend
         batchScanImages(filesToScan, {
             onSuccess: (pendingScans) => {
-                // Ganti ID sementara dengan ID resmi (scan_id) dari database
                 setScanItems((prevItems) => {
                     const updatedItems = [...prevItems];
 
@@ -80,13 +79,35 @@ export default function BatchScanPage() {
             },
             onError: (error) => {
                 console.error('Batch upload gagal:', error);
-                // Revert status jika error
+
+                let errorStatusText = 'Gagal mengunggah';
+                if (error.response) {
+                    const status = error.response.status;
+                    const statusText = error.response.statusText;
+                    const serverMessage = error.response.data?.message || error.response.data?.error;
+
+                    if (serverMessage) {
+                        errorStatusText = `Gagal: ${serverMessage}`;
+                    } else if (status === 413) {
+                        errorStatusText = 'Gagal: File terlalu besar (413)';
+                    } else {
+                        errorStatusText = `Gagal (${status}): ${statusText || 'Error Server'}`;
+                    }
+                } else if (error.message) {
+                    errorStatusText = `Gagal: ${error.message}`;
+                }
+
                 setScanItems((prev) =>
-                    prev.map((item) => ({
-                        ...item,
-                        status: 'Gagal mengunggah',
-                        isProcessing: false,
-                    }))
+                    prev.map((item) => {
+                        if (item.status === 'Mengunggah...' || item.isProcessing) {
+                            return {
+                                ...item,
+                                status: errorStatusText,
+                                isProcessing: false,
+                            };
+                        }
+                        return item;
+                    })
                 );
                 setIsScanning(false);
             },
@@ -220,6 +241,7 @@ export default function BatchScanPage() {
                                     {/* Badge Status */}
                                     {!item.isProcessing && (
                                         <span
+                                            title={item.status}
                                             className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider ${
                                                 item.status === 'normal'
                                                     ? 'bg-[#E3EFEA] text-[#10B981]'
