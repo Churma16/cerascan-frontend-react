@@ -45,10 +45,7 @@ const fetchScans = async () => {
     return response.data.data;
 };
 
-const fetchPublicScans = async () => {
-    const response = await axiosClient.get('/scans/history/public');
-    return response.data.data;
-};
+
 
 /**
  * Hook untuk mendapatkan daftar riwayat pemindaian pengguna.
@@ -72,11 +69,18 @@ export const useScans = (page, limit) => {
     });
 };
 
-export const usePublicScans = () => {
+export const usePublicScans = (page, limit) => {
     return useQuery({
-        queryKey: ['scans', 'public'],
-        queryFn: fetchPublicScans,
+        queryKey: page !== undefined ? ['scans', 'public', { page, limit }] : ['scans', 'public'],
+        queryFn: async () => {
+            const params = {};
+            if (page !== undefined) params.page = page;
+            if (limit !== undefined) params.limit = limit;
+            const response = await axiosClient.get('/scans/history/public', { params });
+            return response.data;
+        },
         staleTime: 1000 * 60 * 5,
+        placeholderData: keepPreviousData,
     });
 };
 
