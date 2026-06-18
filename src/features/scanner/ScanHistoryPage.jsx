@@ -43,9 +43,9 @@ export default function ScanHistoryPage() {
                     <h3 className="font-extrabold text-[#042B1F] flex items-center gap-2">
                         <History className="w-5 h-5 text-[#FF645A]" /> Data Pemrosesan Terakhir
                     </h3>
-                    <button className="text-xs font-bold text-[#042B1F] bg-[#E3EFEA] hover:bg-[#d1e5dd] px-4 py-2 rounded-lg transition-colors">
-                        Unduh CSV
-                    </button>
+                    {/*<button className="text-xs font-bold text-[#042B1F] bg-[#E3EFEA] hover:bg-[#d1e5dd] px-4 py-2 rounded-lg transition-colors">*/}
+                    {/*    Unduh CSV*/}
+                    {/*</button>*/}
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -62,14 +62,20 @@ export default function ScanHistoryPage() {
                         <tbody className="divide-y divide-gray-50">
                             {isLoading && (
                                 <tr>
-                                    <td colSpan={isAdmin ? 6 : 5} className="px-8 py-8 text-center font-medium text-gray-400">
+                                    <td
+                                        colSpan={isAdmin ? 6 : 5}
+                                        className="px-8 py-8 text-center font-medium text-gray-400"
+                                    >
                                         Loading...
                                     </td>
                                 </tr>
                             )}
                             {Array.isArray(scanHistories) && scanHistories.length === 0 && !isLoading && (
                                 <tr>
-                                    <td colSpan={isAdmin ? 6 : 5} className="px-8 py-12 text-center font-medium text-gray-500">
+                                    <td
+                                        colSpan={isAdmin ? 6 : 5}
+                                        className="px-8 py-12 text-center font-medium text-gray-500"
+                                    >
                                         Tidak ada riwayat.
                                     </td>
                                 </tr>
