@@ -162,7 +162,6 @@ export default function ScannerPage() {
                             <img
                                 src={previewUrl}
                                 alt="Preview"
-                                // --- BARU --- Gunakan showLoadingAnimation
                                 className={`w-full max-h-87.5 object-contain rounded-xl transition-all duration-700 ${showLoadingAnimation ? 'scale-105 opacity-50 blur-sm' : 'scale-100 opacity-100 shadow-md'}`}
                             />
 
@@ -307,7 +306,7 @@ export default function ScannerPage() {
                     </div>
                 </div>
 
-                <div className="flex-1 w-full bg-[#042B1F] rounded-lg p-6 md:p-8 flex items-center justify-center relative overflow-hidden h-[360px] shadow-2xl shadow-[#042B1F]/30">
+                <div className="flex-1 w-full bg-[#042B1F] rounded-lg p-6 md:p-8 flex items-center justify-center relative overflow-hidden h-90 shadow-2xl shadow-[#042B1F]/30">
                     <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-5 z-10 animate-in fade-in zoom-in duration-700">
                         <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
                             <div className="w-8 h-8 rounded-full bg-[#FF645A] text-white flex items-center justify-center font-bold text-xs">
@@ -340,11 +339,11 @@ export default function ScannerPage() {
                             className="w-full h-10 bg-[#042B1F] text-white text-xs font-bold rounded-lg hover:bg-[#031d15]"
                             onClick={() => navigate('/login')}
                         >
-                            Login Untuk Melihat Riwayat Pemindaian
+                            Masuk ke Dashboard
                         </Button>
                     </div>
-                    <div className="absolute top-[-50px] right-[-50px] w-64 h-64 border border-white/10 rounded-full"></div>
-                    <div className="absolute bottom-[-100px] left-[-20px] w-80 h-80 border border-white/5 rounded-full"></div>
+                    <div className="absolute -top-12.5 -right-12.5 w-64 h-64 border border-white/10 rounded-full"></div>
+                    <div className="absolute -bottom-25 -left-5 w-80 h-80 border border-white/5 rounded-full"></div>
                 </div>
             </div>
         </div>

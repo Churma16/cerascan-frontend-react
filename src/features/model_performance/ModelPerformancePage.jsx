@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
-import { Activity, Clock, Database, AlertTriangle } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useMemo } from 'react';
+import { Activity, AlertTriangle, Clock, Database } from 'lucide-react';
+import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import AdminPageHeader from '@/components/AdminPageHeader.jsx';
-import { useModelInsightKPI, usePredictionDistribution, useConfidenceDistribution } from '@/hooks/useModelInsight.js';
+import { useConfidenceDistribution, useModelInsightKPI, usePredictionDistribution } from '@/hooks/useModelInsight.js';
 
 function ModelArchitectureIllustration() {
     return (
@@ -238,7 +238,7 @@ function ModelArchitectureIllustration() {
 
                         {/* Output Softmax */}
                         <div className="flex flex-col items-center">
-                            <div className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 border border-emerald-400/50 text-white text-xs font-bold rounded-lg shadow-lg">
+                            <div className="px-4 py-2 bg-linear-to-r from-emerald-600 to-teal-600 border border-emerald-400/50 text-white text-xs font-bold rounded-lg shadow-lg">
                                 Softmax
                             </div>
                             <div className="flex gap-1.5 mt-3">
