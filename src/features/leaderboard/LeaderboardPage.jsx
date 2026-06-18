@@ -86,65 +86,71 @@ export default function LeaderboardPage() {
                             )}
                             {!isLoading &&
                                 leadersData?.map((user) => (
-                                <motion.tr
-                                    layout
-                                    initial={{ opacity: 0, y: -20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{
-                                        type: 'spring',
-                                        stiffness: 300,
-                                        damping: 30,
-                                    }}
-                                    key={user.user_id || user.id}
-                                    className="hover:bg-gray-50/50 transition-colors bg-white"
-                                >
-                                    <td className="px-8 py-4">{getRankBadge(user.rank)}</td>
-                                    <td className="px-8 py-4">
-                                        <div className="flex items-center gap-4">
-                                            {user.avatar ? (
-                                                <img
-                                                    src={user.avatar}
-                                                    alt={user.name}
-                                                    className="w-10 h-10 rounded-full object-cover shadow-inner"
-                                                />
-                                            ) : (
-                                                <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">
-                                                    {user.name.charAt(0)}
+                                    <motion.tr
+                                        layout
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 300,
+                                            damping: 30,
+                                        }}
+                                        key={user.user_id || user.id}
+                                        className="hover:bg-gray-50/50 transition-colors bg-white"
+                                    >
+                                        <td className="px-8 py-4">{getRankBadge(user.rank)}</td>
+                                        <td className="px-8 py-4">
+                                            <div className="flex items-center gap-4">
+                                                {/*{JSON.stringify(user)}*/}
+                                                {user.avatar ? (
+                                                    <img
+                                                        src={user.avatar}
+                                                        alt={user.name}
+                                                        className="w-10 h-10 rounded-full object-cover shadow-inner"
+                                                    />
+                                                ) : (
+                                                    <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">
+                                                        {user.name.charAt(0)}
+                                                    </div>
+                                                )}
+                                                <div>
+                                                    <p className="font-bold text-[#042B1F] leading-tight">
+                                                        {user.name}
+                                                    </p>
+                                                    {/*<p className="text-xs font-medium text-gray-500 mt-0.5">*/}
+                                                    {/*    {user.plan.name}*/}
+                                                    {/*</p>*/}
                                                 </div>
-                                            )}
-                                            <div>
-                                                <p className="font-bold text-[#042B1F] leading-tight">{user.name}</p>
-                                                {/*<p className="text-xs font-medium text-gray-500 mt-0.5">*/}
-                                                {/*    {user.plan.name}*/}
-                                                {/*</p>*/}
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-8 py-4 text-center">
-                                        <span className="font-black text-[#042B1F] text-base">{user.total_scans}</span>
-                                    </td>
-                                    <td className="px-8 py-4 text-center">
-                                        <span className="inline-flex items-center justify-center px-3 py-1 rounded-md bg-[#FEE2E2] text-[#FF645A] font-bold text-xs">
-                                            {user.defect_scans}
-                                        </span>
-                                    </td>
-                                    <td className="px-8 py-4">
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-14 text-sm font-semibold text-gray-600">
-                                                {user.ratio ? convertTwoNumberBeforeDecimal(user.ratio * 100) : '0'}%
+                                        </td>
+                                        <td className="px-8 py-4 text-center">
+                                            <span className="font-black text-[#042B1F] text-base">
+                                                {user.total_scans}
                                             </span>
-                                            <div className="w-24 h-1.5 bg-gray-100 rounded-full relative overflow-hidden flex items-center">
-                                                <div
-                                                    className="absolute left-3 top-0 h-full bg-[#FF645A] rounded-full transition-all duration-500"
-                                                    style={{
-                                                        width: `${Math.min(parseFloat(user.ratio || 0) * 100, 100)}%`,
-                                                    }}
-                                                ></div>
+                                        </td>
+                                        <td className="px-8 py-4 text-center">
+                                            <span className="inline-flex items-center justify-center px-3 py-1 rounded-md bg-[#FEE2E2] text-[#FF645A] font-bold text-xs">
+                                                {user.defect_scans}
+                                            </span>
+                                        </td>
+                                        <td className="px-8 py-4">
+                                            <div className="flex items-center gap-3">
+                                                <span className="w-14 text-sm font-semibold text-gray-600">
+                                                    {user.ratio ? convertTwoNumberBeforeDecimal(user.ratio * 100) : '0'}
+                                                    %
+                                                </span>
+                                                <div className="w-24 h-1.5 bg-gray-100 rounded-full relative overflow-hidden flex items-center">
+                                                    <div
+                                                        className="absolute left-3 top-0 h-full bg-[#FF645A] rounded-full transition-all duration-500"
+                                                        style={{
+                                                            width: `${Math.min(parseFloat(user.ratio || 0) * 100, 100)}%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </motion.tr>
-                            ))}
+                                        </td>
+                                    </motion.tr>
+                                ))}
                         </tbody>
                     </table>
                 </div>
