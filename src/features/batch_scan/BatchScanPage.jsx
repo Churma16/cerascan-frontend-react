@@ -30,50 +30,68 @@ export default function BatchScanPage() {
         const fileArray = Array.from(files).filter((file) => file.type.startsWith('image/'));
         if (fileArray.length === 0) return;
 
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
+
         // Make Preview State
-        const newItems = fileArray.map((file) => ({
-            id: 'temp-' + Math.random().toString(36).substr(2, 9),
-            file: file,
-            previewUrl: URL.createObjectURL(file),
-            status: 'Siap untuk scan',
-            confidence: 0,
-            time: '-',
-            isProcessing: false,
-        }));
+        const newItems = fileArray.map((file) => {
+            const isTooLarge = file.size > MAX_FILE_SIZE;
+            return {
+                id: 'temp-' + Math.random().toString(36).substr(2, 9),
+                file: file,
+                previewUrl: URL.createObjectURL(file),
+                status: isTooLarge ? 'File terlalu besar (>5MB)' : 'Siap untuk scan',
+                confidence: 0,
+                time: '-',
+                isProcessing: false,
+            };
+        });
 
         setScanItems((prev) => [...prev, ...newItems]);
     };
 
     const handleStartScan = () => {
-        if (scanItems.length === 0) return;
+        const itemsToUpload = scanItems.filter(
+            (item) => item.file.size <= 5 * 1024 * 1024 && item.status === 'Siap untuk scan'
+        );
+
+        if (itemsToUpload.length === 0) return;
 
         setIsScanning(true);
 
-        // Update status menjadi "Mengunggah..." untuk semua item
+        // Update status menjadi "Mengunggah..." untuk item yang valid saja
         setScanItems((prev) =>
-            prev.map((item) => ({
-                ...item,
-                status: 'Mengunggah...',
-                isProcessing: true,
-            }))
+            prev.map((item) => {
+                const isValid = itemsToUpload.some((u) => u.id === item.id);
+                if (isValid) {
+                    return {
+                        ...item,
+                        status: 'Mengunggah...',
+                        isProcessing: true,
+                    };
+                }
+                return item;
+            })
         );
 
-        // Kumpulkan file dari scanItems
-        const filesToScan = scanItems.map((item) => item.file);
+        // Kumpulkan file dari itemsToUpload
+        const filesToScan = itemsToUpload.map((item) => item.file);
 
         // Kirim ke Backend
         batchScanImages(filesToScan, {
             onSuccess: (pendingScans) => {
+                // Ganti ID sementara dengan ID resmi (scan_id) dari database
                 setScanItems((prevItems) => {
-                    const updatedItems = [...prevItems];
-
-                    pendingScans.forEach((scan, i) => {
-                        if (updatedItems[i]) {
-                            updatedItems[i].id = scan.scan_id;
-                            updatedItems[i].status = 'Dalam Antrean AI...';
+                    return prevItems.map((item) => {
+                        const uploadedIndex = itemsToUpload.findIndex((u) => u.id === item.id);
+                        if (uploadedIndex !== -1 && pendingScans[uploadedIndex]) {
+                            return {
+                                ...item,
+                                id: pendingScans[uploadedIndex].scan_id,
+                                status: 'Dalam Antrean AI...',
+                            };
                         }
+                        return item;
                     });
-                    return updatedItems;
                 });
                 setIsScanning(false);
             },
@@ -97,9 +115,11 @@ export default function BatchScanPage() {
                     errorStatusText = `Gagal: ${error.message}`;
                 }
 
+                // Revert status jika error untuk item yang valid saja
                 setScanItems((prev) =>
                     prev.map((item) => {
-                        if (item.status === 'Mengunggah...' || item.isProcessing) {
+                        const isValid = itemsToUpload.some((u) => u.id === item.id);
+                        if (isValid) {
                             return {
                                 ...item,
                                 status: errorStatusText,
@@ -126,6 +146,8 @@ export default function BatchScanPage() {
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
+    const hasReadyItems = scanItems.some((item) => item.status === 'Siap untuk scan');
+
     return (
         <PageWrapper>
             {/* HEADER */}
@@ -140,9 +162,9 @@ export default function BatchScanPage() {
                     <div className="flex items-center gap-3">
                         <button
                             onClick={handleStartScan}
-                            disabled={isScanning || isUploading}
+                            disabled={isScanning || isUploading || !hasReadyItems}
                             className={`text-xs font-bold px-6 py-2 rounded-lg transition-colors flex items-center gap-2 ${
-                                isScanning || isUploading
+                                isScanning || isUploading || !hasReadyItems
                                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                                     : 'bg-[#10B981] text-white hover:bg-[#0EA571]'
                             }`}
