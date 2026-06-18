@@ -5,6 +5,7 @@ import { useState } from 'react';
 import AddUserModal from './AddUserModal.jsx';
 import EditUserModal from './EditUserModal.jsx';
 import AlertButtonAndDialog from '@/components/AlertButtonDialog.jsx';
+import { capitalizeEachWord } from '@/utils/helper.js';
 
 export default function AdminUserPage() {
     const { data: userData = [], isLoading } = useUsers();
@@ -103,12 +104,12 @@ export default function AdminUserPage() {
 
                                         {/* Sel Teks (Tengah) */}
                                         <td className="px-8 py-5 text-sm font-bold text-[#042B1F] text-center">
-                                            {user.role}
+                                            {capitalizeEachWord(user.role)}
                                         </td>
 
                                         {/* Sel Teks (Tengah) */}
                                         <td className="px-8 py-5 text-sm font-bold text-[#042B1F] text-center">
-                                            {user.active_plan.name}
+                                            {capitalizeEachWord(user.active_plan.name)}
                                         </td>
 
                                         {/* Sel Status (Tengah) */}

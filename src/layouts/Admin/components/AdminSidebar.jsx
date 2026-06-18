@@ -19,6 +19,7 @@ import {
 import { useCurrentUser, useLogout } from '@/hooks/useAuth.js';
 import UpgradeButton from '@/components/UpgradeButton.jsx';
 import RequireAccess from '@/security/RequireAccess.jsx';
+import { capitalizeEachWord } from '@/utils/helper.js';
 
 export const sidebarMenus = [
     {
@@ -133,7 +134,7 @@ export default function AdminSidebar({ activeMenu, setActiveMenu, isOpen, setIsO
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-bold text-[#042B1F] truncate">{myData?.full_name || 'Admin'}</p>
                             <p className="text-xs text-gray-500 truncate normal-case">
-                                {myData?.active_plan?.name || 'Role'}
+                                {capitalizeEachWord(myData?.active_plan?.name) || 'Free'}
                             </p>
                         </div>
                     </div>
