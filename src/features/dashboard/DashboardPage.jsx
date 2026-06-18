@@ -155,7 +155,7 @@ function KpiSection({ dashboardKPIData, isAdmin }) {
                         </div>
                         {isQuotaLow && (
                             <p className="text-[10px] font-semibold text-[#FF645A] bg-[#FF645A]/10 px-2.5 py-1 rounded-full mt-3 inline-block self-start">
-                                Kuota hampir habis, pertimbangkan upgrade.
+                                Kuota hampir habis.
                             </p>
                         )}
                     </div>
