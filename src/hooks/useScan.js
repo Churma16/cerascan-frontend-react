@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import axiosClient from '@/api/axios.js';
 
 /**
@@ -57,11 +57,18 @@ const fetchPublicScans = async () => {
  * @hook useScans
  * @returns {import('@tanstack/react-query').UseQueryResult} Objek query berisi data riwayat dan status fetching.
  */
-export const useScans = () => {
+export const useScans = (page, limit) => {
     return useQuery({
-        queryKey: ['scans'],
-        queryFn: fetchScans,
+        queryKey: page !== undefined ? ['scans', { page, limit }] : ['scans'],
+        queryFn: async () => {
+            const params = {};
+            if (page !== undefined) params.page = page;
+            if (limit !== undefined) params.limit = limit;
+            const response = await axiosClient.get('/scans/history', { params });
+            return response.data;
+        },
         staleTime: 1000 * 60 * 5,
+        placeholderData: keepPreviousData,
     });
 };
 

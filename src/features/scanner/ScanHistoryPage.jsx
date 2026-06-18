@@ -1,16 +1,31 @@
+import { useState, useEffect } from 'react';
 import { AlertCircle, CheckCircle2, History, Image as ImageIcon } from 'lucide-react';
 import { useDeleteScan, useScans } from '@/hooks/useScan.js';
 import { useCurrentUser } from '@/hooks/useAuth.js';
 import { getImageUrl, timeAgo, truncate } from '@/utils/helper.js';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import AlertButtonAndDialog from '@/components/AlertButtonDialog.jsx';
+import Pagination from '@/components/Pagination.jsx';
 
 export default function ScanHistoryPage() {
-    const { data: scanHistories = [], isLoading } = useScans();
+    const [currentPage, setCurrentPage] = useState(1);
+    const limit = 10;
+    const { data: scansResponse, isLoading } = useScans(currentPage, limit);
     const { data: user } = useCurrentUser();
     const deleteScan = useDeleteScan();
 
+    const scanHistories = scansResponse?.data || [];
+    const meta = scansResponse?.meta || {};
+    const totalPages = meta.totalPages || 1;
+    const totalItems = meta.totalItems || 0;
+
     const isAdmin = user?.role === 'admin';
+
+    useEffect(() => {
+        if (currentPage > totalPages && totalPages > 0) {
+            setCurrentPage(totalPages);
+        }
+    }, [totalPages, currentPage]);
 
     return (
         <PageWrapper>
@@ -108,6 +123,17 @@ export default function ScanHistoryPage() {
                         </tbody>
                     </table>
                 </div>
+
+                {/* Reusable Pagination Control */}
+                {!isLoading && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        totalItems={totalItems}
+                        limit={limit}
+                        onPageChange={setCurrentPage}
+                    />
+                )}
             </div>
         </PageWrapper>
     );
