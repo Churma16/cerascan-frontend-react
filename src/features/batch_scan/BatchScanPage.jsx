@@ -4,6 +4,8 @@ import { useBatchScanImages } from '@/hooks/useScan.js';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import { useBatchScanSocket } from '@/hooks/useBatchScanSocket.js';
 
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB limit
+
 export default function BatchScanPage() {
     const [scanItems, setScanItems] = useState([]);
     const [isDragActive, setIsDragActive] = useState(false);
@@ -30,8 +32,6 @@ export default function BatchScanPage() {
         const fileArray = Array.from(files).filter((file) => file.type.startsWith('image/'));
         if (fileArray.length === 0) return;
 
-        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
-
         // Make Preview State
         const newItems = fileArray.map((file) => {
             const isTooLarge = file.size > MAX_FILE_SIZE;
@@ -39,7 +39,7 @@ export default function BatchScanPage() {
                 id: 'temp-' + Math.random().toString(36).substr(2, 9),
                 file: file,
                 previewUrl: URL.createObjectURL(file),
-                status: isTooLarge ? 'File terlalu besar (>5MB)' : 'Siap untuk scan',
+                status: isTooLarge ? 'File terlalu besar (>1MB)' : 'Siap untuk scan',
                 confidence: 0,
                 time: '-',
                 isProcessing: false,
@@ -51,7 +51,7 @@ export default function BatchScanPage() {
 
     const handleStartScan = () => {
         const itemsToUpload = scanItems.filter(
-            (item) => item.file.size <= 5 * 1024 * 1024 && item.status === 'Siap untuk scan'
+            (item) => item.file.size <= MAX_FILE_SIZE && item.status === 'Siap untuk scan'
         );
 
         if (itemsToUpload.length === 0) return;
