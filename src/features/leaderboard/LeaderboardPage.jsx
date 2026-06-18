@@ -63,7 +63,7 @@ export default function LeaderboardPage() {
                                 <th className="px-8 py-5">Pengguna</th>
                                 <th className="px-8 py-5 text-center">Total Scan</th>
                                 <th className="px-8 py-5 text-center">Cacat Terdeteksi</th>
-                                <th className="px-8 py-5 min-w-[200px]">Rasio Cacat</th>
+                                <th className="px-8 py-5  text-end">Rasio Cacat</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
@@ -102,17 +102,17 @@ export default function LeaderboardPage() {
                                         <td className="px-8 py-4">
                                             <div className="flex items-center gap-4">
                                                 {/*{JSON.stringify(user)}*/}
-                                                {user.avatar ? (
-                                                    <img
-                                                        src={user.avatar}
-                                                        alt={user.name}
-                                                        className="w-10 h-10 rounded-full object-cover shadow-inner"
-                                                    />
-                                                ) : (
-                                                    <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">
-                                                        {user.name.charAt(0)}
-                                                    </div>
-                                                )}
+                                                {/*{user.avatar ? (*/}
+                                                {/*    <img*/}
+                                                {/*        src={user.avatar}*/}
+                                                {/*        alt={user.name}*/}
+                                                {/*        className="w-10 h-10 rounded-full object-cover shadow-inner"*/}
+                                                {/*    />*/}
+                                                {/*) : (*/}
+                                                {/*    <div className="w-10 h-10 rounded-full bg-[#042B1F] flex items-center justify-center text-white font-bold shadow-inner">*/}
+                                                {/*        {user.name.charAt(0)}*/}
+                                                {/*    </div>*/}
+                                                {/*)}*/}
                                                 <div>
                                                     <p className="font-bold text-[#042B1F] leading-tight">
                                                         {user.name}
@@ -134,19 +134,19 @@ export default function LeaderboardPage() {
                                             </span>
                                         </td>
                                         <td className="px-8 py-4">
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-center justify-end gap-3">
                                                 <span className="w-14 text-sm font-semibold text-gray-600">
                                                     {user.ratio ? convertTwoNumberBeforeDecimal(user.ratio * 100) : '0'}
                                                     %
                                                 </span>
-                                                <div className="w-24 h-1.5 bg-gray-100 rounded-full relative overflow-hidden flex items-center">
-                                                    <div
-                                                        className="absolute left-3 top-0 h-full bg-[#FF645A] rounded-full transition-all duration-500"
-                                                        style={{
-                                                            width: `${Math.min(parseFloat(user.ratio || 0) * 100, 100)}%`,
-                                                        }}
-                                                    ></div>
-                                                </div>
+                                                {/*<div className="w-24 h-1.5 bg-gray-100 rounded-full relative overflow-hidden flex items-center">*/}
+                                                {/*    <div*/}
+                                                {/*        className="absolute  top-0 h-full bg-[#FF645A] rounded-full transition-all duration-500"*/}
+                                                {/*        style={{*/}
+                                                {/*            width: `${Math.min(parseFloat(user.ratio || 0) * 100, 100)}%`,*/}
+                                                {/*        }}*/}
+                                                {/*    ></div>*/}
+                                                {/*</div>*/}
                                             </div>
                                         </td>
                                     </motion.tr>
