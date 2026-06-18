@@ -1,9 +1,8 @@
-import { Activity, AlertCircle, CheckCircle2, Image as ImageIcon, Zap, Sparkles, Users } from 'lucide-react';
+import { Activity, AlertCircle, CheckCircle2, Image as ImageIcon, Sparkles, Users, Zap } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
 import { useDashboardKPI, useScanHistory, useScanTrends } from '@/hooks/useDashboard.js';
-import { timeAgo, formatDateId, capitalizeEachWord } from '@/utils/helper.js';
-import { useMemo } from 'react';
+import { capitalizeEachWord, formatDateId, getImageUrl, timeAgo } from '@/utils/helper.js';
 import { useNavigate } from 'react-router-dom';
 import AdminPageHeader from '@/components/AdminPageHeader.jsx';
 import { useCurrentUser } from '@/hooks/useAuth.js';
@@ -36,17 +35,23 @@ function KpiSection({ dashboardKPIData, isAdmin }) {
                             <Activity className="w-6 h-6 text-[#10B981]" />
                         </div>
                     </div>
-                    <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Total Scan (Bulan ini)</p>
-                    <h3 className="text-3xl font-black text-[#042B1F]">{dashboardKPIData.total_scans_this_month ?? 0}</h3>
+                    <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">
+                        Total Scan (Bulan ini)
+                    </p>
+                    <h3 className="text-3xl font-black text-[#042B1F]">
+                        {dashboardKPIData.total_scans_this_month ?? 0}
+                    </h3>
                 </div>
                 {dashboardKPIData.scan_change_text && (
-                    <p className={`text-[10px] font-semibold px-2.5 py-1 rounded-full mt-3 inline-block self-start ${
-                        dashboardKPIData.scan_change_text.includes('Turun')
-                            ? 'text-[#FF645A] bg-[#FF645A]/10'
-                            : dashboardKPIData.scan_change_text.includes('Naik')
-                                ? 'text-[#10B981] bg-[#10B981]/10'
-                                : 'text-gray-500 bg-gray-100'
-                    }`}>
+                    <p
+                        className={`text-[10px] font-semibold px-2.5 py-1 rounded-full mt-3 inline-block self-start ${
+                            dashboardKPIData.scan_change_text.includes('Turun')
+                                ? 'text-[#FF645A] bg-[#FF645A]/10'
+                                : dashboardKPIData.scan_change_text.includes('Naik')
+                                  ? 'text-[#10B981] bg-[#10B981]/10'
+                                  : 'text-gray-500 bg-gray-100'
+                        }`}
+                    >
                         {dashboardKPIData.scan_change_text}
                     </p>
                 )}
@@ -59,11 +64,15 @@ function KpiSection({ dashboardKPIData, isAdmin }) {
                             <AlertCircle className="w-6 h-6 text-[#FF645A]" />
                         </div>
                     </div>
-                    <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Tingkat Cacat (Defect)</p>
+                    <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">
+                        Tingkat Cacat (Defect)
+                    </p>
                     <h3 className="text-3xl font-black text-[#042B1F]">{dashboardKPIData.defect_rate ?? 0}%</h3>
                 </div>
                 <p className="text-[10px] font-semibold text-gray-500 mt-3">
-                    Ditemukan <span className="text-[#FF645A] font-bold">{dashboardKPIData.defect_count_this_month ?? 0}</span> cacat dari total scan.
+                    Ditemukan{' '}
+                    <span className="text-[#FF645A] font-bold">{dashboardKPIData.defect_count_this_month ?? 0}</span>{' '}
+                    cacat dari total scan.
                 </p>
             </div>
 
@@ -76,7 +85,9 @@ function KpiSection({ dashboardKPIData, isAdmin }) {
                                     <CheckCircle2 className="w-6 h-6 text-[#10B981]" />
                                 </div>
                             </div>
-                            <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Rata-rata Akurasi (AI)</p>
+                            <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">
+                                Rata-rata Akurasi (AI)
+                            </p>
                             <h3 className="text-3xl font-black text-[#042B1F]">
                                 {Number(dashboardKPIData.average_scan_accuracy || 0).toFixed(2)}%
                             </h3>
@@ -93,11 +104,20 @@ function KpiSection({ dashboardKPIData, isAdmin }) {
                                     <Users className="w-6 h-6 text-[#f59e0b]" />
                                 </div>
                             </div>
-                            <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Pengguna Aktif</p>
-                            <h3 className="text-3xl font-black text-[#042B1F]">{dashboardKPIData.active_users_this_month ?? 0}</h3>
+                            <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">
+                                Pengguna Aktif
+                            </p>
+                            <h3 className="text-3xl font-black text-[#042B1F]">
+                                {dashboardKPIData.active_users_this_month ?? 0}
+                            </h3>
                         </div>
                         <p className="text-[10px] font-semibold text-gray-500 mt-3">
-                            Aktif <span className="text-gray-800 font-bold">{dashboardKPIData.active_users_this_month ?? 0}</span> dari <span className="text-gray-800 font-bold">{dashboardKPIData.total_users ?? 0}</span> pengguna terdaftar.
+                            Aktif{' '}
+                            <span className="text-gray-800 font-bold">
+                                {dashboardKPIData.active_users_this_month ?? 0}
+                            </span>{' '}
+                            dari <span className="text-gray-800 font-bold">{dashboardKPIData.total_users ?? 0}</span>{' '}
+                            pengguna terdaftar.
                         </p>
                     </div>
                 </>
@@ -110,7 +130,9 @@ function KpiSection({ dashboardKPIData, isAdmin }) {
                                     <Zap className="w-6 h-6 text-[#0284C7]" />
                                 </div>
                             </div>
-                            <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Sisa Kuota Scan</p>
+                            <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">
+                                Sisa Kuota Scan
+                            </p>
                             <h3 className="text-3xl font-black text-[#042B1F]">{remainingQuota}</h3>
 
                             {/* Progress Bar */}
@@ -151,7 +173,9 @@ function KpiSection({ dashboardKPIData, isAdmin }) {
                                 )}
                             </div>
                             <p className="text-xs font-bold text-gray-400 tracking-wide uppercase mb-1">Paket Aktif</p>
-                            <h3 className="text-2xl font-black text-[#042B1F] truncate">{capitalizeEachWord(planName)}</h3>
+                            <h3 className="text-2xl font-black text-[#042B1F] truncate">
+                                {capitalizeEachWord(planName)}
+                            </h3>
                         </div>
                         {resetDateStr && (
                             <p className="text-[10px] font-semibold text-gray-500 mt-3">
@@ -272,7 +296,15 @@ export default function DashboardPage() {
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center border border-gray-200">
-                                        <ImageIcon className="w-5 h-5 text-gray-400" />
+                                        {scan.saved_file_name ? (
+                                            <img
+                                                src={getImageUrl(scan.saved_file_name)}
+                                                alt={scan.file_name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <ImageIcon className="w-5 h-5 text-gray-300" />
+                                        )}{' '}
                                     </div>
                                     <div>
                                         <p className="text-sm font-bold text-[#042B1F] font-mono mb-0.5">
