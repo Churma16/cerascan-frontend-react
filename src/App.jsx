@@ -44,13 +44,13 @@ export default function App() {
                         <Route path="/dashboard/billing" element={<BillingPage />} />
                         <Route path="/dashboard/batch-scan" element={<BatchScanPage />} />
                         <Route path="/dashboard/leaderboard" element={<LeaderboardPage />} />
+                        <Route path="/dashboard/dlq" element={<DLQDashboardPage />} />
                         <Route path="/dashboard/change-password" element={<ChangePasswordPage />} />
                         <Route element={<AdminOnlyRoute />}>
                             <Route path="/dashboard/plans" element={<PlanPage />} />
                             <Route path="/dashboard/users" element={<AdminUserPage />} />
                             <Route path="/dashboard/payment" element={<PaymentPage />} />
                             <Route path="/dashboard/subscriptions" element={<SubscriptionPage />} />
-                            <Route path="/dashboard/dlq" element={<DLQDashboardPage />} />
                             <Route path="/dashboard/model-performance" element={<ModelPerformancePage />} />
                         </Route>
                     </Route>

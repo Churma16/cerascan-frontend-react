@@ -25,8 +25,8 @@ export const sidebarMenus = [
     {
         title: 'Operasional',
         items: [
-            { id: 'overview', label: 'Ringkasan', icon: LayoutDashboard, path: '/dashboard' },
-            { id: 'batch-scan', label: 'Mulai Scan', icon: ScanLine, path: '/dashboard/batch-scan' },
+            { id: 'Overview', label: 'Ringkasan', icon: LayoutDashboard, path: '/dashboard' },
+            { id: 'Batch Scan', label: 'Mulai Scan', icon: ScanLine, path: '/dashboard/batch-scan' },
         ],
     },
     {
@@ -34,6 +34,7 @@ export const sidebarMenus = [
         items: [
             { id: 'history', label: 'Riwayat Scan', icon: History, path: '/dashboard/scans' },
             { id: 'leaderboard', label: 'Peringkat Tim', icon: Trophy, path: '/dashboard/leaderboard' },
+            { id: 'Scan Gagal', label: 'Scan Gagal', icon: AlertTriangle, path: '/dashboard/dlq' },
         ],
     },
     {
@@ -44,7 +45,6 @@ export const sidebarMenus = [
             { id: 'plans', label: 'Data Paket', icon: Package, path: '/dashboard/plans' },
             { id: 'subscriptions', label: 'Kelola Langganan', icon: CreditCard, path: '/dashboard/subscriptions' },
             { id: 'payment', label: 'Semua Transaksi', icon: Banknote, path: '/dashboard/payment' },
-            { id: 'dlq', label: 'Antrean Gagal (DLQ)', icon: AlertTriangle, path: '/dashboard/dlq' },
             { id: 'model-performance', label: 'Performa Model', icon: Activity, path: '/dashboard/model-performance' },
         ],
     },
