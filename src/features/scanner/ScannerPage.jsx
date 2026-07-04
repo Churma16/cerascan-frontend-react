@@ -31,6 +31,11 @@ export default function ScannerPage() {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
+            if (file.size > 4 * 1024 * 1024) {
+                alert('File terlalu besar! Maksimal ukuran file adalah 4MB.');
+                if (fileInputRef.current) fileInputRef.current.value = '';
+                return;
+            }
             setSelectedImage(file);
             setPreviewUrl(URL.createObjectURL(file));
             setScanResult(null);
@@ -58,6 +63,10 @@ export default function ScannerPage() {
             const file = files[0];
             // Cek apakah file adalah image
             if (file.type.startsWith('image/')) {
+                if (file.size > 4 * 1024 * 1024) {
+                    alert('File terlalu besar! Maksimal ukuran file adalah 4MB.');
+                    return;
+                }
                 setSelectedImage(file);
                 setPreviewUrl(URL.createObjectURL(file));
                 setScanResult(null);
