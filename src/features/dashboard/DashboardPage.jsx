@@ -6,16 +6,17 @@ import { capitalizeEachWord, formatDateId, getImageUrl, timeAgo } from '@/utils/
 import { useNavigate } from 'react-router-dom';
 import AdminPageHeader from '@/components/AdminPageHeader.jsx';
 import { useCurrentUser } from '@/hooks/useAuth.js';
+import { useLiveUserQuota } from '@/hooks/useLiveUserQuota.js';
 
-function KpiSection({ dashboardKPIData, isAdmin }) {
+function KpiSection({ dashboardKPIData, isAdmin, liveUserQuota }) {
     const userQuota = dashboardKPIData?.user_quota;
     const activeSubscription = dashboardKPIData?.active_subscription;
 
     // Quota calculations
     const totalQuota = userQuota?.total_quota ?? 0;
-    const usedQuota = userQuota?.used_quota ?? 0;
-    const remainingQuota = userQuota?.remaining_quota ?? 0;
-    const isQuotaLow = userQuota?.is_quota_low ?? false;
+    const remainingQuota = liveUserQuota !== null ? Number(liveUserQuota) : (userQuota?.remaining_quota ?? 0);
+    const usedQuota = totalQuota > 0 ? totalQuota - remainingQuota : 0;
+    const isQuotaLow = totalQuota > 0 ? remainingQuota <= totalQuota * 0.2 : (userQuota?.is_quota_low ?? false);
 
     // Subscription calculations
     const planName = activeSubscription?.plan_name ?? 'Free Plan';
@@ -195,6 +196,7 @@ export default function DashboardPage() {
     const { data: scanHistoryData = [] } = useScanHistory();
     const { data: me } = useCurrentUser();
     const isAdmin = me?.role === 'admin';
+    const { userQuota: liveUserQuota } = useLiveUserQuota(me?.id);
 
     const navigate = useNavigate();
 
@@ -202,7 +204,7 @@ export default function DashboardPage() {
         <PageWrapper>
             <AdminPageHeader title="Selamat Datang, Admin" desc="Berikut adalah ringkasan peforma deteksi hari ini." />
 
-            <KpiSection dashboardKPIData={dashboardKPIData} isAdmin={isAdmin} />
+            <KpiSection dashboardKPIData={dashboardKPIData} isAdmin={isAdmin} liveUserQuota={liveUserQuota} />
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4 mb-8 items-stretch">
                 {/* Kolom Kiri: Chart */}
