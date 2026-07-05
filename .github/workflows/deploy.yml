@@ -54,4 +54,4 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /root/ceramic-scanner
-            docker compose up -d --build frontend
+            docker compose up -d --build --no-deps --force-recreate frontend
