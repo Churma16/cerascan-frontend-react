@@ -89,9 +89,9 @@ export default function ScanHistoryPage() {
                                         </td>
                                         <td className="px-8 py-5 text-sm font-medium text-gray-500 flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-xl bg-[#FAFAFA] flex items-center justify-center border border-gray-100 shrink-0 overflow-hidden">
-                                                {log.saved_file_name ? (
+                                                {log.saved_file_name || log.file_url ? (
                                                     <img
-                                                        src={getImageUrl(log.saved_file_name)}
+                                                        src={log.file_url || getImageUrl(log.saved_file_name)}
                                                         alt={log.file_name}
                                                         className="w-full h-full object-cover"
                                                     />

@@ -27,7 +27,11 @@ export const useScanImage = () => {
             return response.data.data;
         },
         onError: (error) => {
-            console.error('Gagal melakukan scan:', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Terjadi kesalahan saat memproses gambar';
+            console.error('[Scan Error - Single]:', errorMessage);
+            console.log('Detail Error:', error);
+            // Melempar error agar bisa ditangkap oleh komponen UI (misal pakai toast)
+            throw new Error(errorMessage);
         },
     });
 };
@@ -132,6 +136,13 @@ export const useBatchScanImages = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['scans'] });
             queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+        },
+        onError: (error) => {
+            const errorMessage = error.response?.data?.message || error.message || 'Terjadi kesalahan saat memproses batch gambar';
+            console.error('[Scan Error - Batch]:', errorMessage);
+            console.log('Detail Error:', error);
+            // Melempar error agar bisa ditangkap oleh komponen UI
+            throw new Error(errorMessage);
         },
     });
 };

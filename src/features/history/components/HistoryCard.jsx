@@ -6,9 +6,9 @@ export default function HistoryCard({ log }) {
     return (
         <div className="bg-white border border-gray-100 rounded-lg p-4 flex items-center shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_4px_25px_rgb(0,0,0,0.06)] transition-shadow">
             <div className="w-16 h-16 rounded-xl bg-[#FAFAFA] border border-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden mr-5">
-                {log.saved_file_name ? (
+                {log.saved_file_name || log.file_url ? (
                     <img
-                        src={getImageUrl(log.saved_file_name)}
+                        src={log.file_url || getImageUrl(log.saved_file_name)}
                         alt={log.file_name}
                         className="w-full h-full object-cover"
                     />

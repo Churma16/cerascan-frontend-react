@@ -298,9 +298,9 @@ export default function DashboardPage() {
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center border border-gray-200">
-                                        {scan.saved_file_name ? (
+                                        {scan.saved_file_name || scan.file_url ? (
                                             <img
-                                                src={getImageUrl(scan.saved_file_name)}
+                                                src={scan.file_url || getImageUrl(scan.saved_file_name)}
                                                 alt={scan.file_name}
                                                 className="w-full h-full object-cover"
                                             />
