@@ -1,10 +1,10 @@
 import { useCurrentUser } from '@/hooks/useAuth.js';
 import DotLoading from '@/components/DotLoading.jsx';
-import { useLiveUserQuota } from '@/hooks/useLiveUserQuota.js';
+import { useLiveUserQuotaSSE } from '@/hooks/useLiveUserQuotaSSE.js';
 
 export default function LiveUserQuotaColumn() {
     const { data: me } = useCurrentUser();
-    const { userQuota } = useLiveUserQuota(me?.id);
+    const { userQuota } = useLiveUserQuotaSSE(me?.id);
 
     return (
         <div className="text-center">

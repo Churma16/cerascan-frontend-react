@@ -3,7 +3,7 @@ import { AlertCircle, CheckCircle2, ImageIcon, RefreshCw, Search, Settings2, Upl
 import { Button } from '@/components/ui/button.jsx';
 import { useScanImage } from '@/hooks/useScan.js';
 import { useNavigate } from 'react-router-dom';
-import { useScannerSocket } from '@/hooks/useScannerSocket.js';
+import { useScannerSSE } from '@/hooks/useScannerSSE.js';
 
 export default function ScannerPage() {
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -26,7 +26,8 @@ export default function ScannerPage() {
         currentScanIdRef.current = currentScanId;
     }, [currentScanId]);
 
-    useScannerSocket(currentScanIdRef, setScanResult, setIsProcessingAi);
+    // 4) SSE Listener
+    useScannerSSE(currentScanIdRef, setScanResult, setIsProcessingAi);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];

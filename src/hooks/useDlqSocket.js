@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
 
+/**
+ * @deprecated Silakan gunakan `useDlqSSE` yang berbasis Server-Sent Events (SSE).
+ */
 export const useDlqSocket = (onUpdate) => {
     const queryClient = useQueryClient();
     

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { AlertCircle, CheckCircle2, Trash2, UploadCloud, Zap } from 'lucide-react';
 import { useBatchScanImages } from '@/hooks/useScan.js';
 import PageWrapper from '@/layouts/PageWrapper.jsx';
-import { useBatchScanSocket } from '@/hooks/useBatchScanSocket.js';
+import { useBatchScanSSE } from '@/hooks/useBatchScanSSE.js';
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB limit
 
@@ -13,8 +13,8 @@ export default function BatchScanPage() {
     const fileInputRef = useRef(null);
 
     const { mutate: batchScanImages, isPending: isUploading } = useBatchScanImages();
-
-    useBatchScanSocket(setScanItems);
+    // Hook SSE
+    useBatchScanSSE(setScanItems);
 
     // ---------------------------------------------------------
     // HANDLERS: Drag & Drop dan File Input

@@ -3,7 +3,7 @@ import PageWrapper from '@/layouts/PageWrapper.jsx';
 import AdminPageHeader from '@/components/AdminPageHeader.jsx';
 import { AlertTriangle, Check, Eye, Info, Play, RefreshCw, Trash2, X } from 'lucide-react';
 import { useDlqMessages, useRetryDlqMessage, useRetryAllDlqMessages, usePurgeDlq } from '@/hooks/useDlq.js';
-import { useDlqSocket } from '@/hooks/useDlqSocket.js';
+import { useDlqSSE } from '@/hooks/useDlqSSE.js';
 import { useToast } from '@/hooks/useToast.js';
 
 export default function DLQDashboardPage() {
@@ -16,7 +16,7 @@ export default function DLQDashboardPage() {
     const { mutate: retryAll, isPending: isRetryingAll } = useRetryAllDlqMessages();
     const { mutate: purge, isPending: isPurging } = usePurgeDlq();
 
-    useDlqSocket(
+    useDlqSSE(
         useCallback((data) => {
             showToast(`Peringatan: Pesan ${data.routingKey} kembali gagal dan masuk DLQ`, 'error');
         }, [showToast])

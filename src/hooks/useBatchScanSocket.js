@@ -6,6 +6,7 @@ import { io } from 'socket.io-client';
  * Mendengarkan event `scan_completed` dan memperbarui state item scan
  * yang sesuai berdasarkan `scan_id` yang dikembalikan server.
  *
+ * @deprecated Silakan gunakan `useBatchScanSSE` yang berbasis Server-Sent Events (SSE).
  * @hook useBatchScanSocket
  * @param {Function} setScanItems - State setter dari useState untuk daftar item scan.
  * @returns {void}

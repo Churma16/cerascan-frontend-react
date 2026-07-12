@@ -6,6 +6,7 @@ import { io } from 'socket.io-client';
  * Membuka koneksi socket dengan autentikasi `userId` dan mendengarkan event
  * `quota_update` untuk memperbarui tampilan sisa kuota secara real-time.
  *
+ * @deprecated Silakan gunakan `useLiveUserQuotaSSE` yang berbasis Server-Sent Events (SSE).
  * @hook useLiveUserQuota
  * @param {string|number|undefined} userId - ID pengguna yang sedang login. Koneksi tidak akan dibuka jika nilai ini falsy.
  * @returns {{ userQuota: number|null }} Objek berisi sisa kuota pengguna terkini.

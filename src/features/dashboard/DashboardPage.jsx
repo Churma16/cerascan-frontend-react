@@ -6,7 +6,7 @@ import { capitalizeEachWord, formatDateId, getImageUrl, timeAgo } from '@/utils/
 import { useNavigate } from 'react-router-dom';
 import AdminPageHeader from '@/components/AdminPageHeader.jsx';
 import { useCurrentUser } from '@/hooks/useAuth.js';
-import { useLiveUserQuota } from '@/hooks/useLiveUserQuota.js';
+import { useLiveUserQuotaSSE } from '@/hooks/useLiveUserQuotaSSE.js';
 
 function KpiSection({ dashboardKPIData, isAdmin, liveUserQuota }) {
     const userQuota = dashboardKPIData?.user_quota;
@@ -196,7 +196,7 @@ export default function DashboardPage() {
     const { data: scanHistoryData = [] } = useScanHistory();
     const { data: me } = useCurrentUser();
     const isAdmin = me?.role === 'admin';
-    const { userQuota: liveUserQuota } = useLiveUserQuota(me?.id);
+    const { userQuota: liveUserQuota } = useLiveUserQuotaSSE(me?.id);
 
     const navigate = useNavigate();
 

@@ -6,6 +6,7 @@ import { io } from 'socket.io-client';
  * Mendengarkan event `scan_completed` dan memperbarui hasil scan hanya
  * jika `scan_id` yang diterima cocok dengan ID scan yang sedang aktif (via ref).
  *
+ * @deprecated Silakan gunakan `useScannerSSE` yang berbasis Server-Sent Events (SSE).
  * @hook useScannerSocket
  * @param {React.MutableRefObject<string|null>} currentScanIdRef - Ref yang menyimpan scan_id aktif.
  * @param {Function} setScanResult - State setter untuk hasil scan.
