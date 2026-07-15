@@ -24,6 +24,8 @@ import PlanPage from '@/features/plan/PlanPage.jsx';
 import SubscriptionPage from '@/features/subscription/SubscriptionPage.jsx';
 import AdminOnlyRoute from '@/components/guard/AdminOnlyRoute.jsx';
 import AuthCallback from '@/features/auth/AuthCallback.jsx';
+import PrivacyPolicyPage from '@/features/legal/PrivacyPolicyPage.jsx';
+import TermsOfServicePage from '@/features/legal/TermsOfServicePage.jsx';
 
 export default function App() {
     return (
@@ -60,6 +62,8 @@ export default function App() {
                     <Route path="/history" element={<HistoryPage />} />
                     <Route path="/insights" element={<InsightsPage />} />
                     <Route path="/architecture" element={<ArchitecturePage />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                    <Route path="/terms-of-service" element={<TermsOfServicePage />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/scanner" replace />} />
             </Routes>

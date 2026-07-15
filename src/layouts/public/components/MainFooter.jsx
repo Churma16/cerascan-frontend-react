@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MainFooter() {
     return (
@@ -102,24 +102,20 @@ export default function MainFooter() {
                             </a>
                         </li>
                         <li>
-                            <a
-                                href="https://opensource.org/licenses/MIT"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                to="/terms-of-service"
                                 className="text-white/70 hover:text-white transition-colors"
                             >
-                                Lisensi Penggunaan
-                            </a>
+                                Syarat & Ketentuan
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                href="https://www.privacy.gov.id/"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                to="/privacy-policy"
                                 className="text-white/70 hover:text-white transition-colors"
                             >
-                                Protokol Privasi Data
-                            </a>
+                                Kebijakan Privasi
+                            </Link>
                         </li>
                     </ul>
                 </div>
