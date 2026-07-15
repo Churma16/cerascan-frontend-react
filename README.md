@@ -1,16 +1,77 @@
-# React + Vite
+# CeraScan Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![React Version](https://img.shields.io/badge/React-v18.x-61DAFB?logo=react&logoColor=white)](https://react.dev) [![Build Tool](https://img.shields.io/badge/Vite-v5.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Currently, two official plugins are available:
+The responsive web dashboard for CeraScan. It allows users to monitor real-time ceramic tile defect detection results, manage quality control workflows, and view analytics seamlessly.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **Real-time Monitoring**:
+    *   Instantaneous updates of scanning results pushed directly to the UI via WebSockets (Socket.io) and Server-Sent Events (SSE).
+*   **Responsive Dashboard**:
+    *   Sleek and professional interface optimized for both desktop and mobile viewing.
+*   **Authentication**:
+    *   Secure client-side route protection and user session management.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack & Libraries
+
+*   **Framework/Core**: React / Vite
+*   **Styling**: Tailwind CSS
+*   **State Management / Fetching**: TanStack Query / Axios
+*   **Libraries**: Socket.io-client, Server-Sent Events (SSE)
+
+---
+
+## Installation & Setup
+
+### Method 1: Local Development Setup
+
+#### Prerequisites
+*   Node.js >= 16.x
+*   npm or yarn
+
+#### Steps
+1.  **Clone and Navigate**:
+    ```bash
+    git clone [repository-url]
+    cd vgg-frontend-react
+    ```
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Environment Configuration**:
+    Create `.env` based on `.env.example`:
+    ```bash
+    cp .env.example .env
+    ```
+4.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+5.  **Build for Production**:
+    ```bash
+    npm run build
+    ```
+
+---
+
+## Acknowledgements
+
+Special thanks and appreciation to the teams and contributors involved in creating this interactive interface.
+
+---
+
+## Author
+
+**Churma16**
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
