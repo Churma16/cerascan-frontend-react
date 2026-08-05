@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { getSSE } from '../api/sseClient';
+import { connectSSE } from '../api/sseClient';
 
 export const useBatchScanSSE = (setScanItems) => {
     useEffect(() => {
-        const eventSource = getSSE();
+        const eventSource = connectSSE();
         if (!eventSource) return;
 
         const handleScanCompleted = (event) => {
