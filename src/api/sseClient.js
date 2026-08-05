@@ -5,7 +5,7 @@ let eventSource = null;
 
 export const connectSSE = (userId) => {
     if (!eventSource) {
-        let url = `${BASE_URL}/api/sse/events`;
+        let url = `${BASE_URL}/sse/events`;
         if (userId) {
             url += `?userId=${userId}`;
         }
