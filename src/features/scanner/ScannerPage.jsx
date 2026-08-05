@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { AlertCircle, CheckCircle2, ImageIcon, RefreshCw, Search, Settings2, UploadCloud, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { useScanImage } from '@/hooks/useScan.js';
@@ -11,20 +11,14 @@ export default function ScannerPage() {
     const [scanResult, setScanResult] = useState(null);
     const [isDragActive, setIsDragActive] = useState(false);
 
-    // --- BARU --- State untuk menahan loading AI dan melacak ID gambar
+    // State untuk menahan loading AI dan melacak ID gambar
     const [isProcessingAi, setIsProcessingAi] = useState(false);
-    const [currentScanId, setCurrentScanId] = useState(null);
 
     const currentScanIdRef = useRef(null);
     const fileInputRef = useRef(null);
 
     const { mutate: scanImage, isPending: isUploading } = useScanImage();
     const navigate = useNavigate();
-
-    // Sinkronisasi ref dengan state currentScanId
-    useEffect(() => {
-        currentScanIdRef.current = currentScanId;
-    }, [currentScanId]);
 
     // 4) SSE Listener
     useScannerSSE(currentScanIdRef, setScanResult, setIsProcessingAi);
@@ -78,11 +72,15 @@ export default function ScannerPage() {
 
     const triggerScan = (file) => {
         setIsProcessingAi(true);
+        // Reset ref agar tidak ada scan_id lama yang tertinggal
+        currentScanIdRef.current = null;
         scanImage(file, {
             onSuccess: (dataScan) => {
                 const returnedScanId = dataScan.scan_id;
                 console.log('Menunggu hasil AI untuk ID:', returnedScanId);
-                setCurrentScanId(returnedScanId);
+                // Update ref LANGSUNG (synchronous) agar SSE listener sudah siap
+                // sebelum notifikasi Kafka datang, menghindari race condition
+                currentScanIdRef.current = returnedScanId;
             },
             onError: (error) => {
                 console.error('Error scanning:', error);
@@ -101,7 +99,7 @@ export default function ScannerPage() {
         setPreviewUrl(null);
         setScanResult(null);
         setIsProcessingAi(false);
-        setCurrentScanId(null);
+        currentScanIdRef.current = null;
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
