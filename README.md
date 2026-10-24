@@ -1,77 +1,76 @@
-# CeraScan Web Application
+# CeraScan: React Frontend Application
 
-[![React Version](https://img.shields.io/badge/React-v18.x-61DAFB?logo=react&logoColor=white)](https://react.dev) [![Build Tool](https://img.shields.io/badge/Vite-v5.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-v19.x-61DAFB?logo=react&logoColor=white)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-v6.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.x-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-The frontend web application for the CeraScan ecosystem. It serves both as an engaging public portal for visitors and a comprehensive, real-time dashboard for authenticated users to monitor ceramic tile defect detection and manage quality control workflows.
-
----
-
-## Key Features
-
-*   **Public & User Portal Separation**:
-    *   **Public Pages**: Engaging landing pages, informational content, and general access areas for visitors.
-    *   **User Dashboard**: Protected routes for authenticated users featuring quality control workflows and analytics.
-*   **Real-time Monitoring**:
-    *   Instantaneous updates of scanning results pushed directly to the UI via WebSockets (Socket.io) and Server-Sent Events (SSE).
-*   **Responsive Interface**:
-    *   Sleek and professional UI optimized for both desktop and mobile viewing across all pages.
-*   **Authentication**:
-    *   Secure client-side route protection and robust user session management.
+The web interface for CeraScan. Users can upload ceramic tile images, watch defect classifications update in real time, and inspect historical scan records.
 
 ---
 
-## Tech Stack & Libraries
+## Capabilities
 
-*   **Framework/Core**: React / Vite
-*   **Styling**: Tailwind CSS
-*   **State Management / Fetching**: TanStack Query / Axios
-*   **Libraries**: Socket.io-client, Server-Sent Events (SSE)
-
----
-
-## Installation & Setup
-
-### Method 1: Local Development Setup
-
-#### Prerequisites
-*   Node.js >= 16.x
-*   npm or yarn
-
-#### Steps
-1.  **Clone and Navigate**:
-    ```bash
-    git clone [repository-url]
-    cd vgg-frontend-react
-    ```
-2.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-3.  **Environment Configuration**:
-    Create `.env` based on `.env.example`:
-    ```bash
-    cp .env.example .env
-    ```
-4.  **Run Development Server**:
-    ```bash
-    npm run dev
-    ```
-5.  **Build for Production**:
-    ```bash
-    npm run build
-    ```
+* **Tile Inspection**: Upload surface photos to trigger defect detection and view confidence scores.
+* **Live Status**: Receives real-time scan progress from the backend using Socket.io and Server-Sent Events (SSE).
+* **Scan History**: Displays defect trends and past inspection records with interactive charts.
+* **User Authentication**: Client-side protected routes for signed-in operators and visitors.
 
 ---
 
-## Acknowledgements
+## Tech Stack
 
-Special thanks and appreciation to the teams and contributors involved in creating this interactive interface.
+* **Framework**: React 19, Vite
+* **Routing**: React Router v7
+* **Data Fetching**: TanStack Query (React Query), Axios
+* **UI and Styling**: Tailwind CSS v4, Radix UI, Framer Motion, Lucide Icons
+* **Real-time Client**: Socket.io Client
 
 ---
 
-## Author
+## Getting Started
 
-**Churma16**
+### Prerequisites
+
+* Node.js 18 or higher
+* Running CeraScan Express API gateway
+
+### Setup
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Configure environment variables in `.env`:
+   ```env
+   VITE_PROD=false
+   VITE_WEB_SOCKET_URL="http://localhost:5002"
+   VITE_BACKEND_URL_DEV="http://localhost:5002/api"
+   VITE_BACKEND_STORAGE_URL_DEV="http://localhost:5002/storage"
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Build for production:
+   ```bash
+   npm run build
+   ```
+
+The application runs locally at `http://localhost:3002` (or the port Vite prints in your terminal).
+
+---
+
+## Directory Layout
+
+* `src/api/`: Axios API clients for communicating with the Express gateway.
+* `src/features/`: Feature modules for authentication, tile scanning, and dashboard views.
+* `src/hooks/`: Custom React hooks, including TanStack Query hooks.
+* `src/components/`: Reusable UI elements built with Radix UI and Tailwind CSS.
+* `src/layouts/`: Page layouts for public and authenticated views.
 
 ---
 
