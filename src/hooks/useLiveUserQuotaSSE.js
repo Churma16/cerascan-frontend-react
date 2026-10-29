@@ -1,31 +1,14 @@
-import { useEffect, useState } from 'react';
-import { connectSSE, getSSE } from '../api/sseClient';
+import { useUserQuota } from './useUserQuota.js';
 
+/**
+ * Hook backward-compatible untuk live quota SSE.
+ * Dialihkan ke useUserQuota sebagai Single Source of Truth.
+ *
+ * @hook useLiveUserQuotaSSE
+ * @param {string|number|undefined} userId - ID pengguna.
+ * @returns {{ userQuota: number|null }} Sisa kuota pengguna terkini.
+ */
 export const useLiveUserQuotaSSE = (userId) => {
-    const [userQuota, setUserQuota] = useState(null);
-
-    useEffect(() => {
-        if (!userId) return;
-
-        // Pastikan terkoneksi (bisa dipanggil berulang kali karena singleton)
-        const eventSource = connectSSE(userId);
-
-        const handleQuotaUpdate = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                console.log('Update kuota masuk (SSE):', data);
-                setUserQuota(data);
-            } catch (e) {
-                console.error(e);
-            }
-        };
-
-        eventSource.addEventListener('quota_update', handleQuotaUpdate);
-
-        return () => {
-            eventSource.removeEventListener('quota_update', handleQuotaUpdate);
-        };
-    }, [userId]);
-
-    return { userQuota };
+    const { remainingQuota } = useUserQuota(userId);
+    return { userQuota: remainingQuota };
 };

@@ -6,26 +6,29 @@ import { capitalizeEachWord, formatDateId, getImageUrl, timeAgo } from '@/utils/
 import { useNavigate } from 'react-router-dom';
 import AdminPageHeader from '@/components/AdminPageHeader.jsx';
 import { useCurrentUser } from '@/hooks/useAuth.js';
-import { useLiveUserQuotaSSE } from '@/hooks/useLiveUserQuotaSSE.js';
+import { useUserQuota } from '@/hooks/useUserQuota.js';
 
-function KpiSection({ dashboardKPIData, isAdmin, liveUserQuota }) {
-    const userQuota = dashboardKPIData?.user_quota;
+function KpiSection({ dashboardKPIData, isAdmin, quotaDetails }) {
+    const userQuotaFromKpi = dashboardKPIData?.user_quota;
     const activeSubscription = dashboardKPIData?.active_subscription;
 
-    // Quota calculations
-    const totalQuota = userQuota?.total_quota ?? 0;
-    const remainingQuota = liveUserQuota !== null ? Number(liveUserQuota) : (userQuota?.remaining_quota ?? 0);
-    const usedQuota = totalQuota > 0 ? totalQuota - remainingQuota : 0;
-    const isQuotaLow = totalQuota > 0 ? remainingQuota <= totalQuota * 0.2 : (userQuota?.is_quota_low ?? false);
+    // Quota calculations from SSOT hook with fallback to KPI
+    const totalQuota = quotaDetails?.totalQuota || userQuotaFromKpi?.total_quota || 0;
+    const remainingQuota = quotaDetails?.remainingQuota !== null ? quotaDetails.remainingQuota : (userQuotaFromKpi?.remaining_quota ?? 0);
+    const usedQuota = totalQuota > 0 ? (quotaDetails?.usedQuota ?? Math.max(totalQuota - remainingQuota, 0)) : 0;
+    const isQuotaLow = quotaDetails?.isQuotaLow ?? (totalQuota > 0 ? remainingQuota <= totalQuota * 0.2 : false);
 
     // Subscription calculations
     const planName = activeSubscription?.plan_name ?? 'Free Plan';
     const isActive = activeSubscription?.status === 'active';
-    const resetDateStr = userQuota?.next_reset_date
-        ? formatDateId(userQuota.next_reset_date)
-        : activeSubscription?.end_date
-          ? formatDateId(activeSubscription.end_date)
-          : '';
+    const resetDateStr = quotaDetails?.nextResetDate
+        ? formatDateId(quotaDetails.nextResetDate)
+        : userQuotaFromKpi?.next_reset_date
+          ? formatDateId(userQuotaFromKpi.next_reset_date)
+          : activeSubscription?.end_date
+            ? formatDateId(activeSubscription.end_date)
+            : '';
+
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -196,7 +199,7 @@ export default function DashboardPage() {
     const { data: scanHistoryData = [] } = useScanHistory();
     const { data: me } = useCurrentUser();
     const isAdmin = me?.role === 'admin';
-    const { userQuota: liveUserQuota } = useLiveUserQuotaSSE(me?.id);
+    const quotaDetails = useUserQuota(me?.id);
 
     const navigate = useNavigate();
 
@@ -204,7 +207,8 @@ export default function DashboardPage() {
         <PageWrapper>
             <AdminPageHeader title="Selamat Datang, Admin" desc="Berikut adalah ringkasan peforma deteksi hari ini." />
 
-            <KpiSection dashboardKPIData={dashboardKPIData} isAdmin={isAdmin} liveUserQuota={liveUserQuota} />
+            <KpiSection dashboardKPIData={dashboardKPIData} isAdmin={isAdmin} quotaDetails={quotaDetails} />
+
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4 mb-8 items-stretch">
                 {/* Kolom Kiri: Chart */}
