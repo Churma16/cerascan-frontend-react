@@ -4,56 +4,60 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
     paths-ignore:
       - 'README.md'
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
+    name: Build Image and Deploy to VPS
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          node-version: '25'
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Inject Environment Variables
-        run: |
-          echo 'VITE_PROD=true' >> .env
-          echo 'VITE_WEB_SOCKET_URL="https://api-ceramic.churma.codes"' >> .env
-          echo 'VITE_BACKEND_URL_DEV="http://localhost:3000/api"' >> .env
-          echo 'VITE_BACKEND_URL_PROD="https://api-ceramic.churma.codes/api"' >> .env
-          echo 'VITE_BACKEND_STORAGE_URL_DEV="http://localhost:3000/storage"' >> .env
-          echo 'VITE_BACKEND_STORAGE_URL_PROD="https://api-ceramic.churma.codes/uploads"' >> .env
-          echo "VITE_MIDTRANS_CLIENT_KEY=${{ secrets.MIDTRANS_CLIENT_KEY }}" >> .env
-          echo 'VITE_MIDTRANS_SNAP_URL="https://app.sandbox.midtrans.com/snap/snap.js"' >> .env
-
-      - name: Build Application
-        run: npm run build
-
-      - name: Deploy to VPS
-        uses: appleboy/scp-action@v0.1.7
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: "dist/,Dockerfile.frontend,nginx.conf"
-          target: "/root/ceramic-scanner/frontend/"
+          context: .
+          push: true
+          build-args: |
+            VITE_MIDTRANS_CLIENT_KEY=${{ secrets.MIDTRANS_CLIENT_KEY }}
+          tags: |
+            ghcr.io/churma16/cerascan-frontend-react:${{ github.sha }}
+            ghcr.io/churma16/cerascan-frontend-react:latest
 
-      - name: Restart Docker Container
+      - name: Activate Service on VPS
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          IMAGE_TAG: "ghcr.io/churma16/cerascan-frontend-react:${{ github.sha }}"
         with:
+          envs: IMAGE_TAG
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /root/ceramic-scanner
-            docker compose up -d --build --no-deps --force-recreate frontend
+            set -euo pipefail
+            DEPLOY_PATH="/root/cerascan-deployment"
+            if [ -d "$DEPLOY_PATH/scripts" ]; then
+              cd "$DEPLOY_PATH"
+              ./scripts/deploy.sh frontend "$IMAGE_TAG"
+              ./scripts/smoke-test.sh frontend
+            else
+              echo "[info] $DEPLOY_PATH not yet cloned on VPS. Skipping container restart until infra is deployed."
+            fi
