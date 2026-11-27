@@ -23,4 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 /.env
-src/grep.exe.stackdump
+*.stackdump
+/graphify-out
